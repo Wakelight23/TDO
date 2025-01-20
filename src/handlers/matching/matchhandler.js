@@ -1,11 +1,26 @@
 import { PacketType } from '../../constants/header.js';
+import { addGameSession } from '../../session/game.session.js';
+import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const matchHandler = async ({ socket, sequence, payload }) => {
   try {
     const {  } = payload; //없음.?? 이게 왜없지. 아니 소켓으로 유저 찾아서 매칭해야하네.
 
 
+    const user = getUserBySocket(socket);
+
+    let gameSession = getAllGameSessions().find((session) => session.users.length === 1);
+
+    if (gameSession) {
+      gameSession.addUser(user);
+      //게임 시작 함수. 넣어주기.
+    } else {
+      const gameId = uuidv4();
+      gameSession = addGameSession(gameId);
+      gameSession.addUser(user);
+    }
     
 
     const matchStartpayload = {
@@ -77,7 +92,7 @@ const matchHandler = async ({ socket, sequence, payload }) => {
     const matchStartResponse = createResponse(packetType, matchStartpayload, sequence);
     socket.write(matchStartResponse);
 
-    // 매칭이 성공하면 계속 동기화를 시켜줘야 한다.
+    // 매칭이 성공하면 계속 동기화를 시켜줘야 한다.?
     //const stateSyncpayload = {
     //  userGold: 100,
     //  baseHp: 100,

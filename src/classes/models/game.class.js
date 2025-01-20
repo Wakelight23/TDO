@@ -3,6 +3,8 @@ class Game {
     this.id = id;
     this.users = [];
     this.state = 'waiting'; // 'waiting', 'inProgress'
+    this.monsterPaths = []; //애는 저장용임--> 키가 유저소캣. 벨류가 몬스터 패스.
+    this.basePositions = []; //애는 저장용임--> 키가 유저소캣. 벨류가 몬스터 패스.
   }
 
   addUser(user) {
@@ -10,8 +12,6 @@ class Game {
       throw new Error('Game session is full');
     }
     this.users.push(user);
-
-    this.intervalManager.addPlayer(user.id); //핑을 쓸때 바인드 써야함. 마지막은 주기(ms)
   }
 
   getUser(userId) {
@@ -32,17 +32,17 @@ class Game {
     }
   }
 
-  // startGame() {
-  //   this.state = 'inProgress';
-  //   const users = this.users.map((user) => {
-  //     const { x, y } = user.calculatePosition();
-  //     return { id: user.id, role: user.role, x, y };
-  //   });
-  //   const startPacket = gameStartNotification(users ,this.id, Date.now());
-  //   this.users.forEach((user) => {
-  //     user.socket.write(startPacket);
-  //   });
-  // }
+  startGame() {
+    this.state = 'inProgress';
+    const users = this.users.map((user) => {
+      //const { x, y } = user.calculatePosition();
+      //return { id: user.id, role: user.role, x, y };
+    });
+    //const startPacket = gameStartNotification(users ,this.id, Date.now());
+     this.users.forEach((user) => {
+      //user.socket.write(startPacket);
+    });
+  }
 }
 
 export default Game;
