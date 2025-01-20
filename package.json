@@ -1,0 +1,25 @@
+{
+  "name": "ch5_multiplayer_challenges",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/cat10ho/CH5_Multiplayer_Challenges.git",
+  "author": "이이삭 <dlrltn1091@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "lodash": "^4.17.21",
+    "long": "^5.2.4",
+    "mysql2": "^3.12.0",
+    "protobufjs": "^7.4.0",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2"
+  }
+}
