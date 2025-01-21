@@ -1,3 +1,5 @@
+import { getLastPathPoint } from "../../utils/monster/monsterPath.js";
+
 class User {
   constructor(socket) {
     this.highScore = 100;
@@ -7,7 +9,7 @@ class User {
     this.base = { hp: 100, maxHp: 100 };
     this.basePosition = null;
     this.towers = [];
-    this.monsters = [];
+    this.monsters = []; //현재 내가 가진 몬스터.
     this.monsterPath = null;
     this.sequence = 0;
     this.matchingUsersocket = null;
@@ -16,6 +18,10 @@ class User {
 
   updateHighScore(highScore) {
     this.highScore = highScore;
+  }
+
+  gethigHScore() {
+    return this.highScore;
   }
 
   updateScore(score) {
@@ -38,21 +44,35 @@ class User {
     this.base.hp = hp;
   }
 
+  getBase() {
+    return this.base;
+  }
+
   getBasePositions() {
     return this.basePosition;
   }
 
   updateMonsterPaths(monsterPath) {
     this.monsterPath = monsterPath;
+    this.basePosition = getLastPathPoint(monsterPath);
   }
 
   getMonsterPaths() {
     return this.monsterPath;
   }
 
-
   getNextSequence() {
     return ++this.sequence;
+  }
+
+  updateSpawnMonstercounter(spawnMonstercounter) {
+    this.spawnMonstercounter = spawnMonstercounter;
+  }
+
+  getSpawnMonstercounter() {
+    const spawnMonstercounter = this.spawnMonstercounter;
+    this.spawnMonstercounter++;
+    return spawnMonstercounter;
   }
 
   updateMatchingUsersocket(matchingUsersocket) {
@@ -61,6 +81,14 @@ class User {
 
   getMatchingUsersocket() {
     return this.matchingUsersocket;
+  } 
+
+  updateGameId(gameId) {
+    this.gameId = gameId;
+  }
+
+  getGameId() {
+    return this.gameId;
   } 
 
   //타워 추가.
@@ -82,21 +110,18 @@ class User {
     }
   }
 
-
-  //유저 정보 초기화.
   clearUserData(){
     this.score = 0;
     this.gold = 100;
     this.base = { hp: 100, maxHp: 100 };
     this.basePosition = null;
     this.towers = [];
-    this.monsters = []; 
+    this.monsters = []; //현재 내가 가진 몬스터.
     this.monsterPath = null;
     this.sequence = 0;
     this.matchingUsersocket = null;
     this.gameId = null;
   }
-
 }
 
 export default User;
