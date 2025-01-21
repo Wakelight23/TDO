@@ -113,6 +113,12 @@ class Game {
     removeGameSession(this.id);
   }
 
+  //몬스터가 몇 마리 소환되었는가에 따라서 레벨이 오르는 구조
+  levelUp()
+  {
+    this.monsterLevel++;
+  }
+
 
 }
 

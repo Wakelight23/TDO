@@ -14,7 +14,8 @@ const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
 
     const monsterId = gameSessions.getSpawnMonsterCounter();
     
-    const monsterNumber = Math.floor(Math.random()*(4))+ 1 ;
+    //1부터 5까지라면 
+    const monsterNumber = Math.ceil(Math.random()*(5));
 
     const monster = { monsterId , monsterNumber, level:gameSessions.monsterLevel };
 

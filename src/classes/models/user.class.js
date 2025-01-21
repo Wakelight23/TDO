@@ -107,6 +107,7 @@ class User {
 
     if (index !== -1) {
       return this.monsters.splice(index, 1)[0];
+      
     }
   }
 

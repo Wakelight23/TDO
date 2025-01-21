@@ -17,14 +17,8 @@ const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
     const gamesession = getGameSessionByUserSocket(socket);
     const otherSocketList = gamesession.getOtherUserBySocket(socket).map((user)=>user.socket);
     
-
-    const packetType = PacketType.SPAWN_ENEMY_MONSTER_NOTIFICATION;
-    const spawnMonsterResponse = createResponse(packetType, spawnMonsterpayload, sequence);
-    socket.write(spawnMonsterResponse);
-
-    
     const otherPlayerpacketType = PacketType.SPAWN_ENEMY_MONSTER_NOTIFICATION;
-    const spawnEnemyMonsterNotificationResponse = createResponse(otherPlayerpacketType, spawnEnemyMonsterNotificationpayload, sequence);
+    const spawnEnemyMonsterNotificationResponse = createResponse(otherPlayerpacketType, spawnMonsterpayload, sequence);
     for(let otherSocket of otherSocketList)
     {
       otherSocket.write(spawnEnemyMonsterNotificationResponse);
