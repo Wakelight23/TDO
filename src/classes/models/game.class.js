@@ -43,7 +43,7 @@ class Game {
       user1.updateMatchingUsersocket(user2.socket); // 유저1의 matchingUserSocket에 유저2의 소켓 할당
       user2.updateMatchingUsersocket(user1.socket); // 유저2의 matchingUserSocket에 유저1의 소켓 할당 --> 나중에 쓰기 편하라고.
     
-    const initialGameState = { baseHp: 100, towerCost: 10, initialGold: 500, monsterSpawnInterval: 10 };
+    const initialGameState = { baseHp: 100, towerCost: 10, initialGold: 500, monsterSpawnInterval: 1 };
     const user1Data = { gold: user1.gold, base: user1.base, highScore: user1.highScore, towers: user1.towers, monsters: [], monsterLevel: this.monsterLevel, score:user1.score, monsterPath:user1.monsterPath, basePosition: user1.basePosition }
     const user2Data = { gold: user2.gold, base: user2.base, highScore: user2.highScore, towers: user2.towers, monsters: [], monsterLevel: this.monsterLevel, score:user2.score, monsterPath:user2.monsterPath, basePosition: user2.basePosition }
     

@@ -1,6 +1,6 @@
 export const generateRandomMonsterPath = (startY) => {
   const path = [];
-  let currentX = 0;
+  let currentX = 20;
   let currentY = startY; // 500 ~ 520 범위의 y 시작 (캔버스 y축 중간쯤에서 시작할 수 있도록 유도)
 
   path.push({ x: currentX, y: currentY });
