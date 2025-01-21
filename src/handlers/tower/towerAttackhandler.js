@@ -14,13 +14,14 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
     //이 페이로드는 적 타워가 몬스터를 때리는걸 보낸것. 즉 이건 상대쪽에게 보내야함.
     //즉 지금 보내는건 저 타워 어택 핸들러를 받았을때 보내는게 아니고. 
     //상대 유저가 타워어택 핸들러를 받았을때 보내는것.
+
     const enemyTowerAttackNotificationpayload = {
       towerId: 100,
       monsterId: 100,
     };
     const packetType = PacketType.ENEMY_TOWER_ATTACK_NOTIFICATION;
     const enemyTowerAttackNotificationResponse = createResponse(packetType, enemyTowerAttackNotificationpayload, sequence);
-    //anemyUser.socket.write(enemyTowerAttackNotificationResponse);
+    //enemyUser.socket.write(enemyTowerAttackNotificationResponse);
 
   } catch (error) {
     console.error(error);
