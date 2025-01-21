@@ -39,7 +39,7 @@ class Game {
       //return { id: user.id, role: user.role, x, y };
     });
     //const startPacket = gameStartNotification(users ,this.id, Date.now());
-     this.users.forEach((user) => {
+    this.users.forEach((user) => {
       //user.socket.write(startPacket);
     });
   }
