@@ -11,6 +11,7 @@ class User {
     this.monsterPaths = [];
     this.sequence = 0;
     this.matchingUsersocket = null;
+    this.lastMonsterId = 0;
   }
 
   getNextSequence() {
@@ -44,6 +45,11 @@ class User {
     if (index !== -1) {
       return this.monsters.splice(index, 1)[0];
     }
+  }
+
+  getMonsterLastId()
+  {
+    return this.lastMonsterId++;
   }
 
 }
