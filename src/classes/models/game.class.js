@@ -77,7 +77,7 @@ class Game {
     return purchTowerConter;
   }
 
-  stateSyn(){
+  stateSyn(){ // 이건 진짜로 어디에 쓰는 걸까..
     this.users.forEach((user) => {
       const stateSyncpayload = { userGold: user.gold, baseHP: user.base.hp, monsterLevel: this.monsterLevel, score: user.score, towers: user.towers, moseters: user.monsters}
       console.log("stateSyncpayload:",stateSyncpayload);
