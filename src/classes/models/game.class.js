@@ -18,11 +18,26 @@ class Game {
     return this.users.find((user) => user.id === userId);
   }
 
+  getUserBySocket(socket)
+  {
+    return this.users.find((user)=>user.socket === socket);
+  }
+
+  getOtherUserBySocket(socket)
+  {
+    return this.users.filter((user)=>user.socket !== socket);
+  }
+
   removeUseruserId(userId) {
     const index = this.users.findIndex((user) => user.id === userId);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
     }
+  }
+
+  getOtherUser(userId)
+  {
+    return this.users.find((user)=>user.id !== userId);
   }
 
   removeUsersocket(socket) {

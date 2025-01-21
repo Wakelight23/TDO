@@ -20,7 +20,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     
     const updateBaseHPNotificationpayload = {
       isOpponent: true, // HP를 업데이트 할 기지가 상대방 기지라면 true
-      baseHp: 100,
+      baseHp: user.hp,
     };
     const packetType = PacketType.UPDATE_BASE_HP_NOTIFICATION;
     const updateBaseHPNotificationResponse = createResponse(packetType, updateBaseHPNotificationpayload, sequence);

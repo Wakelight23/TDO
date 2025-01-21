@@ -22,13 +22,7 @@ class Monster {
     }
 
 
-    monsterDie() {
-
-    }
-
-    update() {
-        if (this.hp < 0) {
-            this.monsterDie();
-        }
+    isMonsterDead() {
+        return this.hp <= 0 ? true : false;
     }
 }
