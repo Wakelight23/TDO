@@ -1,21 +1,78 @@
+import { getLastPathPoint } from "../../utils/monster/monsterPath.js";
+
 class User {
-  constructor(highScore = 0, score = 0, socket) {
-    this.highScore = highScore;
-    this.score = score;
+  constructor(socket) {
+    this.highScore = 100;
+    this.score = 0;
     this.socket = socket;
     this.gold = 100;
     this.base = { hp: 100, maxHp: 100 };
-    this.basePositions = null;
+    this.basePosition = null;
     this.towers = [];
     this.monsters = []; //현재 내가 가진 몬스터.
-    this.monsterPaths = [];
+    this.monsterPath = null;
     this.sequence = 0;
     this.matchingUsersocket = null;
-    this.lastMonsterId = 0;
+    this.gameId = null;
+  }
+
+  updateHighScore(highScore) {
+    this.highScore = highScore;
+  }
+
+  gethigHScore() {
+    return this.highScore;
+  }
+
+  updateScore(score) {
+    this.score = score;
+  }
+
+  getScore() {
+    return this.score;
+  }
+
+  updateGold(gold) {
+    this.gold = gold;
+  }
+
+  getGold() {
+    return this.gold;
+  }
+
+  updateBase(hp) {
+    this.base.hp = hp;
+  }
+
+  getBase() {
+    return this.base;
+  }
+
+  getBasePositions() {
+    return this.basePosition;
+  }
+
+  updateMonsterPaths(monsterPath) {
+    this.monsterPath = monsterPath;
+    this.basePosition = getLastPathPoint(monsterPath);
+  }
+
+  getMonsterPaths() {
+    return this.monsterPath;
   }
 
   getNextSequence() {
     return ++this.sequence;
+  }
+
+  updateSpawnMonstercounter(spawnMonstercounter) {
+    this.spawnMonstercounter = spawnMonstercounter;
+  }
+
+  getSpawnMonstercounter() {
+    const spawnMonstercounter = this.spawnMonstercounter;
+    this.spawnMonstercounter++;
+    return spawnMonstercounter;
   }
 
   updateMatchingUsersocket(matchingUsersocket) {
@@ -24,9 +81,15 @@ class User {
 
   getMatchingUsersocket() {
     return this.matchingUsersocket;
-  } //필요 한가?
+  } 
 
-  getMatchUserData() {}
+  updateGameId(gameId) {
+    this.gameId = gameId;
+  }
+
+  getGameId() {
+    return this.gameId;
+  } 
 
   //타워 추가.
   addTower(tower){
@@ -47,11 +110,18 @@ class User {
     }
   }
 
-  getMonsterLastId()
-  {
-    return this.lastMonsterId++;
+  clearUserData(){
+    this.score = 0;
+    this.gold = 100;
+    this.base = { hp: 100, maxHp: 100 };
+    this.basePosition = null;
+    this.towers = [];
+    this.monsters = []; //현재 내가 가진 몬스터.
+    this.monsterPath = null;
+    this.sequence = 0;
+    this.matchingUsersocket = null;
+    this.gameId = null;
   }
-
 }
 
 export default User;

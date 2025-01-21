@@ -1,47 +1,46 @@
 import { PacketType } from '../../constants/header.js';
+import { getJoinGameSessions } from '../../session/game.session.js';
+import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { getGameSessionByUserSocket } from '../../session/game.session.js';
 
 const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
   try {
-    const { } = payload; //소켓으로 유저 찾아서 매칭.
-    //몬스터의 id
-    //생성될 몬스터의 타입
-    const spawnMonsterType = Math.ceil(Math.random()*5);
-    
+    const { } = payload; 
 
-    //게임 내 세션에서 monsterNumber를 읽고 최대 숫자만큼을 받아오도록 한다.
-    //monsterId : 몬스터의 고유 값, monsterNumber = 몬스터의 종류(1~5);
+    const user = getUserBySocket(socket);
+
+    const gameSessions = getJoinGameSessions(user);
+
+    const monsterId = gameSessions.getSpawnMonsterCounter();
+    
+    const monsterNumber = Math.floor(Math.random()*(4))+ 1 ;
+
+    const monster = { monsterId , monsterNumber, level:gameSessions.monsterLevel };
+
+    user.addMonster(monster);
+    
     const spawnMonsterpayload = {
         monsterId,
-        monsterNumber: spawnMonsterType
+        monsterNumber,
     };
-
-    //현재 플레이어가 속해 있는 게임 세션을 가져오기
-    const gamesession = getGameSessionByUserSocket(socket);
-    const otherSocketList = gamesession.getOtherUserBySocket(socket).map((user)=>user.socket);
-    
-
-    const packetType = PacketType.SPAWN_MONSTER_RESPONSE;
+    let packetType = PacketType.SPAWN_MONSTER_RESPONSE;
     const spawnMonsterResponse = createResponse(packetType, spawnMonsterpayload, sequence);
     socket.write(spawnMonsterResponse);
 
-    
-    // 대칭상대 몬스터 스폰 동기화. 상대가 spawnMonsterHandler를 받았을때 보내면 됨.
+
+
+    //상대한테 내 몬스터 나왔다고 보네기.
+    const enemyUser = getUserBySocket(user.getMatchingUsersocket());
+
     const spawnEnemyMonsterNotificationpayload = {
-     monsterId,
-     monsterNumber: spawnMonsterType,
+      monsterId,
+      monsterNumber,
     }
-    const otherPlayerpacketType = PacketType.SPAWN_ENEMY_MONSTER_NOTIFICATION;
-    const spawnEnemyMonsterNotificationResponse = createResponse(otherPlayerpacketType, spawnEnemyMonsterNotificationpayload, sequence);
-    for(let otherSocket of otherSocketList)
-    {
-      otherSocket.write(spawnEnemyMonsterNotificationResponse);
-    }
+    packetType = PacketType.SPAWN_ENEMY_MONSTER_NOTIFICATION;
+    const spawnEnemyMonsterNotificationResponse = createResponse(packetType, spawnEnemyMonsterNotificationpayload, sequence);
+    enemyUser.socket.write(spawnEnemyMonsterNotificationResponse);
     
-
-    
-
   } catch (error) {
     console.error(error);
   }
