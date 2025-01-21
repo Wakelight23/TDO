@@ -1,5 +1,5 @@
 import { PacketType } from '../../constants/header.js';
-import { addGameSession } from '../../session/game.session.js';
+import { addGameSession,getAllGameSessions } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { v4 as uuidv4 } from 'uuid';
