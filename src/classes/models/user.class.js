@@ -1,17 +1,55 @@
 class User {
   constructor(socket) {
-    this.highScore = null;
-    this.score = null;
+    this.highScore = 100;
+    this.score = 0;
     this.socket = socket;
     this.gold = 100;
     this.base = { hp: 100, maxHp: 100 };
-    this.basePositions = null;
+    this.basePosition = null;
     this.towers = [];
-    this.monsters = []; //현재 내가 가진 몬스터.
-    this.monsterPaths = [];
+    this.monsters = [];
+    this.monsterPath = null;
     this.sequence = 0;
     this.matchingUsersocket = null;
+    this.gameId = null;
   }
+
+  updateHighScore(highScore) {
+    this.highScore = highScore;
+  }
+
+  updateScore(score) {
+    this.score = score;
+  }
+
+  getScore() {
+    return this.score;
+  }
+
+  updateGold(gold) {
+    this.gold = gold;
+  }
+
+  getGold() {
+    return this.gold;
+  }
+
+  updateBase(hp) {
+    this.base.hp = hp;
+  }
+
+  getBasePositions() {
+    return this.basePosition;
+  }
+
+  updateMonsterPaths(monsterPath) {
+    this.monsterPath = monsterPath;
+  }
+
+  getMonsterPaths() {
+    return this.monsterPath;
+  }
+
 
   getNextSequence() {
     return ++this.sequence;
@@ -23,9 +61,7 @@ class User {
 
   getMatchingUsersocket() {
     return this.matchingUsersocket;
-  } //필요 한가?
-
-  getMatchUserData() {}
+  } 
 
   //타워 추가.
   addTower(tower){
@@ -44,6 +80,21 @@ class User {
     if (index !== -1) {
       return this.monsters.splice(index, 1)[0];
     }
+  }
+
+
+  //유저 정보 초기화.
+  clearUserData(){
+    this.score = 0;
+    this.gold = 100;
+    this.base = { hp: 100, maxHp: 100 };
+    this.basePosition = null;
+    this.towers = [];
+    this.monsters = []; 
+    this.monsterPath = null;
+    this.sequence = 0;
+    this.matchingUsersocket = null;
+    this.gameId = null;
   }
 
 }

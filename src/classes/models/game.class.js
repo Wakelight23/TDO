@@ -3,8 +3,6 @@ class Game {
     this.id = id;
     this.users = [];
     this.state = 'waiting'; // 'waiting', 'inProgress'
-    this.monsterPaths = []; //애는 저장용임--> 키가 유저소캣. 벨류가 몬스터 패스.
-    this.basePositions = []; //애는 저장용임--> 키가 유저소캣. 벨류가 몬스터 패스.
   }
 
   addUser(user) {
