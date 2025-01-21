@@ -40,4 +40,9 @@ export const removeGameSessionSocket = (socket) => {
   }
 }
 
+export const getJoinGameSessions = (user) => {
+  const gameId = user.getGameId();
+  return gameSessions.find((session) => session.id === gameId);
+};
+
 

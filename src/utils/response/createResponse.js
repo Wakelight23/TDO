@@ -3,6 +3,7 @@ import { getpacketnameByHandlerId } from '../../handlers/index.js';
 import { getProtoMessages } from '../../init/loadProtos.js';
 
 export const createResponse = (packetType, payloadData = {}, sequence) => {
+  //console.log("\npacketType:",packetType,"\npayloadData:",payloadData);
   // 패킷 타입 정보를 넣은 버퍼 생성
   const typeBuffer = Buffer.alloc(config.packet.packetTypeLength);
   typeBuffer.writeUInt16BE(packetType);
@@ -23,8 +24,15 @@ export const createResponse = (packetType, payloadData = {}, sequence) => {
 
   const gamePacket = protoMessages['packets']['GamePacket'];
   const responsePayload = {};
+  // if (packetType === 10){
+  //   console.log("payloadData:", payloadData);
+  // };
   responsePayload[packetname] = payloadData;
   const payloadBuffer = gamePacket.encode(responsePayload).finish();
+
+  // if (packetType === 10){
+  //   console.log("payloadBuffer:", payloadBuffer);
+  // };
 
   // 6. 페이로드 길이 만들기.
   const payloadLengthBuffer = Buffer.alloc(config.packet.payloadLength);

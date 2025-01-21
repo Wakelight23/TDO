@@ -69,7 +69,7 @@ const handlers = {
   [HANDLER_IDS.SPAWNMONSTERRESPONSE]: {
     //handler: testHandler,
     protoType: 'packets.S2CSpawnMonsterResponse',
-    packetname: 'spawnMonsterRespons',
+    packetname: 'spawnMonsterResponse',
   },
   [HANDLER_IDS.SPAWNMONSTERNOTIFICATION]: {
     //handler: testHandler,
