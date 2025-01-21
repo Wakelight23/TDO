@@ -75,19 +75,16 @@ export const onData = (socket) => async (data) => {
       );
 
       try {
-        const { packetType, sequence, payload } = packetParser(
-          packetpacketType,
-          packetversion,
-          packetsequence,
-          packetpayload,
-        );
-
+        console.log("packetType:",packetpacketType,"\npayload:", packetpayload );
+        const { packetType, sequence, payload } = packetParser(packetpacketType, packetversion, packetsequence, packetpayload);
+        
         const handler = getHandlerById(packetType);
         await handler({
           socket,
           sequence,
           payload,
         });
+
       } catch (error) {
         console.error(error);
       }

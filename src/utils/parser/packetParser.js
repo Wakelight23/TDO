@@ -34,6 +34,7 @@ export const packetParser = (packetType, version, sequence, packetpayload) => {
   const expectedFields = Object.keys(PayloadType.fields);
   const actualFields = Object.keys(payload);
   const missingFields = expectedFields.filter((field) => !actualFields.includes(field));
+
   if (missingFields.length > 0) {
     console.error(`필수 필드가 누락되었습니다: ${missingFields.join(', ')}`);
   }
