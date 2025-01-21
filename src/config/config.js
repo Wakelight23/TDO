@@ -5,6 +5,7 @@ import {
   SEQUENCE_LENGTH,
   VERSION_LENGTH,
 } from '../constants/header.js';
+import { DB1_NAME, DB1_USER, DB1_PASSWORD, DB1_HOST, DB1_PORT } from '../constants/env.js';
 
 export const config = {
   //이 config 하나로 모든 환경변수를 가져옴.
