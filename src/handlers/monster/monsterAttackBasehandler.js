@@ -2,12 +2,19 @@ import { PacketType } from '../../constants/header.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
+//packetType : 16
 const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
   try {
     const { damage } = payload; //소켓으로 유저 찾아서 매칭.
     
     const user = getUserBySocket(socket);
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
+
+    //음수값의 수치가 있을 수 있으니까?
+    if(damage < 0)
+    {
+      damage = 0;
+    }
 
     user.updateBase(user.base.hp - damage);
 

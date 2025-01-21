@@ -4,6 +4,7 @@ import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { getGameSessionByUserSocket } from '../../session/game.session.js';
 
+//packetType : 11
 const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
   try {
     const { } = payload; 

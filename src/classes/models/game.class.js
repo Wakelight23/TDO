@@ -11,6 +11,8 @@ class Game {
     this.spawnMonsterCounter = 10000;
     this.purchTowerConter = 100;
     this.deleteAgreement = 0; //삭제를 위한 변수
+    this.startTime = Date.now();
+    this.playingTime = 0;
   }
 
   addUser(user) {
@@ -111,6 +113,20 @@ class Game {
 
   deleteSession() {
     removeGameSession(this.id);
+  }
+
+  updateTimestamp(deltaTime)
+  {
+    this.playingTime += deltaTime;
+    //60초마다 한 번씩 레벨업 한다는 의미로
+    if(this.playingTime > 60)
+    {
+      this.playingTime = 0;
+      //나중에 여기에 별도의 추가 함수를 집어 넣는 것도 고려해 보도록 하자.
+      this.levelUp();
+    }
+
+
   }
 
   //몬스터가 몇 마리 소환되었는가에 따라서 레벨이 오르는 구조
