@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "long": "^5.2.4",
     "mysql2": "^3.12.0",

@@ -1,6 +1,6 @@
 
 class User {
-  constructor(socket) {
+  constructor(highScore = 0, score = 0, socket) {
     this.highScore = highScore;
     this.score = score;
     this.socket = socket;
