@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 const matchHandler = async ({ socket, sequence, payload }) => {
   try {
     const {  } = payload; //없음.?? 이게 왜없지. 아니 소켓으로 유저 찾아서 매칭해야하네.
+    console.log("socket:",socket);
 
 
     const user = getUserBySocket(socket);
