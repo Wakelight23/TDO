@@ -33,6 +33,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     const tower = { towerId: towerId, x: x, y: y };
 
     user.addTower(tower);
+    
 
     //console.log('유저가 보유한 타워:', user.towers);
 
@@ -41,6 +42,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     // 6. 타워 구매 응답
     const towerPurchasePayload = { towerId: towerId };
+    console.log("towerPurchasePayload",towerPurchasePayload.towerId);
     const towerPurchaseResponse = createResponse(
       PacketType.TOWER_PURCHASE_RESPONSE,
       towerPurchasePayload,
@@ -50,8 +52,13 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     // 7. 상대방에게 타워 추가 알림 전송
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
+
+    console.log("user.towers",user.towers);
+    console.log("enemyUser.towers",enemyUser.towers);
+
     if (enemyUser && enemyUser.socket) {
       const addEnemyTowerNotificationPayload = { towerId: towerId, x: x, y: y};
+      console.log("addEnemyTowerNotificationPayload",addEnemyTowerNotificationPayload.towerId);
       const addEnemyTowerNotificationResponse = createResponse(
         PacketType.ADD_ENEMY_TOWER_NOTIFICATION,
         addEnemyTowerNotificationPayload,

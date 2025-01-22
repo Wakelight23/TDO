@@ -6,7 +6,6 @@ import { createResponse } from '../../utils/response/createResponse.js';
 const towerAttackHandler = async ({ socket, sequence, payload }) => {
   try {
     const { towerId, monsterId } = payload;
-
     if (typeof towerId !== 'number' || towerId < 100) {
       throw new Error('towerId는 100 이상의 숫자여야 합니다.');
     }
