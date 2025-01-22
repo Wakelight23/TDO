@@ -15,6 +15,7 @@ function update(deltaTime)
     for(let gameSession of gameSessions)
     {
         gameSession.updateTimestamp(deltaTime);
+        
     }
     //여기서 프레임마다 업데이트를 해보도록 하자.
 }
@@ -26,7 +27,7 @@ function updateLoop()
     const now = Date.now();
     const deltaTime = now - lastUpdateTime;
 
-    if(targetFrameDuration >= deltaTime && deltaTime >= minFrameDuration)
+    if(deltaTime >= minFrameDuration)
     {
         //나중에 별도의 이벤트가 추가되어야 한다면 여기서 처리해 주도록 하자.
         update(deltaTime);

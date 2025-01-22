@@ -1,4 +1,5 @@
 import { PacketType } from '../../constants/header.js';
+import { getGameSessionByUserSocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
@@ -17,6 +18,8 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     }
 
     user.updateBase(user.base.hp - damage);
+    const gameSession = getGameSessionByUserSocket(socket);
+    gameSession.stateSyn();
 
 
     if(user.base.hp <= 0 ) {

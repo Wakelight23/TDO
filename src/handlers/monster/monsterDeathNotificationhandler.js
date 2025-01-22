@@ -1,4 +1,5 @@
 import { PacketType } from '../../constants/header.js';
+import { getGameSessionByUserSocket, notificationGameSessionsBySocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
@@ -9,8 +10,13 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     const user = getUserBySocket(socket);
 
     user.removeMonster(monsterId);
+    user.updateGold(user.getGold() + 10);
+    user.udateScore(user.getScore() + monsterId * 10);    
 
-    const enemyUser = getUserBySocket(user.getMatchingUsersocket());
+    const gameSession = getGameSessionByUserSocket(socket);
+
+    const enemyUsers = gameSession.getOtherUserBySocket(socket);
+    
 
 
     
@@ -20,7 +26,15 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     }
     const packetType = PacketType.ENEMY_MONSTER_DEATH_NOTIFICATION;
     const enemyMonsterDeathNotificationResponse = createResponse(packetType, enemyMonsterDeathNotificationpayload, sequence);
-    enemyUser.socket.write(enemyMonsterDeathNotificationResponse);
+    for(let enemyUser of enemyUsers)
+    {
+      enemyUser.socket.write(enemyMonsterDeathNotificationResponse);
+    }
+
+
+    notificationGameSessionsBySocket(socket);
+
+
 
   } catch (error) {
     console.error(error);
