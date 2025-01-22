@@ -11,7 +11,7 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     const { id, password } = payload; // email 기반으로 로그인 처리
 
     // 이메일로 사용자 검색
-    console.log(payload);
+    // console.log(payload);
     const [rows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE email = ?', [id]);
     if (rows.length === 0) {
       const failResponse = createResponse(
