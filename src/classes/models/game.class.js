@@ -16,7 +16,7 @@ class Game {
     this.baseHp = 100,
     this.towerCost = 100,
     this.initialGold = 500,
-    this.monsterSpawnInterval = 3
+    this.monsterSpawnInterval = 1
   }
 
   //유저를 넣어둡니다. 유저에게 게임 아이디를 추가합니다.

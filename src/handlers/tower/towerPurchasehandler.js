@@ -42,7 +42,6 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     // 6. 타워 구매 응답
     const towerPurchasePayload = { towerId: towerId };
-    console.log("towerPurchasePayload",towerPurchasePayload.towerId);
     const towerPurchaseResponse = createResponse(
       PacketType.TOWER_PURCHASE_RESPONSE,
       towerPurchasePayload,
@@ -52,13 +51,8 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     // 7. 상대방에게 타워 추가 알림 전송
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
-
-    console.log("user.towers",user.towers);
-    console.log("enemyUser.towers",enemyUser.towers);
-
     if (enemyUser && enemyUser.socket) {
       const addEnemyTowerNotificationPayload = { towerId: towerId, x: x, y: y};
-      console.log("addEnemyTowerNotificationPayload",addEnemyTowerNotificationPayload.towerId);
       const addEnemyTowerNotificationResponse = createResponse(
         PacketType.ADD_ENEMY_TOWER_NOTIFICATION,
         addEnemyTowerNotificationPayload,
@@ -69,7 +63,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
       console.warn('상대방이 연결되어 있지 않음');
     }
 
-    console.log('타워 구매 완료');
+    //console.log('타워 구매 완료');
   } catch (error) {
     console.error('타워 구매 처리 중 오류 발생:', error);
   }
