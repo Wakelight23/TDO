@@ -1,7 +1,7 @@
 export const generateRandomMonsterPath = (startY) => {
   const path = [];
-  let currentX = 0;
-  let currentY = startY; // 500 ~ 520 범위의 y 시작 (캔버스 y축 중간쯤에서 시작할 수 있도록 유도)
+  let currentX = 20;
+  let currentY = startY; // 
 
   path.push({ x: currentX, y: currentY });
 
@@ -28,6 +28,8 @@ export const generateRandomMonsterPath = (startY) => {
   return path;
 }
 
+
+//마지막 포인트를 가져옵니다.
 export const getLastPathPoint = (path) => {
   if (path.length === 0) {
     console.error("경로를 넣으라고");
@@ -35,6 +37,7 @@ export const getLastPathPoint = (path) => {
   return path[path.length - 1];
 };
 
+//이건 혹시 몬스터 패스의 Y를 전체적으로 올려야 할때 사용하려고 했던것. 지워도 됨.
 export const adjustPathY = (path, offsetY) => {
   return path.map(point => ({
     x: point.x,
