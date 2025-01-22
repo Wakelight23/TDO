@@ -1,0 +1,5 @@
+export const SQL_QUERIES = {
+  FIND_USER_BY_EMAIL: 'SELECT * FROM USER WHERE email = ?',
+  CREATE_USER: 'INSERT INTO USER (id, email) VALUES (?, ?)',
+  UPDATE_USER_LOGIN: 'UPDATE USER SET last_login = CURRENT_TIMESTAMP WHERE id = ?',
+};
