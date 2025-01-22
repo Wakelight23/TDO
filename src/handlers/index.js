@@ -4,6 +4,7 @@ import matchHandler from './matching/matchhandler.js';
 import monsterAttackBaseHandler from './monster/monsterAttackBasehandler.js';
 import monsterDeathNotificationHandler from './monster/monsterDeathNotificationhandler.js';
 import spawnMonsterHandler from './monster/spawnMonsterhandler.js';
+import spawnMonsterNotification from './monster/spawnMonsterNotification.js';
 import testHandler from './test/testhandler.js';
 import towerAttackHandler from './tower/towerAttackhandler.js';
 import towerPurchaseHandler from './tower/towerPurchasehandler.js';
@@ -72,7 +73,7 @@ const handlers = {
     packetname: 'spawnMonsterResponse',
   },
   [HANDLER_IDS.SPAWNMONSTERNOTIFICATION]: {
-    //handler: testHandler,
+    handler: spawnMonsterNotification,
     protoType: 'packets.S2CSpawnEnemyMonsterNotification',
     packetname: 'spawnEnemyMonsterNotification',
   },

@@ -13,6 +13,7 @@ export const packetParser = (packetType, version, sequence, packetpayload) => {
 const protoMessages = getProtoMessages();
 
 const GamePacket = protoMessages["packets"]["GamePacket"];
+//console.log(GamePacket);
 
 const packetname = getpacketnameByHandlerId(packetType);
 const protoTypeName = getProtoTypeNameByHandlerId(packetType);
