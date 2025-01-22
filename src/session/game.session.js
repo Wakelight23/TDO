@@ -17,7 +17,6 @@ export const removeGameSession = (id) => {
 export const removeGameSessionUser = (socket) => {
   const index = gameSessions.findIndex((session) => session.id === id);
 
-  
   if (index !== -1) {
     return gameSessions.splice(index, 1)[0];
   }
@@ -28,26 +27,22 @@ export const getGameSession = (id) => {
 };
 
 export const getGameSessionByUserSocket = (socket) => {
-  for(const gameSession of gameSessions)
-  {
+  for (const gameSession of gameSessions) {
     const findUser = gameSession.getUserBySocket(socket);
-    if(findUser)
-    {
+    if (findUser) {
       return gameSession;
     }
   }
-}
+};
 
 export const getAllGameSessions = () => {
   return gameSessions;
 };
 
 export const notificationGameSessionsBySocket = (socket) => {
-  const gameSession = this.getGameSessionByUserSocket(socket);
-  gameSession.stateSyn();
-
-  
-}
+  // const gameSession = this.getGameSessionByUserSocket(socket);
+  // gameSession.stateSyn();
+};
 
 export const removeGameSessionSocket = (socket) => {
   for (const game of gameSessions) {
@@ -56,11 +51,9 @@ export const removeGameSessionSocket = (socket) => {
       break; // 유저를 찾으면 중단 (유저는 한 게임에만 존재한다고 가정)
     }
   }
-}
+};
 
 export const getJoinGameSessions = (user) => {
   const gameId = user.getGameId();
   return gameSessions.find((session) => session.id === gameId);
 };
-
-
