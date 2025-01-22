@@ -40,8 +40,8 @@ const matchHandler = async ({ socket, sequence, payload }) => {
       gameSession.addUser(matchedUser);
 
       // 초기 타워 설정
-      const tower1 = { x: 200, y: 340, towerId: gameSession.getPurchTowerConter() };
-      const tower2 = { x: 200, y: 340, towerId: gameSession.getPurchTowerConter() };
+      const tower1 = { towerId: gameSession.getPurchTowerConter(), x: 200, y: 340 };
+      const tower2 = { towerId: gameSession.getPurchTowerConter(), x: 200, y: 340 };
 
       user.addTower(tower1);
       matchedUser.addTower(tower2);

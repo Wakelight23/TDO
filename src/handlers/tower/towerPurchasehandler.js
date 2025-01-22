@@ -30,7 +30,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     // 4. 타워 정보 생성 및 추가
     const towerId = gameSessions.getPurchTowerConter();
-    const tower = { x: x, y: y, towerId: towerId };
+    const tower = { towerId: towerId, x: x, y: y };
 
     user.addTower(tower);
 
@@ -51,7 +51,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     // 7. 상대방에게 타워 추가 알림 전송
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
     if (enemyUser && enemyUser.socket) {
-      const addEnemyTowerNotificationPayload = { x: x, y: y, towerId: towerId };
+      const addEnemyTowerNotificationPayload = { towerId: towerId, x: x, y: y};
       const addEnemyTowerNotificationResponse = createResponse(
         PacketType.ADD_ENEMY_TOWER_NOTIFICATION,
         addEnemyTowerNotificationPayload,
