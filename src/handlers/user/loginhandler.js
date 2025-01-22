@@ -3,7 +3,8 @@ import pools from '../../db/database.js';
 import { addUser } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
-import mysql from 'mysql2/promise'; // promise 기반 MySQL
+import jwt from 'jsonwebtoken';
+import { SECRET_KEY } from '../../constants/env.js';
 
 const loginHandler = async ({ socket, sequence, payload }) => {
   try {
@@ -48,11 +49,15 @@ const loginHandler = async ({ socket, sequence, payload }) => {
       [user.user_id],
     );
 
-    // JWT 생성 (임시 토큰 메시지로 대체)
+    // JWT 생성
+    const token = jwt.sign({ userId: user.user_id, email: user.email }, SECRET_KEY, {
+      expiresIn: '1h',
+    });
+
     const successPayload = {
       success: true,
       message: 'Login successful',
-      token: 'TemporaryToken', // 실제 구현 시 JWT 발급
+      token, // JWT 발급
       failCode: 0, // NONE
     };
 
