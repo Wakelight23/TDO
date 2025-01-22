@@ -7,7 +7,7 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     const { id, password } = payload;
 
 
-
+    //로그인 되면 게임 세션에 넣어줍니다.
     addUser(socket);
 
 
