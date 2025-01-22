@@ -1,4 +1,4 @@
-import { getLastPathPoint } from "../../utils/monster/monsterPath.js";
+import { getLastPathPoint } from '../../utils/monster/monsterPath.js';
 
 class User {
   constructor(socket) {
@@ -20,7 +20,7 @@ class User {
     this.highScore = highScore;
   }
 
-  gethigHScore() {
+  getHighScore() {
     return this.highScore;
   }
 
@@ -81,7 +81,7 @@ class User {
 
   getMatchingUsersocket() {
     return this.matchingUsersocket;
-  } 
+  }
 
   updateGameId(gameId) {
     this.gameId = gameId;
@@ -89,15 +89,15 @@ class User {
 
   getGameId() {
     return this.gameId;
-  } 
+  }
 
   //타워 추가.
-  addTower(tower){
+  addTower(tower) {
     this.towers.push(tower);
   }
 
   //몬스터 추가.
-  addMonster(monster){
+  addMonster(monster) {
     this.monsters.push(monster);
   }
 
@@ -110,7 +110,7 @@ class User {
     }
   }
 
-  clearUserData(){
+  clearUserData() {
     this.score = 0;
     this.gold = 100;
     this.base = { hp: 100, maxHp: 100 };
