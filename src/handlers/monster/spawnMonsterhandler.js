@@ -49,7 +49,7 @@ const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
     const spawnEnemyMonsterNotificationResponse = createResponse(packetType, spawnEnemyMonsterNotificationpayload, sequence);
     enemyUser.socket.write(spawnEnemyMonsterNotificationResponse);
 
-    //notificationGameSessionsBySocket(socket);
+    notificationGameSessionsBySocket(socket);
     
   } catch (error) {
     console.error(error);

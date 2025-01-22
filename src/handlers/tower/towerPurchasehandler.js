@@ -9,6 +9,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => { //일단
     const { x , y } = payload; 
 
     const user = getUserBySocket(socket);
+    console.log("타워 구매");
 
     //유저가 참여하고 있는 게임세션을 가져옵니다. 
     const gameSessions = getJoinGameSessions(user);

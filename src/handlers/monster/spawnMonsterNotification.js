@@ -24,7 +24,7 @@ const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
       otherSocket.write(spawnEnemyMonsterNotificationResponse);
     }
 
-    //notificationGameSessionsBySocket(socket);
+    notificationGameSessionsBySocket(socket);
   } catch (error) {
     console.error(error);
   }

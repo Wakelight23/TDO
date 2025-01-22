@@ -37,5 +37,5 @@ export function updateLoop() {
         //console.log("업데이트 확인용")
         update();
 
-    }, targetFrameDuration);
+    }, 1000);
 }

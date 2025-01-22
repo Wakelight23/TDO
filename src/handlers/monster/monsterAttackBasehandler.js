@@ -62,7 +62,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
       }
 
       //일단 동기화를 이렇게 처리하도록 하자
-      //notificationGameSessionsBySocket(socket);
+      notificationGameSessionsBySocket(socket);
 
 
   } catch (error) {

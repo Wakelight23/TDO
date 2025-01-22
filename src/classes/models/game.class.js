@@ -78,7 +78,7 @@ class Game {
       opponentData: user2Data,
     }
 
-    
+
     const packetType = PacketType.MATCH_START_NOTIFICATION;
     let user1matchStartResponse = createResponse(packetType, user1matchStartpayload, user1.sequence);
     //유저1 소켓으로 보넵니다.
@@ -140,11 +140,12 @@ class Game {
     this.stateSyn();
     this.playingTime += deltaTime;
     //60초마다 한 번씩 레벨업 한다는 의미로
-    if(this.playingTime > 60)
+    if(this.playingTime > 60 * 1000)
     {
       this.playingTime = 0;
       //나중에 여기에 별도의 추가 함수를 집어 넣는 것도 고려해 보도록 하자.
-      this.levelUp();
+      this.monsterLevel = 
+      this.monsterLevel < 5 ? this.monsterLevel + 1 : this.monsterLevel; 
     }
   }
 
@@ -152,7 +153,7 @@ class Game {
   levelUp()
   {
     this.monsterLevel = 
-    this.monsterLevel <= 5 ? this.monsterLevel + 1 : this.monsterLevel; 
+    this.monsterLevel < 5 ? this.monsterLevel + 1 : this.monsterLevel; 
   }
 
 

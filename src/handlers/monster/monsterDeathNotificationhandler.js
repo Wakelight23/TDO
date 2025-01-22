@@ -34,7 +34,7 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
       enemyUser.socket.write(enemyMonsterDeathNotificationResponse);
     }
 
-    //notificationGameSessionsBySocket(socket);
+    notificationGameSessionsBySocket(socket);
 
   } catch (error) {
     console.error(error);

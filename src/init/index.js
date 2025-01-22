@@ -8,7 +8,7 @@ import { updateLoop } from './update/update.js';
    try {
      await loadGameAssets();
      await loadProtos();
-     updateLoop();
+     //updateLoop();
      // 다음 작업
    } catch (e) {
      console.error(e);
