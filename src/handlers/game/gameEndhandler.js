@@ -1,4 +1,4 @@
-import { updateDBHighScore, updateHighScoreByEmail } from '../../db/user/user.db.js';
+import { updateDBHighScore } from '../../db/user/user.db.js';
 import { getJoinGameSessions } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 
@@ -11,13 +11,16 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
     // 현재 참가 중인 게임 세션 가져오기
     const gameSession = getJoinGameSessions(user);
 
+    console.log('user.score : ', user.score);
+    console.log('user.highscore : ', user.highscore);
+
     // 새로운 점수가 기존 highScore보다 높은지 확인
-    if (user.score > user.highScore) {
-      // console.log(`신기록 달성! : ${user.score}`);
+    if (user.score > user.highscore) {
+      console.log(`신기록 달성! : ${user.score}`);
       // DB에 새로운 highScore 업데이트
-      // await updateDBHighScore(user.id, user.score);
+      await updateDBHighScore(user.id, user.score);
       // 메모리 상의 사용자 highScore도 업데이트
-      // user.highScore = user.score;
+      user.highScore = user.score;
     }
 
     // 참가 중인 게임 세션 삭제

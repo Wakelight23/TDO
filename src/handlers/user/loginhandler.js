@@ -1,5 +1,6 @@
 import { PacketType } from '../../constants/header.js';
 import pools from '../../db/database.js';
+import { findUserByHighScore } from '../../db/user/user.db.js';
 import { addUser } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
@@ -59,7 +60,11 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
     socket.write(successResponse);
 
-    addUser(socket, highScore, id); // 소켓을 세션에 추가
+    // DB에 저장된 id를 토대로 highscore를 가져온다
+    const highScoreData = await findUserByHighScore(id);
+
+    addUser(socket, highScoreData.highscore, id); // 소켓을 세션에 추가
+    console.log('highScore, id : ', highScoreData.highscore, id);
   } catch (error) {
     console.error('Error in loginHandler:', error);
 

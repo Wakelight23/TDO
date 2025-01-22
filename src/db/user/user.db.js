@@ -8,6 +8,11 @@ export const findUserByEmail = async (email) => {
   return toCamelCase(rows[0]);
 };
 
+export const findUserByHighScore = async (email) => {
+  const [rows] = await pools.TDO_USER_DB.query(SQL_QUERIES.FIND_USER_BY_HIGHSCORE, [email]);
+  return toCamelCase(rows[0]);
+};
+
 export const createUser = async (email) => {
   const id = uuidv4();
   await pools.TDO_USER_DB.query(SQL_QUERIES.CREATE_USER, [id, email]);
@@ -18,13 +23,6 @@ export const updateUserLogin = async (id) => {
   await pools.TDO_USER_DB.query(SQL_QUERIES.UPDATE_USER_LOGIN, [id]);
 };
 
-export const updateDBHighScore = async (id, newHighScore) => {
-  await pools.TDO_USER_DB.query(SQL_QUERIES.UPDATE_USER_HIGHSCORE, [newHighScore, id]);
-};
-
-export const updateHighScoreByEmail = async (email, newHighScore) => {
-  await pools.TDO_USER_DB.query('UPDATE USER SET highscore = ? WHERE email = ?', [
-    newHighScore,
-    email,
-  ]);
+export const updateDBHighScore = async (email, newHighScore) => {
+  await pools.TDO_USER_DB.query(SQL_QUERIES.UPDATE_USER_HIGHSCORE, [newHighScore, email]);
 };

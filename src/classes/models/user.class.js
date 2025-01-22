@@ -1,9 +1,9 @@
 import { getLastPathPoint } from '../../utils/monster/monsterPath.js';
 
 class User {
-  constructor(socket, highScore, id) {
+  constructor(socket, highscore, id) {
     this.id = id;
-    this.highScore = highScore;
+    this.highscore = highscore;
     this.score = 0;
     this.socket = socket;
     this.gold = 100;
@@ -18,11 +18,11 @@ class User {
   }
 
   updateHighScore(highScore) {
-    this.highScore = highScore;
+    this.highscore = highscore;
   }
 
   getHighScore() {
-    return this.highScore;
+    return this.highscore;
   }
 
   updateScore(score) {

@@ -16,7 +16,7 @@ const matchHandler = async ({ socket, sequence, payload }) => {
 
     const user = getUserBySocket(socket);
     console.log('🚀 ~ matchHandler ~ user:', user);
-
+    console.log('matchmakingQueue : ', matchmakingQueue);
     // 대기열에 추가
     matchmakingQueue.addToQueue(user);
 
