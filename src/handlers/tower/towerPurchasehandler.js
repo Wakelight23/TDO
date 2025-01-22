@@ -34,10 +34,10 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     user.addTower(tower);
 
-    console.log('유저가 보유한 타워:', user.towers);
+    //console.log('유저가 보유한 타워:', user.towers);
 
     // 5. 로그 기록
-    console.log(`사용자가 타워 ID: ${towerId}, 위치: (${x}, ${y}), 남은 골드: ${user.getGold()}`);
+    //console.log(`사용자가 타워 ID: ${towerId}, 위치: (${x}, ${y}), 남은 골드: ${user.getGold()}`);
 
     // 6. 타워 구매 응답
     const towerPurchasePayload = { towerId };

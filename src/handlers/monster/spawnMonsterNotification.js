@@ -1,6 +1,7 @@
 import { PacketType } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
+//이건.. 왜 있는거죠 받을수가 없는데.
 const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
   try {
     const { monsterId, monsterNumber } = payload; //소켓으로 유저 찾아서 매칭.
