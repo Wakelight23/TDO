@@ -59,7 +59,7 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
     socket.write(successResponse);
 
-    addUser(socket); // 소켓을 세션에 추가
+    addUser(socket, highScore, id); // 소켓을 세션에 추가
   } catch (error) {
     console.error('Error in loginHandler:', error);
 
