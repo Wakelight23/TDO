@@ -1,7 +1,9 @@
 import { PacketType } from '../../constants/header.js';
+import { getGameSessionByUserSocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
+//packetType : 16
 const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
   try {
     const { damage } = payload; //소켓으로 유저 찾아서 매칭.
@@ -10,8 +12,15 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     // 유저에게 저장된 상대 유저의 소켓으로 상대 유저를 찾습니다. 
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
 
-    // 유저의 베이스 체력을 깍습니다.
+    //음수값의 수치가 있을 수 있으니까?
+    if(damage < 0)
+    {
+      damage = 0;
+    }
+
     user.updateBase(user.base.hp - damage);
+    const gameSession = getGameSessionByUserSocket(socket);
+    gameSession.stateSyn();
 
 
     if(user.base.hp <= 0 ) { //이때 베이스 체력이 0보다 낮아진다면.
