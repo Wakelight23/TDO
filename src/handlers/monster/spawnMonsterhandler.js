@@ -2,7 +2,9 @@ import { PacketType } from '../../constants/header.js';
 import { getJoinGameSessions } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
+import { getGameSessionByUserSocket } from '../../session/game.session.js';
 
+//packetType : 11
 const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
   try {
     const { } = payload; 
@@ -16,8 +18,8 @@ const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
     //이 함수는 가져올때마다 세션의 몬스터 카운트가 하나씩 증가해 중복되지 않게 해줍니다.
     const monsterId = gameSessions.getSpawnMonsterCounter();
     
-    //1~5까지 랜덤으로 뽑아줍니다. 몬스터 외형과 스테이터스를 정해줍니다.(정확한 수치는 모름)
-    const monsterNumber = Math.floor(Math.random()*(4))+ 1 ;
+    //1부터 5까지라면 
+    const monsterNumber = Math.ceil(Math.random()*(5));
 
     //몬스터 객체를 만들어 줍니다. 반드시 이 형태로 만들어야 합니다. 
     const monster = { monsterId , monsterNumber, level:gameSessions.monsterLevel };

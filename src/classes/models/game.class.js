@@ -11,6 +11,8 @@ class Game {
     this.spawnMonsterCounter = 10000; //몬스터 스폰 카운트 겸 몬스터 아이디 부여 변수입니다. 10000부터 시작하지만 타워가 9900개 이상 설치될것 같다면 더 올려도 됩니다. 마음대로 해도 됨.
     this.purchTowerConter = 100; // 타워 스폰 카운트 겸 타워 아이디 부여 변수 입니다.
     this.deleteAgreement = 0; //2가 되면 게임을 삭제합니다. 게임 엔드 페이로드가 오면 유저가 나가면서 하나를 올려줍니다. 모든 유저가 나가면 게임이 삭제됩니다. 생각해 보니까 삭제 시도 로직을 짜서 유저가 없을때만 삭제되게 하면 될지도.
+    this.startTime = Date.now();
+    this.playingTime = 0;
   }
 
   //유저를 넣어둡니다. 유저에게 게임 아이디를 추가합니다.
@@ -24,6 +26,16 @@ class Game {
     return this.users.find((user) => user.id === userId);
   }
 
+  getUserBySocket(socket)
+  {
+    return this.users.find((user)=>user.socket === socket);
+  }
+
+  getOtherUserBySocket(socket)
+  {
+    return this.users.filter((user)=>user.socket !== socket);
+  }
+
   //가지고 있는 유저중 아이디가 같은 유저를 제외합니다.
   removeUseruserId(userId) {
     const index = this.users.findIndex((user) => user.id === userId);
@@ -31,6 +43,12 @@ class Game {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
     }
   }
+
+  getOtherUser(userId)
+  {
+    return this.users.find((user)=>user.id !== userId);
+  }
+
  //가지고 있는 유저중 소켓이 같은 유저를 제외합니다.
   removeUsersocket(socket) {
     const index = this.users.findIndex((user) => user.socket === socket);
@@ -97,6 +115,7 @@ class Game {
       const stateSyncpayload = { userGold: user.gold, baseHP: user.base.hp, monsterLevel: this.monsterLevel, score: user.score, towers: user.towers, moseters: user.monsters}
       console.log("stateSyncpayload:",stateSyncpayload);
       const packetType = PacketType.STATE_SYNC_NOTIFICATION;
+      console.log("싱크로 되는 중")
       const stateSyncResponse = createResponse(packetType, stateSyncpayload, user.sequence);
       user.socket.write(stateSyncResponse);
     });
@@ -113,6 +132,26 @@ class Game {
   //삭제변수가 2가 되면 게임을 삭제합니다.
   deleteSession() {
     removeGameSession(this.id);
+  }
+
+  updateTimestamp(deltaTime)
+  {
+    this.stateSyn();
+    this.playingTime += deltaTime;
+    //60초마다 한 번씩 레벨업 한다는 의미로
+    if(this.playingTime > 60)
+    {
+      this.playingTime = 0;
+      //나중에 여기에 별도의 추가 함수를 집어 넣는 것도 고려해 보도록 하자.
+      this.levelUp();
+    }
+  }
+
+  //몬스터가 몇 마리 소환되었는가에 따라서 레벨이 오르는 구조
+  levelUp()
+  {
+    this.monsterLevel = 
+    this.monsterLevel <= 5 ? this.monsterLevel + 1 : this.monsterLevel; 
   }
 
 
