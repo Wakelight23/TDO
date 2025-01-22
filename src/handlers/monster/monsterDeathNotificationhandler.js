@@ -19,6 +19,8 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     const gameSession = getJoinGameSessions(user);
 
+    user.stateSyn();
+
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
 
     const enemyMonsterDeathNotificationpayload = {

@@ -40,7 +40,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     //console.log(`사용자가 타워 ID: ${towerId}, 위치: (${x}, ${y}), 남은 골드: ${user.getGold()}`);
 
     // 6. 타워 구매 응답
-    const towerPurchasePayload = { towerId };
+    const towerPurchasePayload = { towerId: towerId };
     const towerPurchaseResponse = createResponse(
       PacketType.TOWER_PURCHASE_RESPONSE,
       towerPurchasePayload,
