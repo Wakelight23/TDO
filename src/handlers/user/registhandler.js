@@ -2,7 +2,6 @@ import { PacketType } from '../../constants/header.js';
 import pools from '../../db/database.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
-import mysql from 'mysql2/promise'; // promise 기반 MySQL
 
 const registHandler = async ({ socket, sequence, payload }) => {
   try {
