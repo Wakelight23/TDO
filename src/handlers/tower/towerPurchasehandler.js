@@ -5,7 +5,7 @@ import { createResponse } from '../../utils/response/createResponse.js';
 
 const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
   try {
-    console.log('타워 구매 시작');
+    //console.log('타워 구매 시작');
     const { x, y } = payload;
 
     // 1. x, y 값 검증
@@ -19,7 +19,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     let userGold = user.getGold();
 
     // 2. 타워 코스트 확인
-    const towerCost = 10; // 기본값 10
+    const towerCost = gameSessions.towerCost; // 기본값 10
     if (userGold < towerCost) {
       console.error('골드가 부족합니다.');
       return; // 에러 발생시 바로 리턴

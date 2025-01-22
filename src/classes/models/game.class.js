@@ -13,6 +13,10 @@ class Game {
     this.deleteAgreement = 0; //2가 되면 게임을 삭제합니다. 게임 엔드 페이로드가 오면 유저가 나가면서 하나를 올려줍니다. 모든 유저가 나가면 게임이 삭제됩니다. 생각해 보니까 삭제 시도 로직을 짜서 유저가 없을때만 삭제되게 하면 될지도.
     this.startTime = Date.now();
     this.playingTime = 0;
+    this.baseHp = 100,
+    this.towerCost = 100,
+    this.initialGold = 500,
+    this.monsterSpawnInterval = 3
   }
 
   //유저를 넣어둡니다. 유저에게 게임 아이디를 추가합니다.
@@ -31,7 +35,7 @@ class Game {
   }
 
   getOtherUserBySocket(socket) {
-    return this.users.filter((user) => user.socket !== socket);
+    return this.users.find((user) => user.socket !== socket);
   }
 
   //가지고 있는 유저중 아이디가 같은 유저를 제외합니다.
@@ -63,18 +67,25 @@ class Game {
     user2.updateMatchingUsersocket(user1.socket); // 유저2의 matchingUserSocket에 유저1의 소켓 할당 --> 나중에 쓰기 편하라고.
 
     const initialGameState = {
-      baseHp: 100,
-      towerCost: 10,
-      initialGold: 500,
-      monsterSpawnInterval: 1,
+      baseHp: this.baseHp,
+      towerCost: this.towerCost,
+      initialGold: this.initialGold,
+      monsterSpawnInterval: this.monsterSpawnInterval,
     };
+
+    this.users.forEach((user) => {
+      user.updateBase(this.baseHp);
+      user.updateGold(this.initialGold);
+    })
+    
+
     const user1Data = {
       gold: user1.gold,
       base: user1.base,
       highScore: user1.highScore,
       towers: user1.towers,
       monsters: [],
-      monsterLevel: this.monsterLevel,
+      monsterLevel: user1.monsterLevel,
       score: user1.score,
       monsterPath: user1.monsterPath,
       basePosition: user1.basePosition,
@@ -85,7 +96,7 @@ class Game {
       highScore: user2.highScore,
       towers: user2.towers,
       monsters: [],
-      monsterLevel: this.monsterLevel,
+      monsterLevel: user2.monsterLevel,
       score: user2.score,
       monsterPath: user2.monsterPath,
       basePosition: user2.basePosition,
@@ -135,21 +146,17 @@ class Game {
     return purchTowerConter;
   }
 
-  //유저의 골드, 베이스체력, 몬스터레벨(게임에서 관리), 점수, 타워, 몬스터 등을 동기화 시킵니다.
-  //유저의 골드, 베이스체력, 몬스터레벨, 점수등을 변경후 이 함수를 실행하면 클라이언트에 적용이 될겁니다. 안해봐서 모름.
   stateSyn() {
     this.users.forEach((user) => {
       const stateSyncPayload = {
         userGold: user.gold,
-        baseHP: user.base.hp,
-        monsterLevel: this.monsterLevel,
+        baseHp: user.base.hp,
+        monsterLevel: user.monsterLevel,
         score: user.score,
         towers: user.towers,
         monsters: user.monsters,
       };
-      console.log('stateSyncPayload:', stateSyncPayload);
       const packetType = PacketType.STATE_SYNC_NOTIFICATION;
-      console.log('싱크로 되는 중');
       const stateSyncResponse = createResponse(packetType, stateSyncPayload, user.sequence);
       user.socket.write(stateSyncResponse);
     });

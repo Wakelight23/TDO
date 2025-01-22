@@ -1,6 +1,5 @@
 import { PacketType } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import { getGameSessionByUserSocket } from '../../session/game.session.js';
 
 const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
   try {
@@ -14,7 +13,7 @@ const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
     };
 
     //현재 플레이어가 속해 있는 게임 세션을 가져오기
-    const gamesession = getGameSessionByUserSocket(socket);
+    //const gamesession = getGameSessionByUserSocket(socket);
     const otherSocketList = gamesession.getOtherUserBySocket(socket).map((user)=>user.socket);
     
     const otherPlayerpacketType = PacketType.SPAWN_ENEMY_MONSTER_NOTIFICATION;

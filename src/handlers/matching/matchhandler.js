@@ -10,13 +10,13 @@ import MatchmakingQueue from '../../classes/models/matchmaking.class.js';
 const matchmakingQueue = new MatchmakingQueue();
 
 const matchHandler = async ({ socket, sequence, payload }) => {
-  console.log('🚀 ~ matchHandler ~ socket:', socket);
+  //console.log('🚀 ~ matchHandler ~ socket:', socket);
   try {
     const {} = payload; //없음.?? 이게 왜없지. 아니 소켓으로 유저 찾아서 매칭해야하네.
 
     const user = getUserBySocket(socket);
-    console.log('🚀 ~ matchHandler ~ user:', user);
-    console.log('matchmakingQueue : ', matchmakingQueue);
+    //console.log('🚀 ~ matchHandler ~ user:', user);
+    //console.log('matchmakingQueue : ', matchmakingQueue);
     // 대기열에 추가
     matchmakingQueue.addToQueue(user);
 
