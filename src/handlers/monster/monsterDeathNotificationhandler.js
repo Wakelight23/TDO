@@ -5,6 +5,8 @@ import { createResponse } from '../../utils/response/createResponse.js';
 
 const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) => {
   try {
+
+    console.log("몬스터 사망 출력, monsterDeathNotificationHandler에서 출력되고 있으니 확인 후 지울 것")
     const { monsterId } = payload; //소켓으로 유저 찾아서 매칭.
 
     const user = getUserBySocket(socket);
@@ -12,14 +14,14 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     //유저가 가지고 있는 몬스터중 같은 아이디의 몬스터를 삭제시킵니다.
     user.removeMonster(monsterId);
     user.updateGold(user.getGold() + 10);
-    user.udateScore(user.getScore() + monsterId * 10);    
+    user.updateScore(user.getScore() + 100);    
 
     const gameSession = getGameSessionByUserSocket(socket);
 
     const enemyUsers = gameSession.getOtherUserBySocket(socket);
     
 
-
+    console.log(user.getGold());
     
     
     const enemyMonsterDeathNotificationpayload = {
@@ -32,10 +34,7 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
       enemyUser.socket.write(enemyMonsterDeathNotificationResponse);
     }
 
-
-    notificationGameSessionsBySocket(socket);
-
-
+    //notificationGameSessionsBySocket(socket);
 
   } catch (error) {
     console.error(error);

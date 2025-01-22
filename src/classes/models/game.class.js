@@ -77,6 +77,8 @@ class Game {
       playerData: user1Data,
       opponentData: user2Data,
     }
+
+    
     const packetType = PacketType.MATCH_START_NOTIFICATION;
     let user1matchStartResponse = createResponse(packetType, user1matchStartpayload, user1.sequence);
     //유저1 소켓으로 보넵니다.
@@ -113,9 +115,8 @@ class Game {
   stateSyn(){ 
     this.users.forEach((user) => {
       const stateSyncpayload = { userGold: user.gold, baseHP: user.base.hp, monsterLevel: this.monsterLevel, score: user.score, towers: user.towers, moseters: user.monsters}
-      console.log("stateSyncpayload:",stateSyncpayload);
+      //console.log("stateSyncpayload:",stateSyncpayload);
       const packetType = PacketType.STATE_SYNC_NOTIFICATION;
-      console.log("싱크로 되는 중")
       const stateSyncResponse = createResponse(packetType, stateSyncpayload, user.sequence);
       user.socket.write(stateSyncResponse);
     });

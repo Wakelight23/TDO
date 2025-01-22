@@ -1,5 +1,5 @@
 import { PacketType } from '../../constants/header.js';
-import { getGameSessionByUserSocket } from '../../session/game.session.js';
+import { getGameSessionByUserSocket, notificationGameSessionsBySocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
@@ -19,6 +19,8 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     }
 
     user.updateBase(user.base.hp - damage);
+    user.updateGold(user.getGold() + 10);
+    user.updateScore(user.getScore() + 30);
     const gameSession = getGameSessionByUserSocket(socket);
     gameSession.stateSyn();
 
@@ -58,6 +60,9 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
         //상대 유저 소캣으로 보내줍니다.
         enemyUser.socket.write(enemyupdateBaseHPNotificationResponse);
       }
+
+      //일단 동기화를 이렇게 처리하도록 하자
+      //notificationGameSessionsBySocket(socket);
 
 
   } catch (error) {

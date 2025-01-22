@@ -1,6 +1,6 @@
 import { PacketType } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import { getGameSessionByUserSocket } from '../../session/game.session.js';
+import { getGameSessionByUserSocket, notificationGameSessionsBySocket } from '../../session/game.session.js';
 
 const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
   try {
@@ -23,10 +23,8 @@ const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
     {
       otherSocket.write(spawnEnemyMonsterNotificationResponse);
     }
-    
 
-    
-
+    //notificationGameSessionsBySocket(socket);
   } catch (error) {
     console.error(error);
   }

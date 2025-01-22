@@ -1,9 +1,10 @@
-import { getGameSessionByUserSocket } from "../session/game.session.js";
+import { getAllGameSessions, getGameSessionByUserSocket } from "../session/game.session.js";
+import { removeUser } from "../session/user.session.js";
 
 export const onEnd = (socket) => () => {
   console.log('클라이언트 연결이 종료되었습니다.');
-  const gameSession = getGameSessionByUserSocket(socket);
-  gameSession.removeUsersocket(socket);
+  //게임을 종료했을 때 어떻게 처리할 것인가. 
 
-  gameSession.stateSyn();
+  //1. 
+  
 };
