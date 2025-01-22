@@ -52,6 +52,7 @@ class User {
     return this.basePosition;
   }
 
+  //몬스터 패스를 넣으며 패스의 끝부분이 베이스 포인트가 됩니다.
   updateMonsterPaths(monsterPath) {
     this.monsterPath = monsterPath;
     this.basePosition = getLastPathPoint(monsterPath);
@@ -65,24 +66,15 @@ class User {
     return ++this.sequence;
   }
 
-  updateSpawnMonstercounter(spawnMonstercounter) {
-    this.spawnMonstercounter = spawnMonstercounter;
-  }
-
-  getSpawnMonstercounter() {
-    const spawnMonstercounter = this.spawnMonstercounter;
-    this.spawnMonstercounter++;
-    return spawnMonstercounter;
-  }
-
+  //매칭 상대의 소캣 저장용.
   updateMatchingUsersocket(matchingUsersocket) {
     this.matchingUsersocket = matchingUsersocket;
   }
-
+ //매칭 상대의 소캣을 불러옵니다.
   getMatchingUsersocket() {
     return this.matchingUsersocket;
   } 
-
+  //참여한 게임의 아이디를 저장합니다.
   updateGameId(gameId) {
     this.gameId = gameId;
   }
@@ -111,6 +103,7 @@ class User {
     }
   }
 
+  //상태를 초기화 시킵니다.
   clearUserData(){
     this.score = 0;
     this.gold = 100;

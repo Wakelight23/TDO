@@ -9,6 +9,7 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     const user = getUserBySocket(socket);
 
+    //유저가 가지고 있는 몬스터중 같은 아이디의 몬스터를 삭제시킵니다.
     user.removeMonster(monsterId);
     user.updateGold(user.getGold() + 10);
     user.udateScore(user.getScore() + monsterId * 10);    

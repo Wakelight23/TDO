@@ -9,6 +9,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     const { damage } = payload; //소켓으로 유저 찾아서 매칭.
     
     const user = getUserBySocket(socket);
+    // 유저에게 저장된 상대 유저의 소켓으로 상대 유저를 찾습니다. 
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
 
     //음수값의 수치가 있을 수 있으니까?
@@ -22,8 +23,9 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     gameSession.stateSyn();
 
 
-    if(user.base.hp <= 0 ) {
+    if(user.base.hp <= 0 ) { //이때 베이스 체력이 0보다 낮아진다면.
 
+      // 유저(지금 보내고 있는)의 베이스가 0이므로 패배 처리를 해줍니다.isWin이 false면 패배입니다.
       const gameOverNotificationpayload = {
           isWin: false, 
         }
@@ -31,12 +33,14 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
         const sgameOverNotificationResponse = createResponse(packetType, gameOverNotificationpayload, sequence);
         socket.write(sgameOverNotificationResponse);
       
+        //그 뒤 상대 유저에게는 승리 처리를 해줍니다. isWin이 true면 승리입니다.
       const enemygameOverNotificationpayload = {
           isWin: true, 
         }
         const enemysgameOverNotificationResponse = createResponse(packetType, enemygameOverNotificationpayload, sequence);
+        //상대 유저 소캣으로 보내줍니다.
         enemyUser.socket.write(enemysgameOverNotificationResponse);
-      } else {
+      } else { //베이스가 0이 아니라면 업데이트 시켜줍니다. isOpponent이 false 면 유저의 베이스의 체력이 업데이트 됩니다. 모르겠으면 true로 바꿔봅시다.
         const updateBaseHPNotificationpayload = {
           isOpponent: false, 
           baseHp: user.base.hp,
@@ -45,12 +49,13 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
         const updateBaseHPNotificationResponse = createResponse(packetType, updateBaseHPNotificationpayload, sequence);
         socket.write(updateBaseHPNotificationResponse);
     
-        // 동기화 ㅋㅋ
+        // 상대 유저에게 보내주는 겁니다. 상대 유저의 화면에 보이는 베이스의 체력을 업데이트 시켜 줍니다.
         const enemyupdateBaseHPNotificationpayload = {
           isOpponent: true, 
           baseHp: user.base.hp,
         };
         const enemyupdateBaseHPNotificationResponse = createResponse(packetType, enemyupdateBaseHPNotificationpayload, sequence);
+        //상대 유저 소캣으로 보내줍니다.
         enemyUser.socket.write(enemyupdateBaseHPNotificationResponse);
       }
 
