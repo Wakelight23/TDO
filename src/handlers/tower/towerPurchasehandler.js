@@ -3,59 +3,68 @@ import { getJoinGameSessions } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
-//타워 구매 위치
-const towerPurchaseHandler = async ({ socket, sequence, payload }) => { //일단.. 타워 코스트 추가해야함.
+const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
   try {
-    const { x , y } = payload; 
+    console.log('타워 구매 시작');
+    const { x, y } = payload;
+
+    // 1. x, y 값 검증
+    if (typeof x !== 'number' || typeof y !== 'number' || x < 0 || y < 0) {
+      console.error('유효하지 않은 위치입니다.');
+      return; // 에러 발생시 바로 리턴
+    }
 
     const user = getUserBySocket(socket);
-
-    //유저가 참여하고 있는 게임세션을 가져옵니다. 
     const gameSessions = getJoinGameSessions(user);
+    let userGold = user.getGold();
 
-    //유저 골드를 업데이트 시켜줍니다. 게임 세션에서 타워코스트를 관리한다면 gameSessions.towercost로 할수 있을거 같다.
-    let usergold = user.getGold();
-    // 타워 코스트가 10이라 그냥 적은것.
-    user.updateGold(usergold-10); 
+    // 2. 타워 코스트 확인
+    const towerCost = 10; // 기본값 10
+    if (userGold < towerCost) {
+      console.error('골드가 부족합니다.');
+      return; // 에러 발생시 바로 리턴
+    }
 
-    //user.getGold()--> 현재 골드 가져옴, 
-    //user.updategold(n) --> 골드를 n으로 업데이트 해줌. 
-    //gameSessions.stateSyn(); 를 사용하면 클라이언트에 골드, 점수가 업데이트 됩니다.
+    // 3. 골드 차감
+    user.updateGold(userGold - towerCost);
 
-
-
-    //타워 카운터를 가져옵니다. 가져올때마다 1씩 증가하여, 중복되지 않도록 해줍니다.
+    // 4. 타워 정보 생성 및 추가
     const towerId = gameSessions.getPurchTowerConter();
-
-    //타워 객체는 반드시 이런 형태여야 합니다.
-    const tower = { towerId:towerId, x:x, y:y };
+    const tower = { x: x, y: y, towerId: towerId };
 
     user.addTower(tower);
-    
-    //타워 구매 아이디 부여.
-    const towerPurchasepayload = {
-      towerId: towerId,
-    };
 
-    let packetType = PacketType.TOWER_PURCHASE_RESPONSE;
-    const towerPurchaseResponse = createResponse(packetType, towerPurchasepayload, sequence);
+    console.log('유저가 보유한 타워:', user.towers);
+
+    // 5. 로그 기록
+    console.log(`사용자가 타워 ID: ${towerId}, 위치: (${x}, ${y}), 남은 골드: ${user.getGold()}`);
+
+    // 6. 타워 구매 응답
+    const towerPurchasePayload = { towerId };
+    const towerPurchaseResponse = createResponse(
+      PacketType.TOWER_PURCHASE_RESPONSE,
+      towerPurchasePayload,
+      sequence,
+    );
     socket.write(towerPurchaseResponse);
 
-    // 상대에게 구매했다는걸 보내주는 것 (타워의 동기화).
+    // 7. 상대방에게 타워 추가 알림 전송
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
-
-    const addEnemyTowerNotificationpayload = {
-      towerId: towerId,
-      x: x,
-      y: y,
+    if (enemyUser && enemyUser.socket) {
+      const addEnemyTowerNotificationPayload = { x: x, y: y, towerId: towerId };
+      const addEnemyTowerNotificationResponse = createResponse(
+        PacketType.ADD_ENEMY_TOWER_NOTIFICATION,
+        addEnemyTowerNotificationPayload,
+        sequence,
+      );
+      enemyUser.socket.write(addEnemyTowerNotificationResponse);
+    } else {
+      console.warn('상대방이 연결되어 있지 않음');
     }
-    packetType = PacketType.ADD_ENEMY_TOWER_NOTIFICATION;
-    const saddEnemyTowerNotificationResponse = createResponse(packetType, addEnemyTowerNotificationpayload, sequence);
-    enemyUser.socket.write(saddEnemyTowerNotificationResponse);
-    // ^모르겠으면 주석처리 해보기
 
+    console.log('타워 구매 완료');
   } catch (error) {
-    console.error(error);
+    console.error('타워 구매 처리 중 오류 발생:', error);
   }
 };
 
