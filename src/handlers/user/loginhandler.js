@@ -1,24 +1,17 @@
 import { PacketType } from '../../constants/header.js';
+import pools from '../../db/database.js';
 import { addUser } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2/promise'; // promise 기반 MySQL
-import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } from '../../constants/env.js';
-
-// MySQL 연결 설정
-const db = mysql.createPool({
-  host: DB_HOST,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
-});
 
 const loginHandler = async ({ socket, sequence, payload }) => {
   try {
-    const { email, password } = payload; // email 기반으로 로그인 처리
+    const { id, password } = payload; // email 기반으로 로그인 처리
 
     // 이메일로 사용자 검색
-    const [rows] = await db.query('SELECT * FROM USER WHERE email = ?', [email]);
+    console.log(payload);
+    const [rows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE email = ?', [id]);
     if (rows.length === 0) {
       const failResponse = createResponse(
         PacketType.LOGIN_RESPONSE,
@@ -50,9 +43,10 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     }
 
     // 마지막 로그인 시간 업데이트
-    await db.query('UPDATE USER SET last_login = CURRENT_TIMESTAMP WHERE user_id = ?', [
-      user.user_id,
-    ]);
+    await pools.TDO_USER_DB.query(
+      'UPDATE USER SET last_login = CURRENT_TIMESTAMP WHERE user_id = ?',
+      [user.user_id],
+    );
 
     // JWT 생성 (임시 토큰 메시지로 대체)
     const successPayload = {

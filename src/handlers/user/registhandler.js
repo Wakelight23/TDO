@@ -1,16 +1,8 @@
 import { PacketType } from '../../constants/header.js';
+import pools from '../../db/database.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2/promise'; // promise 기반 MySQL
-import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } from '../../constants/env.js';
-
-// MySQL 연결 설정
-const db = mysql.createPool({
-  host: DB_HOST,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
-});
 
 const registHandler = async ({ socket, sequence, payload }) => {
   try {
@@ -39,7 +31,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 중복 이메일 확인
-    const [rows] = await db.query('SELECT * FROM USER WHERE email = ?', [email]);
+    const [rows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE email = ?', [email]);
     if (rows.length > 0) {
       const failResponse = createResponse(
         PacketType.REGISTER_RESPONSE,
@@ -54,10 +46,10 @@ const registHandler = async ({ socket, sequence, payload }) => {
     }
 
     // 사용자 추가
-    await db.query('INSERT INTO USER (user_id, email, password) VALUES (UUID(), ?, ?)', [
-      email,
-      hashedPassword,
-    ]);
+    await pools.TDO_USER_DB.query(
+      'INSERT INTO USER (user_id, email, password) VALUES (UUID(), ?, ?)',
+      [email, hashedPassword],
+    );
 
     const successPayload = {
       success: true,

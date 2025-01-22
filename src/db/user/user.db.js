@@ -4,7 +4,7 @@ import { SQL_QUERIES } from './user.queries.js';
 import { toCamelCase } from '../../utils/transformCase.js';
 
 export const findUserByEmail = async (email) => {
-  const [rows] = await pools.USER_DB.query(SQL_QUERIES.FIND_USER_BY_DEVICE_ID, [email]);
+  const [rows] = await pools.USER_DB.query(SQL_QUERIES.FIND_USER_BY_EMAIL, [email]);
   return toCamelCase(rows[0]);
 };
 
