@@ -10,11 +10,12 @@ class Game {
     this.monsterLevel = 1; //몬스터 레벨입니다.
     this.spawnMonsterCounter = 10000; //몬스터 스폰 카운트 겸 몬스터 아이디 부여 변수입니다. 10000부터 시작하지만 타워가 9900개 이상 설치될것 같다면 더 올려도 됩니다. 마음대로 해도 됨.
     this.purchTowerConter = 100; // 타워 스폰 카운트 겸 타워 아이디 부여 변수 입니다.
+    this.specialPurchTowerConter = 1000; // 타워 스폰 카운터 스페셜 버전
     this.deleteAgreement = 0; //2가 되면 게임을 삭제합니다. 게임 엔드 페이로드가 오면 유저가 나가면서 하나를 올려줍니다. 모든 유저가 나가면 게임이 삭제됩니다. 생각해 보니까 삭제 시도 로직을 짜서 유저가 없을때만 삭제되게 하면 될지도.
     this.startTime = Date.now();
     this.playingTime = 0;
     this.baseHp = 100,
-    this.towerCost = 100,
+    this.towerCost = 10,
     this.initialGold = 500,
     this.monsterSpawnInterval = 1
   }
@@ -144,6 +145,13 @@ class Game {
     const purchTowerConter = this.purchTowerConter;
     this.purchTowerConter++;
     return purchTowerConter;
+  }
+
+   //설치하는 스페셜 타워의 카운트를 줍니다. 카운트가 하나 올라갑니다.
+   getSpecialPurchTowerConter() {
+    const specialPurchTowerConter = this.specialPurchTowerConter;
+    this.specialPurchTowerConter++;
+    return specialPurchTowerConter;
   }
 
   stateSyn() {
