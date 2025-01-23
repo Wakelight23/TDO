@@ -29,27 +29,46 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     // 3. 골드 차감
     user.updateGold(userGold - towerCost);
 
-    // 4. 스페셜 타워 확률 처리 (예: 10% 확률로 스페셜 타워 구매)
-    const specialTowerChance = 10; // 10% 확률을 1에서 100까지 범위로 설정
-    let isSpecialTower = false;
+    // 4. 스페셜 타워 확률 처리
 
-    // Math.random() 값을 따로 변수로 저장
-    const randomValue = Math.random() * 100;
+    //특수 타워들은 전부 떄리면 골드 스코어 점수를 얻음
+    // 각 타워의 확률을 정의
+    const normalTowerChance = 70; // 일반 타워: 70%
+    const goldTowerChance = 13; // 골드 타워: 13%
+    const scoreTowerChance = 13; // 스코어 타워: 13%
+    const bothTowerChance = 4; // 둘 다 타워: 4%
+
+    const specialTowerTotalChance =
+      normalTowerChance + goldTowerChance + scoreTowerChance + bothTowerChance;
+
+    let towerId;
+    let towerType = 'normal'; // 기본 타워는 일반 타워
+
+    // Math.random()을 통해 1~100 사이의 랜덤 값을 생성
+    const randomValue = Math.ceil(Math.random() * 100); // 1 ~ 100 사이의 정수
 
     console.log(`랜덤 값: ${randomValue}`); // 랜덤 값 출력
 
-    // 그 랜덤 값이 specialTowerChance 이하일 때 스페셜 타워로 설정
-    if (randomValue < specialTowerChance) {
-      isSpecialTower = true;
+    // 확률을 기준으로 타워 유형을 결정
+    if (randomValue < normalTowerChance) {
+      // 일반 타워
+      towerType = 'normal';
+      towerId = gameSessions.getPurchTowerConter(); // 기본 타워 ID
+    } else if (randomValue < normalTowerChance + goldTowerChance) {
+      // 골드 타워
+      towerType = 'gold';
+      towerId = gameSessions.getGoldPurchTowerConter(); // 골드 타워 ID
+    } else if (randomValue < normalTowerChance + goldTowerChance + scoreTowerChance) {
+      // 스코어 타워
+      towerType = 'score';
+      towerId = gameSessions.getScorePurchTowerConter(); // 스코어 타워 ID
+    } else if (randomValue < specialTowerTotalChance) {
+      // 둘 다 타워
+      towerType = 'both';
+      towerId = gameSessions.getBothPurchTowerConter(); // 둘 다 타워 ID
     }
 
-    console.log(`스페셜 타워 여부: ${isSpecialTower}`); // 스페셜 타워 여부 출력
-
-    // 5. 스페셜 타워 카운터 (스페셜 타워일 경우)
-    let towerId = gameSessions.getPurchTowerConter(); // 기본 타워 ID
-    if (isSpecialTower) {
-      towerId = gameSessions.getSpecialPurchTowerConter(); // 스페셜 타워 ID
-    }
+    console.log(`선택된 타워 타입: ${towerType}`); // 선택된 타워 타입 출력
 
     // 6. 타워 정보 생성 및 추가
     const tower = { towerId: towerId, x: x, y: y };
