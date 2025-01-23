@@ -3,7 +3,7 @@ import { getpacketnameByHandlerId } from '../../handlers/index.js';
 import { getProtoMessages } from '../../init/loadProtos.js';
 
 export const createResponse = (packetType, payloadData = {}, sequence) => {
-  console.log('\npacketType:', packetType, '\npayloadData:', payloadData);
+  // console.log('\npacketType:', packetType, '\npayloadData:', payloadData);
   // 패킷 타입 정보를 넣은 버퍼 생성
   const typeBuffer = Buffer.alloc(config.packet.packetTypeLength);
   typeBuffer.writeUInt16BE(packetType);

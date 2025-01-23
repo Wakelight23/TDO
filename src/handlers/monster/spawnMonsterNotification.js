@@ -2,6 +2,7 @@ import { PacketType } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { getGameSessionByUserSocket, notificationGameSessionsBySocket } from '../../session/game.session.js';
 
+//이건.. 왜 있는거죠 받을수가 없는데.
 const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
   try {
     const { monsterId, monsterNumber } = payload; //소켓으로 유저 찾아서 매칭.
@@ -14,7 +15,7 @@ const spawnMonsterNotification = async ({ socket, sequence, payload }) => {
     };
 
     //현재 플레이어가 속해 있는 게임 세션을 가져오기
-    const gamesession = getGameSessionByUserSocket(socket);
+    //const gamesession = getGameSessionByUserSocket(socket);
     const otherSocketList = gamesession.getOtherUserBySocket(socket).map((user)=>user.socket);
     
     const otherPlayerpacketType = PacketType.SPAWN_ENEMY_MONSTER_NOTIFICATION;

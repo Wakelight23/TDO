@@ -1,8 +1,11 @@
-import { getLastPathPoint } from "../../utils/monster/monsterPath.js";
+import { PacketType } from '../../constants/header.js';
+import { getLastPathPoint } from '../../utils/monster/monsterPath.js';
+import { createResponse } from '../../utils/response/createResponse.js';
 
 class User {
-  constructor(socket) {
-    this.highScore = 100;
+  constructor(socket, highscore, id) {
+    this.id = id;
+    this.highscore = highscore;
     this.score = 0;
     this.socket = socket;
     this.gold = 100;
@@ -14,14 +17,15 @@ class User {
     this.sequence = 0;
     this.matchingUsersocket = null;
     this.gameId = null;
+    this.monsterLevel = 1;
   }
 
   updateHighScore(highScore) {
-    this.highScore = highScore;
+    this.highscore = highscore;
   }
 
-  gethigHScore() {
-    return this.highScore;
+  getHighScore() {
+    return this.highscore;
   }
 
   updateScore(score) {
@@ -70,10 +74,10 @@ class User {
   updateMatchingUsersocket(matchingUsersocket) {
     this.matchingUsersocket = matchingUsersocket;
   }
- //매칭 상대의 소캣을 불러옵니다.
+  //매칭 상대의 소캣을 불러옵니다.
   getMatchingUsersocket() {
     return this.matchingUsersocket;
-  } 
+  }
   //참여한 게임의 아이디를 저장합니다.
   updateGameId(gameId) {
     this.gameId = gameId;
@@ -81,15 +85,23 @@ class User {
 
   getGameId() {
     return this.gameId;
-  } 
+  }
+
+  updateMonsterLevel(monsterLevel) {
+    this.monsterLevel = monsterLevel;
+  }
+
+  getMonsterLevel() {
+    return this.monsterLevel;
+  }
 
   //타워 추가.
-  addTower(tower){
+  addTower(tower) {
     this.towers.push(tower);
   }
 
   //몬스터 추가.
-  addMonster(monster){
+  addMonster(monster) {
     this.monsters.push(monster);
   }
 
@@ -99,12 +111,11 @@ class User {
 
     if (index !== -1) {
       return this.monsters.splice(index, 1)[0];
-      
     }
   }
 
   //상태를 초기화 시킵니다.
-  clearUserData(){
+  clearUserData() {
     this.score = 0;
     this.gold = 100;
     this.base = { hp: 100, maxHp: 100 };
@@ -115,7 +126,23 @@ class User {
     this.sequence = 0;
     this.matchingUsersocket = null;
     this.gameId = null;
+    this.monsterLevel = 1;
   }
+
+
+   stateSyn() {
+        const stateSyncPayload = {
+          userGold: this.gold,
+          baseHp: this.base.hp,
+          monsterLevel: this.monsterLevel,
+          score: this.score,
+          towers: this.towers,
+          monsters: this.monsters,
+        };
+        const packetType = PacketType.STATE_SYNC_NOTIFICATION;
+        const stateSyncResponse = createResponse(packetType, stateSyncPayload, this.sequence);
+        this.socket.write(stateSyncResponse);
+    }
 }
 
 export default User;

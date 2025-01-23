@@ -24,6 +24,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     const gameSession = getGameSessionByUserSocket(socket);
     gameSession.stateSyn();
 
+    //user.stateSyn(); //--> 추가해서 이거 쓰면 개인을 동기화 합니다.
 
     if(user.base.hp <= 0 ) { //이때 베이스 체력이 0보다 낮아진다면.
 
