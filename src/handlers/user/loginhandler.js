@@ -62,6 +62,8 @@ const loginHandler = async ({ socket, sequence, payload }) => {
       failCode: 0, // NONE
     };
 
+    console.log(successPayload.token);
+
     const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
     socket.write(successResponse);
 
