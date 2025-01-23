@@ -10,13 +10,13 @@ import MatchmakingQueue from '../../classes/models/matchmaking.class.js';
 const matchmakingQueue = new MatchmakingQueue();
 
 const matchHandler = async ({ socket, sequence, payload }) => {
-  console.log('🚀 ~ matchHandler ~ socket:', socket);
+  //console.log('🚀 ~ matchHandler ~ socket:', socket);
   try {
     const {} = payload; //없음.?? 이게 왜없지. 아니 소켓으로 유저 찾아서 매칭해야하네.
 
     const user = getUserBySocket(socket);
-    console.log('🚀 ~ matchHandler ~ user:', user);
-    console.log('matchmakingQueue : ', matchmakingQueue);
+    //console.log('🚀 ~ matchHandler ~ user:', user);
+    //console.log('matchmakingQueue : ', matchmakingQueue);
     // 대기열에 추가
     matchmakingQueue.addToQueue(user);
 
@@ -40,8 +40,8 @@ const matchHandler = async ({ socket, sequence, payload }) => {
       gameSession.addUser(matchedUser);
 
       // 초기 타워 설정
-      const tower1 = { x: 200, y: 340, towerId: gameSession.getPurchTowerConter() };
-      const tower2 = { x: 200, y: 340, towerId: gameSession.getPurchTowerConter() };
+      const tower1 = { towerId: gameSession.getPurchTowerConter(), x: 200, y: 340 };
+      const tower2 = { towerId: gameSession.getPurchTowerConter(), x: 200, y: 340 };
 
       user.addTower(tower1);
       matchedUser.addTower(tower2);
