@@ -1,4 +1,6 @@
+import { PacketType } from '../../constants/header.js';
 import { getLastPathPoint } from '../../utils/monster/monsterPath.js';
+import { createResponse } from '../../utils/response/createResponse.js';
 
 class User {
   constructor(socket, highscore, id) {
@@ -15,6 +17,7 @@ class User {
     this.sequence = 0;
     this.matchingUsersocket = null;
     this.gameId = null;
+    this.monsterLevel = 1;
   }
 
   updateHighScore(highScore) {
@@ -84,6 +87,14 @@ class User {
     return this.gameId;
   }
 
+  updateMonsterLevel(monsterLevel) {
+    this.monsterLevel = monsterLevel;
+  }
+
+  getMonsterLevel() {
+    return this.monsterLevel;
+  }
+
   //타워 추가.
   addTower(tower) {
     this.towers.push(tower);
@@ -115,7 +126,23 @@ class User {
     this.sequence = 0;
     this.matchingUsersocket = null;
     this.gameId = null;
+    this.monsterLevel = 1;
   }
+
+
+   stateSyn() {
+        const stateSyncPayload = {
+          userGold: this.gold,
+          baseHp: this.base.hp,
+          monsterLevel: this.monsterLevel,
+          score: this.score,
+          towers: this.towers,
+          monsters: this.monsters,
+        };
+        const packetType = PacketType.STATE_SYNC_NOTIFICATION;
+        const stateSyncResponse = createResponse(packetType, stateSyncPayload, this.sequence);
+        this.socket.write(stateSyncResponse);
+    }
 }
 
 export default User;
