@@ -18,6 +18,7 @@ class User {
     this.matchingUsersocket = null;
     this.gameId = null;
     this.monsterLevel = 1;
+    this.lastTowerPurchaseTime = 0; //마지막 타워 구매 시간 (타임스탬프)
   }
 
   updateHighScore(highScore) {
@@ -34,6 +35,26 @@ class User {
 
   getScore() {
     return this.score;
+  }
+
+  //레벨 등에 따라서 처리해야 할 문제가 조금씩 있으니까 이런 게 필요할 듯 하다.
+  pointMultiplier(point) {
+    switch(this.monsterLevel)
+    {
+      case 0:
+      case 1:
+        return point;
+        break;
+      case 2:
+        return point * 2;
+        break;
+      case 3:
+        return point * 4;
+        break;
+      default:
+        return point * 5;
+        break;
+    }
   }
 
   updateGold(gold) {
@@ -95,6 +116,23 @@ class User {
     return this.monsterLevel;
   }
 
+  // // 쿨타임 체크
+  // canPurchaseTower() {
+  //   const currentTime = Date.now();
+  //   const cooldownPeriod = 100; // 0.1초 (쿨타임 시간)
+  //   const timeSinceLastPurchase = currentTime - this.lastTowerPurchaseTime;
+
+  //   if (timeSinceLastPurchase < cooldownPeriod) {
+  //     return false; // 쿨타임 중이라면 구매 불가
+  //   }
+  //   return true; // 쿨타임이 지나면 구매 가능
+  // }
+
+  // // 타워 구매 후 쿨타임 업데이트
+  // updateTowerPurchaseTime() {
+  //   this.lastTowerPurchaseTime = Date.now(); // 타워 구매 후 시간 갱신
+  // }
+
   //타워 추가.
   addTower(tower) {
     this.towers.push(tower);
@@ -129,20 +167,19 @@ class User {
     this.monsterLevel = 1;
   }
 
-
-   stateSyn() {
-        const stateSyncPayload = {
-          userGold: this.gold,
-          baseHp: this.base.hp,
-          monsterLevel: this.monsterLevel,
-          score: this.score,
-          towers: this.towers,
-          monsters: this.monsters,
-        };
-        const packetType = PacketType.STATE_SYNC_NOTIFICATION;
-        const stateSyncResponse = createResponse(packetType, stateSyncPayload, this.sequence);
-        this.socket.write(stateSyncResponse);
-    }
+  stateSyn() {
+    const stateSyncPayload = {
+      userGold: this.gold,
+      baseHp: this.base.hp,
+      monsterLevel: this.monsterLevel,
+      score: this.score,
+      towers: this.towers,
+      monsters: this.monsters,
+    };
+    const packetType = PacketType.STATE_SYNC_NOTIFICATION;
+    const stateSyncResponse = createResponse(packetType, stateSyncPayload, this.sequence);
+    this.socket.write(stateSyncResponse);
+  }
 }
 
 export default User;
