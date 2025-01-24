@@ -8,7 +8,13 @@ import { createResponse } from '../../utils/response/createResponse.js';
 
 const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) => {
   try {
-    const { monsterId } = payload; //소켓으로 유저 찾아서 매칭.
+    let { monsterId } = payload; //소켓으로 유저 찾아서 매칭.
+
+
+    //어떤 타워가 죽였는지에 따라 번호가 다릅니다. 100~999는 1, 1000~1999는 2, 2000~2999는 3, 3000~3999는 4로 나옵니다.
+    const prefix = Math.floor(monsterId / 100000); 
+
+    monsterId = monsterId % 100000;
 
     const user = getUserBySocket(socket);
 
