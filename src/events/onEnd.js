@@ -1,4 +1,3 @@
-
 export const onEnd = (socket) => () => {
-  console.log('클라이언트 연결이 종료되었습니다.');
+  // 뭔가를 넣어야 할 거 같은데 뭐를 넣어야 할까?
 };

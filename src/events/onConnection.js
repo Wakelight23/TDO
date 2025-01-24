@@ -26,7 +26,7 @@ export const onConnection = (socket, activeClients) => {
   });
 
   // 연결 종료 이벤트 처리
-  socket.on('end', () => {
+  socket.on('end', async () => {
     console.log('클라이언트 연결이 종료되었습니다:', clientKey);
     activeClients.delete(clientKey); // 연결 종료 시 activeClients에서 제거
     onEnd(socket)(); // 기존 onEnd 호출
@@ -42,7 +42,7 @@ export const onConnection = (socket, activeClients) => {
 
 // 이전 세션 복구 함수
 export const recoverSessions = (activeClients) => {
-  console.log('서버 재시작 후 이전 세션 복구 중...');
+  console.log('복구할 세션이 있는지 확인 중...');
 
   if (activeClients.size === 0) {
     console.log('복구할 세션이 없습니다.');

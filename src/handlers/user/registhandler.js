@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 
 const registHandler = async ({ socket, sequence, payload }) => {
   try {
+    console.log('registHandler payload : ', payload);
     const { email, password } = payload;
 
     // 이메일 유효성 검사

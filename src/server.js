@@ -14,7 +14,7 @@ const server = net.createServer((socket) => {
 initServer()
   .then(() => {
     server.listen(config.server.port, config.server.host, () => {
-      console.log(`서버가 ${config.server.host}:${config.server.port}에서 실행 중입니다.`);
+      console.log(`서버가 ${config.server.host}:${config.server.port} 에서 실행 중입니다.`);
       recoverSessions(activeClients); // 서버 초기화 후 세션 복구
     });
   })
@@ -24,10 +24,12 @@ initServer()
   });
 
 // Nodemon 종료 신호 처리
-process.once('SIGUSR2', () => {
-  console.log('Nodemon에 의해 서버가 종료됩니다.');
+const shutdownHandler = () => {
+  console.log('서버 종료 처리 중...');
   server.close(() => {
     console.log('서버가 안전하게 종료되었습니다.');
-    process.kill(process.pid, 'SIGUSR2');
+    process.exit(0);
   });
-});
+};
+
+process.once('SIGINT', shutdownHandler); // Windows (CTRL+C)
