@@ -17,7 +17,7 @@ class Game {
     this.startTime = Date.now();
     this.playingTime = 0;
     this.baseHp = 100;
-    this.towerCost = 10;
+    this.towerCost = 100;
     this.initialGold = 500;
     this.monsterSpawnInterval = 1;
   }
