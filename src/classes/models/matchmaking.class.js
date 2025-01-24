@@ -2,7 +2,7 @@ class MatchmakingQueue {
   constructor() {
     this.waitingUsers = [];
     this.scoreRange = 50; // 초기 매칭 범위
-    this.maxWaitTime = 30000; // 최대 대기 시간 (30초)
+    // this.maxWaitTime = 30000; // 최대 대기 시간 (30초) -> 현재 사용하지 않음
   }
 
   // 대기열에 유저 추가
@@ -10,20 +10,20 @@ class MatchmakingQueue {
     this.waitingUsers.push({
       user,
       joinTime: Date.now(),
-      highScore: user.getHighScore(),
     });
   }
 
   // 매칭 가능한 유저들 찾기
   findMatchableUsers(user) {
-    const userScore = user.getHighScore();
+    const userScore = user.highscore;
+    console.log('\n🚀 ~ MatchmakingQueue ~ findMatchableUsers ~ userScore:', userScore);
     const currentTime = Date.now();
 
     return this.waitingUsers.filter((waitingUser) => {
       // 자기 자신 제외
       if (waitingUser.user === user) return false;
 
-      const scoreDiff = Math.abs(waitingUser.highScore - userScore);
+      const scoreDiff = Math.abs(waitingUser.user.highscore - userScore);
       const waitTime = currentTime - waitingUser.joinTime;
 
       // 대기 시간이 길어질수록 매칭 범위 확대
@@ -46,6 +46,8 @@ class MatchmakingQueue {
       this.removeFromQueue(user);
       this.removeFromQueue(matchedUser);
 
+      console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ matchedUser:', matchedUser);
+
       return matchedUser;
     }
   }
@@ -53,6 +55,10 @@ class MatchmakingQueue {
   // 대기열에서 유저 제거
   removeFromQueue(user) {
     this.waitingUsers = this.waitingUsers.filter((waitingUser) => waitingUser.user !== user);
+    console.log(
+      '\n🚀 ~ MatchmakingQueue ~ removeFromQueue ~ this.waitingUsers:',
+      this.waitingUsers,
+    );
   }
 }
 
