@@ -42,7 +42,7 @@ class Game {
   }
 
   //가지고 있는 유저중 아이디가 같은 유저를 제외합니다.
-  removeUseruserId(userId) {
+  removeUserUserId(userId) {
     const index = this.users.findIndex((user) => user.id === userId);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
@@ -54,11 +54,21 @@ class Game {
   }
 
   //가지고 있는 유저중 소켓이 같은 유저를 제외합니다.
-  removeUsersocket(socket) {
+  removeUserSocket(socket) {
     const index = this.users.findIndex((user) => user.socket === socket);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
     }
+  }
+
+  // onEnd에서 사용중인 gameSession 내의 socket 찾아서 삭제
+  removeUserBySocket(socket) {
+    const user = this.users.find((user) => user.socket === socket);
+    if (user) {
+      this.removeUserSocket(user.id); // 기존 removeUser 메서드 호출
+      return user;
+    }
+    return null;
   }
 
   //게임 시작 함수입니다. 게임 상태를 'inProgress'로 바꾸어 줍니다.
@@ -201,28 +211,29 @@ class Game {
     removeGameSession(this.id);
   }
 
-  //여기서 계속 
+  //여기서 계속
   updateTimestamp(deltaTime) {
     this.playingTime += deltaTime;
     let currentLowLevel = Infinity;
     //console.log(this.playingTime);
     this.users.forEach((user) => {
-      //일단 레벨 올라가는공식을 이렇게 해보도록 하고 
-      user.monsterLevel = Math.max(user.monsterLevel, Math.ceil((user.score + this.playingTime / 1000)/(this.playingTime / 1000 + (500))));
+      //일단 레벨 올라가는공식을 이렇게 해보도록 하고
+      user.monsterLevel = Math.max(
+        user.monsterLevel,
+        Math.ceil((user.score + this.playingTime / 1000) / (this.playingTime / 1000 + 500)),
+      );
       currentLowLevel = Math.min(currentLowLevel, user.monsterLevel);
     });
 
     this.monsterLevel = currentLowLevel;
 
     //약 0.1초 뒤부터 업데이트를 진행하겠다.
-    if(this.playingTime > 1000)
-    {
+    if (this.playingTime > 1000) {
       this.stateSyn();
     }
   }
   //몬스터가 몇 마리 소환되었는가에 따라서 레벨이 오르는 구조
   levelUp() {
-    
     this.monsterLevel = this.monsterLevel <= 5 ? this.monsterLevel + 1 : this.monsterLevel;
   }
 }
