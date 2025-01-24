@@ -25,21 +25,21 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
       throw new Error('상대 유저를 찾을 수 없습니다.');
     }
     
-    // 특수 타워의 경우 점수나 골드 증가
-    if (3000 <= towerId) {
-      user.updateGold(user.getGold() + 1);
-      user.updateScore(user.getScore() + 1);
-      console.log(towerId);
-      console.log('둘다 타워가 떄림', user.gold, user.score);
-    } else if (2000 <= towerId) {
-      user.updateScore(user.getScore() + 1);
-      console.log(towerId);
-      console.log('스코어 타워가 떄림', user.score);
-    } else if (1000 <= towerId) {
-      user.updateGold(user.getGold() + 1);
-      console.log(towerId);
-      console.log('골드 타워가 떄림', user.gold);
-    }
+    // // 특수 타워의 경우 점수나 골드 증가
+    // if (3000 <= towerId) {
+    //   user.updateGold(user.getGold() + 1);
+    //   user.updateScore(user.getScore() + 1);
+    //   // console.log(towerId);
+    //   // console.log('둘다 타워가 떄림', user.gold, user.score);
+    // } else if (2000 <= towerId) {
+    //   user.updateScore(user.getScore() + 1);
+    //   // console.log(towerId);
+    //   // console.log('스코어 타워가 떄림', user.score);
+    // } else if (1000 <= towerId) {
+    //   user.updateGold(user.getGold() + 1);
+    //   // console.log(towerId);
+    //   // console.log('골드 타워가 떄림', user.gold);
+    // }
 
     user.stateSyn();
 

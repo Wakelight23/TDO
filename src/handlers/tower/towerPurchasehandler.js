@@ -35,8 +35,8 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     // 5. 골드 차감
     user.updateGold(userGold - towerCost);
 
-    // 6. 타워 구매 후 쿨타임 갱신
-    user.updateTowerPurchaseTime(); // 타워 구매 후 쿨타임 갱신
+    // // 6. 타워 구매 후 쿨타임 갱신
+    // user.updateTowerPurchaseTime(); // 타워 구매 후 쿨타임 갱신
 
     // 7. 스페셜 타워 확률 처리
     const normalTowerChance = 70; // 일반 타워: 70%
