@@ -49,6 +49,12 @@ class User {
         return point * 2;
         break;
       case 3:
+      case 4:
+        return point * 3;
+        break;
+      case 5:
+      case 6:
+      case 7:
         return point * 4;
         break;
       default:

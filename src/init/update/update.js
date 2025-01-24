@@ -11,6 +11,8 @@ let lastUpdateTime = Date.now();
 
 export const updateList = [];
 
+//별도의 처리를 할 업데이트가 있다면 추가해 보도록 하자.
+
 function update() {
     const gameSessions = getAllGameSessions();
     //델타 타임을 확인해 보도록 하자
@@ -42,4 +44,5 @@ export function updateLoop() {
         update();
 
     }, 1000);
+    //시간에 따라서 업데이트를 세분화 할 수 있는지 고민해보자.
 }
