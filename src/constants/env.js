@@ -13,3 +13,8 @@ export const DB1_NAME = process.env.DB_NAME || 'user';
 export const DB1_PORT = process.env.DB_PORT || 3306;
 
 export const SECRET_KEY = process.env.SECRET_KEY || 'default_secret_key';
+
+export const NOMAL_TOWER = process.env.NOMAL_TOWER || 70;
+export const GOLD_TOWER = process.env.GOLD_TOWER || 13;
+export const SCORE_TOWER = process.env.SCORE_TOWER || 13;
+export const BOTH_TOWER = process.env.BOTH_TOWER || 4;
