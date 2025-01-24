@@ -1,7 +1,7 @@
 import { PacketType } from '../../constants/header.js';
 import { removeGameSession } from '../../session/game.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
- 
+
 class Game {
   constructor(id) {
     this.id = id;
@@ -16,9 +16,9 @@ class Game {
     this.deleteAgreement = 0; //2가 되면 게임을 삭제합니다. 게임 엔드 페이로드가 오면 유저가 나가면서 하나를 올려줍니다. 모든 유저가 나가면 게임이 삭제됩니다. 생각해 보니까 삭제 시도 로직을 짜서 유저가 없을때만 삭제되게 하면 될지도.
     this.startTime = Date.now();
     this.playingTime = 0;
-    this.baseHp = 100,
-    this.towerCost = 10,
-    this.initialGold = 500,
+    this.baseHp = 100;
+    this.towerCost = 10;
+    this.initialGold = 500;
     this.monsterSpawnInterval = 1;
   }
 
@@ -152,7 +152,7 @@ class Game {
   getGoldPurchTowerConter() {
     const goldPurchTowerConter = this.goldPurchTowerConter;
     this.goldPurchTowerConter++;
-    return goldPurchTowerConter; 
+    return goldPurchTowerConter;
   }
 
   //설치하는 스코어의 카운트를 줍니다. 카운트가 하나 올라갑니다.
