@@ -37,6 +37,26 @@ class User {
     return this.score;
   }
 
+  //레벨 등에 따라서 처리해야 할 문제가 조금씩 있으니까 이런 게 필요할 듯 하다.
+  pointMultiplier(point) {
+    switch(this.monsterLevel)
+    {
+      case 0:
+      case 1:
+        return point;
+        break;
+      case 2:
+        return point * 2;
+        break;
+      case 3:
+        return point * 4;
+        break;
+      default:
+        return point * 5;
+        break;
+    }
+  }
+
   updateGold(gold) {
     this.gold = gold;
   }

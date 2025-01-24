@@ -1,5 +1,5 @@
 import { PacketType } from '../../constants/header.js';
-import { addGameSession, getAllGameSessions } from '../../session/game.session.js';
+import { addGameSession, getAllGameSessions, notificationGameSessionsBySocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
 import { createResponse } from '../../utils/response/createResponse.js';

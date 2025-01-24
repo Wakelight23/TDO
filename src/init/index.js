@@ -1,11 +1,14 @@
  // 서버 초기화 작업
- import { loadGameAssets } from './assets.js';
+
+import { loadGameAssets } from './assets.js';
  import { loadProtos } from './loadProtos.js';
+import { updateLoop } from './update/update.js';
  
  const initServer = async () => { //이곳은 서버가 시작되기 전에 시작되는 것.
    try {
      await loadGameAssets();
      await loadProtos();
+     updateLoop();
      // 다음 작업
    } catch (e) {
      console.error(e);

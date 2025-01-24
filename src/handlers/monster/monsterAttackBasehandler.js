@@ -1,5 +1,5 @@
 import { PacketType } from '../../constants/header.js';
-import { getJoinGameSessions } from '../../session/game.session.js';
+import { notificationGameSessionsBySocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
@@ -19,6 +19,10 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     }
 
     user.updateBase(user.base.hp - damage);
+    //충돌했을 때 돈은 분명 더 줘야지 제대로 처리할 수 있을 것으로 생각된다.
+    user.updateGold(user.getGold() + user.pointMultiplier(30));
+    //충돌 시의 포인트 증가는 있으면 좋되 default 값으로 증가하도록 해보자.
+    user.updateScore(user.getScore() + 30);
 
     //user.stateSyn(); //--> 추가해서 이거 쓰면 개인을 동기화 합니다.
 
@@ -57,6 +61,9 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
         //상대 유저 소캣으로 보내줍니다.
         enemyUser.socket.write(enemyupdateBaseHPNotificationResponse);
       }
+
+      //일단 동기화를 이렇게 처리하도록 하자
+      notificationGameSessionsBySocket(socket);
 
 
   } catch (error) {
