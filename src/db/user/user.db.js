@@ -35,11 +35,13 @@ export const updateDBHighScore = async (id, newHighScore) => {
 export const findUserByLoginId = async (loginId) => {
   const [rows] = await pools.TDO_USER_DB.query(SQL_QUERIES.FIND_USER_BY_LOGIN_ID, [loginId]);
   if (rows.length > 0) {
+    console.log('User found:', rows[0]); // 여기서 user_id 값을 확인
     const user = toCamelCase(rows[0]);
 
     // updateLastLogin 메서드 추가
     user.updateLastLogin = async () => {
-      await pools.TDO_USER_DB.query(SQL_QUERIES.UPDATE_USER_LAST_LOGIN, [user.user_id]);
+      // user.userId를 사용해서 마지막 로그인 시간 업데이트
+      await pools.TDO_USER_DB.query(SQL_QUERIES.UPDATE_USER_LAST_LOGIN, [user.userId]);
     };
 
     return user;

@@ -27,5 +27,6 @@ export const getUser = () => {
 };
 
 export const isUserLoggedIn = (id) => {
-  return userSessions.some((user) => user.id === id); // userSessions 배열에서 id가 일치하는 사용자가 있는지 확인
+  // 로그인된 사용자 세션 배열에서 해당 id를 가진 사용자가 있는지 확인
+  return userSessions.some((user) => user.id === id);
 };
