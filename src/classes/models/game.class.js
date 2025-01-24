@@ -1,7 +1,7 @@
 import { PacketType } from '../../constants/header.js';
 import { removeGameSession } from '../../session/game.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
- 
+
 class Game {
   constructor(id) {
     this.id = id;
@@ -152,7 +152,7 @@ class Game {
   getGoldPurchTowerConter() {
     const goldPurchTowerConter = this.goldPurchTowerConter;
     this.goldPurchTowerConter++;
-    return goldPurchTowerConter; 
+    return goldPurchTowerConter;
   }
 
   //설치하는 스코어의 카운트를 줍니다. 카운트가 하나 올라갑니다.
