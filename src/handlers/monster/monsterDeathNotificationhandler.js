@@ -15,25 +15,6 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     const user = getUserBySocket(socket);
 
-    switch (prefix) {
-      case 1:
-        user.updateGold(user.getGold() + 10);
-        user.updateScore(user.getScore() + 10);
-        break;
-      case 2:
-        user.updateGold(user.getGold() + 20);
-        user.updateScore(user.getScore() + 10);
-        break;
-      case 3:
-        user.updateGold(user.getGold() + 10);
-        user.updateScore(user.getScore() + 20);
-        break;
-      case 4:
-        user.updateGold(user.getGold() + 20);
-        user.updateScore(user.getScore() + 20);
-        break;
-    }
-
     monsterId = monsterId % 100000;
 
     //유저가 가지고 있는 몬스터중 같은 아이디의 몬스터를 삭제시킵니다.
@@ -42,25 +23,23 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     //타워의 타입에 따라서 골드와 스코어를 올리는 방법을 분리해보자.
     switch (prefix) {
-      case 1://기본 타워
+      case 1: //기본 타워
         user.updateGold(user.getGold() + user.pointMultiplier(10));
         user.updateScore(user.getScore() + user.pointMultiplier(10));
         break;
-      case 2://골드 더 주는 타워'
+      case 2: //골드 더 주는 타워'
         user.updateGold(user.getGold() + user.pointMultiplier(30));
         user.updateScore(user.getScore() + user.pointMultiplier(10));
         break;
-      case 3://스코어 더 주는 타워
+      case 3: //스코어 더 주는 타워
         user.updateGold(user.getGold() + user.pointMultiplier(10));
         user.updateScore(user.getScore() + user.pointMultiplier(30));
         break;
-      case 4://둘 다 더 주는 타워
+      case 4: //둘 다 더 주는 타워
         user.updateGold(user.getGold() + user.pointMultiplier(20));
         user.updateScore(user.getScore() + user.pointMultiplier(20));
         break;
-
     }
-
 
     //const gameSession = getJoinGameSessions(user);
 
