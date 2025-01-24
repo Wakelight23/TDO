@@ -9,11 +9,10 @@ import { SECRET_KEY } from '../../constants/env.js';
 
 const loginHandler = async ({ socket, sequence, payload }) => {
   try {
-    const { id, password } = payload; // email 기반으로 로그인 처리
+    const { id, password } = payload; // 로그인 ID 기반으로 로그인 처리
 
-    // 이메일로 사용자 검색
-    // console.log(payload);
-    const [rows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE email = ?', [id]);
+    // 로그인 ID로 사용자 검색
+    const [rows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE login_id = ?', [id]);
     if (rows.length === 0) {
       const failResponse = createResponse(
         PacketType.LOGIN_RESPONSE,
@@ -51,7 +50,7 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     );
 
     // JWT 생성
-    const token = jwt.sign({ userId: user.user_id, email: user.email }, SECRET_KEY, {
+    const token = jwt.sign({ userId: user.user_id, login_id: user.login_id }, SECRET_KEY, {
       expiresIn: '1h',
     });
 
@@ -65,11 +64,11 @@ const loginHandler = async ({ socket, sequence, payload }) => {
     const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
     socket.write(successResponse);
 
-    // DB에 저장된 id를 토대로 highscore를 가져온다
+    // DB에 저장된 login_id를 토대로 highscore를 가져온다
     const highScoreData = await findUserByHighScore(id);
 
     addUser(socket, highScoreData.highscore, id); // 소켓을 세션에 추가
-    console.log('highScore, id : ', highScoreData.highscore, id);
+    console.log('highScore, user_id : ', highScoreData.highscore, user.user_id);
   } catch (error) {
     console.error('Error in loginHandler:', error);
 

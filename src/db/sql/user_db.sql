@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS USER
 (
     user_id    VARCHAR(36)  PRIMARY KEY,
     email      VARCHAR(255) UNIQUE NOT NULL,
-    login_id   VARCHAR(36)  UNIQUE NOT NULL,
+    login_id   VARCHAR(255) UNIQUE NOT NULL,
     password   VARCHAR(255),
     highscore  INT          DEFAULT 0,
     last_login TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
