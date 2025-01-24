@@ -6,6 +6,7 @@ import { createResponse } from '../../utils/response/createResponse.js';
 const towerAttackHandler = async ({ socket, sequence, payload }) => {
   try {
     const { towerId, monsterId } = payload;
+
     if (typeof towerId !== 'number' || towerId < 100) {
       throw new Error('towerId는 100 이상의 숫자여야 합니다.');
     }
@@ -23,6 +24,25 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
     if (!enemyUser) {
       throw new Error('상대 유저를 찾을 수 없습니다.');
     }
+    
+    // // 특수 타워의 경우 점수나 골드 증가
+    // if (3000 <= towerId) {
+    //   user.updateGold(user.getGold() + 1);
+    //   user.updateScore(user.getScore() + 1);
+    //   // console.log(towerId);
+    //   // console.log('둘다 타워가 떄림', user.gold, user.score);
+    // } else if (2000 <= towerId) {
+    //   user.updateScore(user.getScore() + 1);
+    //   // console.log(towerId);
+    //   // console.log('스코어 타워가 떄림', user.score);
+    // } else if (1000 <= towerId) {
+    //   user.updateGold(user.getGold() + 1);
+    //   // console.log(towerId);
+    //   // console.log('골드 타워가 떄림', user.gold);
+    // }
+
+    user.stateSyn();
+
     // 상대 유저에게 이 타워가 저 몬스터를 때렸다고 알려줍니다. 그럼 클라에서 때림.
     const enemyTowerAttackNotificationpayload = {
       towerId: towerId,
