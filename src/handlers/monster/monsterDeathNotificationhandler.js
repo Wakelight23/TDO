@@ -54,16 +54,6 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
       monsterId: monsterId,
     };
 
-    const userPacketType = PacketType.MONSTER_DEATH_NOTIFICATION;
-
-    const monsterDeathNotificationResponse = createResponse(
-      userPacketType,
-      enemyMonsterDeathNotificationpayload,
-      sequence
-    )
-
-    user.socket.write(monsterDeathNotificationResponse);
-
     const packetType = PacketType.ENEMY_MONSTER_DEATH_NOTIFICATION;
     const enemyMonsterDeathNotificationResponse = createResponse(
       packetType,
