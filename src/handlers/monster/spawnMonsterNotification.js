@@ -1,6 +1,6 @@
 import { PacketType } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import { getGameSessionByUserSocket, notificationGameSessionsBySocket } from '../../session/game.session.js';
+import { notificationGameSessionsBySocket } from '../../session/game.session.js';
 
 //이건.. 왜 있는거죠 받을수가 없는데.
 const spawnMonsterNotification = async ({ socket, sequence, payload }) => {

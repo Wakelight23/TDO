@@ -175,20 +175,29 @@ class Game {
     removeGameSession(this.id);
   }
 
+  //여기서 계속 
   updateTimestamp(deltaTime) {
-    this.stateSyn();
     this.playingTime += deltaTime;
-    //60초마다 한 번씩 레벨업 한다는 의미로
-    if (this.playingTime > 60) {
-      this.playingTime = 0;
-      //나중에 여기에 별도의 추가 함수를 집어 넣는 것도 고려해 보도록 하자.
-      this.monsterLevel = 
-      this.monsterLevel < 5 ? this.monsterLevel + 1 : this.monsterLevel; 
+    let currentLowLevel = Infinity;
+    //console.log(this.playingTime);
+    this.users.forEach((user) => {
+      //일단 레벨 올라가는공식을 이렇게 해보도록 하고 
+      user.monsterLevel = Math.max(user.monsterLevel, Math.ceil((user.score + this.playingTime / 1000)/(this.playingTime / 1000 + (500))));
+      currentLowLevel = Math.min(currentLowLevel, user.monsterLevel);
+    });
+
+    this.monsterLevel = currentLowLevel;
+    console.log(this.monsterLevel);
+
+    //약 0.1초 뒤부터 업데이트를 진행하겠다.
+    if(this.playingTime > 1000)
+    {
+      this.stateSyn();
     }
   }
-
   //몬스터가 몇 마리 소환되었는가에 따라서 레벨이 오르는 구조
   levelUp() {
+    
     this.monsterLevel = this.monsterLevel <= 5 ? this.monsterLevel + 1 : this.monsterLevel;
   }
 }

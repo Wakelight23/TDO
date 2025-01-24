@@ -13,6 +13,10 @@ export const updateList = [];
 
 function update() {
     const gameSessions = getAllGameSessions();
+    //델타 타임을 확인해 보도록 하자
+    const now = Date.now();
+    const deltaTime = now - lastUpdateTime;
+    lastUpdateTime = now;
     for (let gameSession of gameSessions) {
         //2부터 게임이 시작된다고 했으니 그 때부터 보내면 될 듯 하다.
         //너무 빠르게 시작했을 때 게임이 시작하기도 전에 동기화 패킷을 보내면서 문제가 발생하는 문제가 있다. 
@@ -20,7 +24,7 @@ function update() {
         if (gameSession.state === 'inProgress') {
             
             //console.log("업데이트 되는 중");
-            gameSession.stateSyn();
+            gameSession.updateTimestamp(deltaTime)
         }
     }
     //여기서 프레임마다 업데이트를 해보도록 하자.

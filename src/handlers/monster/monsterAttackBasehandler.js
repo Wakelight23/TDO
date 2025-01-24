@@ -1,5 +1,5 @@
 import { PacketType } from '../../constants/header.js';
-import { getGameSessionByUserSocket, notificationGameSessionsBySocket } from '../../session/game.session.js';
+import { notificationGameSessionsBySocket } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
@@ -21,8 +21,6 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     user.updateBase(user.base.hp - damage);
     user.updateGold(user.getGold() + 10);
     user.updateScore(user.getScore() + 30);
-    const gameSession = getGameSessionByUserSocket(socket);
-    gameSession.stateSyn();
 
     //user.stateSyn(); //--> 추가해서 이거 쓰면 개인을 동기화 합니다.
 
