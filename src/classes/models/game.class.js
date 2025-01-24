@@ -16,9 +16,9 @@ class Game {
     this.deleteAgreement = 0; //2가 되면 게임을 삭제합니다. 게임 엔드 페이로드가 오면 유저가 나가면서 하나를 올려줍니다. 모든 유저가 나가면 게임이 삭제됩니다. 생각해 보니까 삭제 시도 로직을 짜서 유저가 없을때만 삭제되게 하면 될지도.
     this.startTime = Date.now();
     this.playingTime = 0;
-    this.baseHp = 100,
-    this.towerCost = 10,
-    this.initialGold = 500,
+    this.baseHp = 100;
+    this.towerCost = 100;
+    this.initialGold = 500;
     this.monsterSpawnInterval = 1;
   }
 
