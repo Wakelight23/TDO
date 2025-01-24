@@ -210,7 +210,6 @@ class Game {
     });
 
     this.monsterLevel = currentLowLevel;
-    console.log(this.monsterLevel);
 
     //약 0.1초 뒤부터 업데이트를 진행하겠다.
     if(this.playingTime > 1000)
