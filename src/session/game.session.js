@@ -31,9 +31,19 @@ export const getAllGameSessions = () => {
 };
 
 export const notificationGameSessionsBySocket = (socket) => {
-  // const gameSession = this.getGameSessionByUserSocket(socket);
-  // gameSession.stateSyn();
-};
+  for(const gameSession of gameSessions)
+    {
+      const findUser = gameSession.getUserBySocket(socket);
+      if(findUser)
+      {
+        gameSession.stateSyn();
+        break;
+      }
+    }
+  
+
+  
+}
 
 export const removeGameSessionSocket = (socket) => {
   for (const game of gameSessions) {
