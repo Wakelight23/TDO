@@ -1,19 +1,20 @@
 import { PacketType } from '../../constants/header.js';
-import pools from '../../db/database.js';
-import { findUserByHighScore } from '../../db/user/user.db.js';
-import { addUser } from '../../session/user.session.js';
+import { findUserByHighScore, findUserByLoginId } from '../../db/user/user.db.js';
+import { addUser, isUserLoggedIn } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../../constants/env.js';
+import User from '../../classes/models/user.class.js'; // User 클래스 import
 
 const loginHandler = async ({ socket, sequence, payload }) => {
   try {
-    const { id, password } = payload; // 로그인 ID 기반으로 로그인 처리
+    const { id, password } = payload;
 
     // 로그인 ID로 사용자 검색
-    const [rows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE login_id = ?', [id]);
-    if (rows.length === 0) {
+    const userData = await findUserByLoginId(id);
+    console.log('1');
+    if (!userData) {
       const failResponse = createResponse(
         PacketType.LOGIN_RESPONSE,
         {
@@ -23,13 +24,12 @@ const loginHandler = async ({ socket, sequence, payload }) => {
         },
         sequence,
       );
+      console.log('1 failResponse' + failResponse);
       return socket.write(failResponse);
     }
 
-    const user = rows[0];
-
     // 비밀번호 검증
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, userData.password);
     if (!passwordMatch) {
       const failResponse = createResponse(
         PacketType.LOGIN_RESPONSE,
@@ -40,17 +40,36 @@ const loginHandler = async ({ socket, sequence, payload }) => {
         },
         sequence,
       );
+      console.log('2 failResponse' + failResponse);
       return socket.write(failResponse);
     }
+    console.log('2');
+
+    // 중복 로그인 방지
+    if (isUserLoggedIn(id)) {
+      const failResponse = createResponse(
+        PacketType.LOGIN_RESPONSE,
+        {
+          success: false,
+          message: 'User already logged in',
+          failCode: 4, // USER_ALREADY_LOGGED_IN
+        },
+        sequence,
+      );
+      console.log('3 failResponse : ' + failResponse);
+      return socket.write(failResponse);
+    }
+    console.log('3');
+
+    // User 클래스 인스턴스 생성
+    const user = new User(socket, userData.highscore, userData.loginId, userData.userId);
 
     // 마지막 로그인 시간 업데이트
-    await pools.TDO_USER_DB.query(
-      'UPDATE USER SET last_login = CURRENT_TIMESTAMP WHERE user_id = ?',
-      [user.user_id],
-    );
+    await userData.updateLastLogin();
+    console.log('4');
 
     // JWT 생성
-    const token = jwt.sign({ userId: user.user_id, login_id: user.login_id }, SECRET_KEY, {
+    const token = jwt.sign({ userId: userData.userId, login_id: userData.loginId }, SECRET_KEY, {
       expiresIn: '1h',
     });
 
@@ -63,12 +82,13 @@ const loginHandler = async ({ socket, sequence, payload }) => {
 
     const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
     socket.write(successResponse);
-
+    console.log('successResponse : ' + successResponse);
     // DB에 저장된 login_id를 토대로 highscore를 가져온다
     const highScoreData = await findUserByHighScore(id);
 
-    addUser(socket, highScoreData.highscore, id); // 소켓을 세션에 추가
-    console.log('highScore, user_id : ', highScoreData.highscore, user.user_id);
+    // 세션에 사용자 추가
+    addUser(socket, highScoreData.highscore, id);
+    console.log('highScore, user_id : ', highScoreData.highscore, userData.userId);
   } catch (error) {
     console.error('Error in loginHandler:', error);
 
