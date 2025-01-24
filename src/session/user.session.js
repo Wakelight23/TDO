@@ -25,3 +25,8 @@ export const getUserBySocket = (socket) => {
 export const getUser = () => {
   return userSessions;
 };
+
+export const isUserLoggedIn = (id) => {
+  // 로그인된 사용자 세션 배열에서 해당 id를 가진 사용자가 있는지 확인
+  return userSessions.some((user) => user.id === id);
+};

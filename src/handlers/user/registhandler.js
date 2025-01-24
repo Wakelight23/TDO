@@ -1,5 +1,5 @@
 import { PacketType } from '../../constants/header.js';
-import pools from '../../db/database.js';
+import { createUser, findUserByEmail, findUserByLoginId } from '../../db/user/user.db.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
 
@@ -30,10 +30,8 @@ const registHandler = async ({ socket, sequence, payload }) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 중복 이메일 확인
-    const [emailRows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE email = ?', [
-      email,
-    ]);
-    if (emailRows.length > 0) {
+    const existingUserByEmail = await findUserByEmail(email);
+    if (existingUserByEmail) {
       const failResponse = createResponse(
         PacketType.REGISTER_RESPONSE,
         {
@@ -47,10 +45,8 @@ const registHandler = async ({ socket, sequence, payload }) => {
     }
 
     // 중복 로그인 ID 확인
-    const [loginIdRows] = await pools.TDO_USER_DB.query('SELECT * FROM USER WHERE login_id = ?', [
-      id,
-    ]);
-    if (loginIdRows.length > 0) {
+    const existingUserByLoginId = await findUserByLoginId(id);
+    if (existingUserByLoginId) {
       const failResponse = createResponse(
         PacketType.REGISTER_RESPONSE,
         {
@@ -65,10 +61,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
 
     // 사용자 추가
     console.log(id);
-    await pools.TDO_USER_DB.query(
-      'INSERT INTO USER (user_id, email, login_id, password) VALUES (UUID(), ?, ?, ?)',
-      [email, id, hashedPassword],
-    );
+    await createUser(email, id, hashedPassword);
 
     const successPayload = {
       success: true,
