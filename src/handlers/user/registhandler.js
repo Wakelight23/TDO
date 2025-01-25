@@ -8,6 +8,7 @@ import { SECRET_KEY } from '../../constants/env.js';
 import User from '../../classes/models/user.class.js';
 
 const registHandler = async ({ socket, sequence, payload }) => {
+ 
   const { email, id, password } = payload;
 
   if (email === 'login') {
