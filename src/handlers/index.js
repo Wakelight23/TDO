@@ -1,4 +1,5 @@
 import { HANDLER_IDS } from '../constants/handlerIds.js';
+import loginHandler from '../utils/parser/loginhandler.js';
 import gameEndHandler from './game/gameEndhandler.js';
 import matchHandler from './matching/matchhandler.js';
 import monsterAttackBaseHandler from './monster/monsterAttackBasehandler.js';
@@ -8,7 +9,6 @@ import spawnMonsterNotification from './monster/spawnMonsterNotification.js';
 import testHandler from './test/testhandler.js';
 import towerAttackHandler from './tower/towerAttackhandler.js';
 import towerPurchaseHandler from './tower/towerPurchasehandler.js';
-import loginHandler from './user/loginhandler.js';
 import registHandler from './user/registhandler.js';
 
 const handlers = {
