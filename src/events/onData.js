@@ -76,17 +76,22 @@ export const onData = (socket) => async (data) => {
 
       try {
         //console.log("packetType:",packetpacketType,"\npayload:", packetpayload );
-        const { packetType, sequence, payload } = packetParser(packetpacketType, packetversion, packetsequence, packetpayload);
-        
+        const { packetType, sequence, payload } = packetParser(
+          packetpacketType,
+          packetversion,
+          packetsequence,
+          packetpayload,
+        );
+
         const handler = getHandlerById(packetType);
         await handler({
           socket,
           sequence,
           payload,
         });
-
       } catch (error) {
-        console.error(error);
+        console.error('onData 처리 중 오류:', error.message);
+        throw error; // 상위로 오류 전달
       }
     } else {
       // 아직 전체 패킷이 도착하지 않음

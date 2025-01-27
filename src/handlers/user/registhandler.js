@@ -1,5 +1,10 @@
 import { PacketType } from '../../constants/header.js';
-import { createUser, findUserByHighScore, findUserByEmail, findUserByLoginId } from '../../db/user/user.db.js';
+import {
+  createUser,
+  findUserByHighScore,
+  findUserByEmail,
+  findUserByLoginId,
+} from '../../db/user/user.db.js';
 import { addUser, isUserLoggedIn } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import bcrypt from 'bcrypt';
@@ -8,16 +13,14 @@ import { SECRET_KEY } from '../../constants/env.js';
 import User from '../../classes/models/user.class.js';
 
 const registHandler = async ({ socket, sequence, payload }) => {
- 
   const { email, id, password } = payload;
 
   if (email === 'login') {
     try {
       const { id, password } = payload;
-  
+
       // 로그인 ID로 사용자 검색
       const userData = await findUserByLoginId(id);
-      console.log('1');
       if (!userData) {
         const failResponse = createResponse(
           PacketType.LOGIN_RESPONSE,
@@ -31,7 +34,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
         console.log('1 failResponse' + failResponse);
         return socket.write(failResponse);
       }
-  
+
       // 비밀번호 검증
       const passwordMatch = await bcrypt.compare(password, userData.password);
       if (!passwordMatch) {
@@ -47,8 +50,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
         console.log('2 failResponse' + failResponse);
         return socket.write(failResponse);
       }
-      console.log('2');
-  
+
       // 중복 로그인 방지
       if (isUserLoggedIn(id)) {
         const failResponse = createResponse(
@@ -63,39 +65,37 @@ const registHandler = async ({ socket, sequence, payload }) => {
         console.log('3 failResponse : ' + failResponse);
         return socket.write(failResponse);
       }
-      console.log('3');
-  
+
       // User 클래스 인스턴스 생성
       const user = new User(socket, userData.highscore, userData.loginId, userData.userId);
-  
+
       // 마지막 로그인 시간 업데이트
       await userData.updateLastLogin();
-      console.log('4');
-  
+
       // JWT 생성
       const token = jwt.sign({ userId: userData.userId, login_id: userData.loginId }, SECRET_KEY, {
         expiresIn: '1h',
       });
-  
+
       const successPayload = {
         success: true,
         message: 'Login successful',
         token, // JWT 발급
         failCode: 0, // NONE
       };
-  
+
       const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
       socket.write(successResponse);
       console.log('successResponse : ' + successResponse);
       // DB에 저장된 login_id를 토대로 highscore를 가져온다
       const highScoreData = await findUserByHighScore(id);
-  
+
       // 세션에 사용자 추가
       addUser(socket, highScoreData.highscore, id);
       console.log('highScore, user_id : ', highScoreData.highscore, userData.userId);
     } catch (error) {
       console.error('Error in loginHandler:', error);
-  
+
       const errorResponse = createResponse(
         PacketType.LOGIN_RESPONSE,
         {
@@ -107,7 +107,6 @@ const registHandler = async ({ socket, sequence, payload }) => {
       );
       socket.write(errorResponse);
     }
-
   } else {
     try {
       // 이메일 유효성 검사

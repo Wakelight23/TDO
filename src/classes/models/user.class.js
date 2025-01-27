@@ -19,6 +19,7 @@ class User {
     this.gameId = null;
     this.monsterLevel = 1;
     this.lastTowerPurchaseTime = 0; //마지막 타워 구매 시간 (타임스탬프)
+    this.bossCount = 0;
   }
 
   updateHighScore(highScore) {

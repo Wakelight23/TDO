@@ -1,4 +1,4 @@
-import { FRAME_DIVISION, LEVEL_BASED_MULTIPLIER, LEVEL_INITIAL_VIGILANCE } from '../../constants/env.js';
+import { FRAME_DIVISION, LEVEL_BASED_MULTIPLIER, LEVEL_BOSS_SPAWN, LEVEL_INITIAL_VIGILANCE, ONE_SECOND_FRAME } from '../../constants/env.js';
 import { PacketType } from '../../constants/header.js';
 import { removeGameSession } from '../../session/game.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
@@ -43,7 +43,7 @@ class Game {
   }
 
   //가지고 있는 유저중 아이디가 같은 유저를 제외합니다.
-  removeUseruserId(userId) {
+  removeUserUserId(userId) {
     const index = this.users.findIndex((user) => user.id === userId);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
@@ -55,11 +55,21 @@ class Game {
   }
 
   //가지고 있는 유저중 소켓이 같은 유저를 제외합니다.
-  removeUsersocket(socket) {
+  removeUserSocket(socket) {
     const index = this.users.findIndex((user) => user.socket === socket);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
     }
+  }
+
+  // onEnd에서 사용중인 gameSession 내의 socket 찾아서 삭제
+  removeUserBySocket(socket) {
+    const user = this.users.find((user) => user.socket === socket);
+    if (user) {
+      this.removeUserSocket(user.id); // 기존 removeUser 메서드 호출
+      return user;
+    }
+    return null;
   }
 
   //게임 시작 함수입니다. 게임 상태를 'inProgress'로 바꾸어 줍니다.
@@ -88,7 +98,7 @@ class Game {
     const user1Data = {
       gold: user1.gold,
       base: user1.base,
-      highScore: user1.highScore,
+      highScore: user1.getHighScore(),
       towers: user1.towers,
       monsters: [],
       monsterLevel: user1.monsterLevel,
@@ -99,7 +109,7 @@ class Game {
     const user2Data = {
       gold: user2.gold,
       base: user2.base,
-      highScore: user2.highScore,
+      highScore: user2.getHighScore(),
       towers: user2.towers,
       monsters: [],
       monsterLevel: user2.monsterLevel,
@@ -203,23 +213,30 @@ class Game {
   }
 
   //여기서 계속
+  //심플하게 10초마다 레벨이 올라가도록 수정하도록 하자.
   updateTimestamp(deltaTime) {
     this.playingTime += deltaTime;
-    let currentLowLevel = Infinity;
+    this.monsterLevel = Math.ceil(this.playingTime/(ONE_SECOND_FRAME * 10));
     //console.log(this.playingTime);
     this.users.forEach((user) => {
       //일단 레벨 올라가는공식을 이렇게 해보도록 하고
-      user.monsterLevel = Math.max(
-        user.monsterLevel,
-        Math.ceil((user.score + this.playingTime / 1000) / (this.playingTime / 1000 + 500)),
-      );
-      currentLowLevel = Math.min(currentLowLevel, user.monsterLevel);
+      if(user.base.hp > 0)
+      {
+        if(user.monsterLevel < this.monsterLevel)
+        {
+          user.monsterLevel = this.monsterLevel;
+          if(user.monsterLevel >= LEVEL_BOSS_SPAWN)
+          {
+            //레벨 5당 보스 한 마리씩 등장하도록 수정
+            user.bossCount = Math.floor(user.monsterLevel/LEVEL_BOSS_SPAWN);
+          }
+        }
+        
+      }
     });
 
-    this.monsterLevel = currentLowLevel;
-
     //약 0.1초 뒤부터 업데이트를 진행하겠다.
-    if (this.playingTime > 1000) {
+    if (this.playingTime > ONE_SECOND_FRAME) {
       this.stateSyn();
     }
   }
