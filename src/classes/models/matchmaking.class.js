@@ -12,10 +12,20 @@ class MatchmakingQueue {
 
   // 대기열에 유저 추가
   addToQueue(user) {
+    // 이미 대기열에 있는 유저인지 확인
+    const isUserInQueue = this.waitingUsers.some((waitingUser) => waitingUser.user.id === user.id);
+
+    if (isUserInQueue) {
+      console.log(`${user.id} 님은 이미 대기열에 있습니다.`);
+      return false;
+    }
+
     this.waitingUsers.push({
       user,
       joinTime: Date.now(),
     });
+
+    return true; // 대기열에 추가되었을 경우 true 반환
   }
 
   // 매칭 가능한 유저들 찾기
@@ -23,12 +33,12 @@ class MatchmakingQueue {
     const userScore = user.highscore;
     const currentTime = Date.now();
 
-    console.log(`
-      [매칭 시도 정보]
-      - 현재 유저: ${user.id} (점수: ${userScore})
-      - 대기열 유저 수: ${this.waitingUsers.length}
-      - 현재 시간: ${currentTime}
-    `); // 2번째로 로그 찍힘
+    // console.log(`
+    //   [매칭 시도 정보]
+    //   - 현재 유저: ${user.id} (점수: ${userScore})
+    //   - 대기열 유저 수: ${this.waitingUsers.length}
+    //   - 현재 시간: ${currentTime}
+    // `);
 
     return this.waitingUsers.filter((waitingUser) => {
       // 자기 자신 제외
@@ -58,7 +68,7 @@ class MatchmakingQueue {
 
   // 매칭 실행
   executeMatch(user) {
-    console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작'); // 1번째로 로그 찍힘
+    // console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작');
     const matchableUsers = this.findMatchableUsers(user);
 
     if (matchableUsers.length > 0) {
@@ -136,11 +146,14 @@ class MatchmakingQueue {
   }
 
   // 매칭 시도 중단
-  stopMatching() {
+  stopMatching(userId) {
     if (this.matchingInterval) {
       clearInterval(this.matchingInterval);
+      this.matchingInterval = null;
     }
+    this.matchingUsers.delete(userId);
   }
 }
 
-export default MatchmakingQueue;
+const matchmakingQueue = new MatchmakingQueue();
+export default matchmakingQueue;
