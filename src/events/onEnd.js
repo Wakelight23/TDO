@@ -7,6 +7,7 @@ import {
 } from '../session/game.session.js';
 import { removeUser } from '../session/user.session.js';
 import { createResponse } from '../utils/response/createResponse.js';
+import matchmakingQueue from '../classes/models/matchmaking.class.js';
 
 export const onEnd = (socket) => () => {
   // 유저 세션에서 해당 유저 제거
@@ -15,6 +16,12 @@ export const onEnd = (socket) => () => {
     console.log('socket 안에 user를 찾을 수 없습니다.');
     return;
   }
+
+  // 매칭 큐에서 유저 제거 및 매칭 중단
+  if (matchmakingQueue.matchingUsers.has(removedUser.id)) {
+    matchmakingQueue.stopMatching(removedUser.id);
+  }
+  matchmakingQueue.removeFromQueue(removedUser);
 
   console.log(`${removedUser.id} 가 userSessions에서 삭제되었습니다.`);
 
