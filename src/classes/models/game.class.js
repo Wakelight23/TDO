@@ -42,7 +42,7 @@ class Game {
   }
 
   //가지고 있는 유저중 아이디가 같은 유저를 제외합니다.
-  removeUseruserId(userId) {
+  removeUserUserId(userId) {
     const index = this.users.findIndex((user) => user.id === userId);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
@@ -54,11 +54,21 @@ class Game {
   }
 
   //가지고 있는 유저중 소켓이 같은 유저를 제외합니다.
-  removeUsersocket(socket) {
+  removeUserSocket(socket) {
     const index = this.users.findIndex((user) => user.socket === socket);
     if (index !== -1) {
       this.users.splice(index, 1)[0]; // 제거된 사용자 반환
     }
+  }
+
+  // onEnd에서 사용중인 gameSession 내의 socket 찾아서 삭제
+  removeUserBySocket(socket) {
+    const user = this.users.find((user) => user.socket === socket);
+    if (user) {
+      this.removeUserSocket(user.id); // 기존 removeUser 메서드 호출
+      return user;
+    }
+    return null;
   }
 
   //게임 시작 함수입니다. 게임 상태를 'inProgress'로 바꾸어 줍니다.
@@ -87,7 +97,7 @@ class Game {
     const user1Data = {
       gold: user1.gold,
       base: user1.base,
-      highScore: user1.highScore,
+      highScore: user1.getHighScore(),
       towers: user1.towers,
       monsters: [],
       monsterLevel: user1.monsterLevel,
@@ -98,7 +108,7 @@ class Game {
     const user2Data = {
       gold: user2.gold,
       base: user2.base,
-      highScore: user2.highScore,
+      highScore: user2.getHighScore(),
       towers: user2.towers,
       monsters: [],
       monsterLevel: user2.monsterLevel,

@@ -1,5 +1,9 @@
 import { updateDBHighScore } from '../../db/user/user.db.js';
-import { getJoinGameSessions } from '../../session/game.session.js';
+import {
+  getGameSessionBySocket,
+  getJoinGameSessions,
+  removeGameSession,
+} from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 
 const gameEndHandler = async ({ socket, sequence, payload }) => {
@@ -24,7 +28,27 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
     }
 
     // 참가 중인 게임 세션 삭제
-    gameSession.addDeleteAgreement();
+    // 게임 세션에서 해당 소켓이 속한 게임 찾기
+    const deleteGameSession = getGameSessionBySocket(socket);
+    if (deleteGameSession && deleteGameSession.users.length === 2) {
+      // 게임 세션에서 유저 제거
+      deleteGameSession.removeUserUserId(user.id);
+      console.log(`${user.id} 가 게임 세션 ${deleteGameSession.id} 에서 삭제되었습니다.`);
+
+      // 게임 상태를 종료로 변경
+      deleteGameSession.state = 'ended';
+      // 게임 세션이 비어 있으면 삭제
+      if (deleteGameSession.state === 'ended') {
+        console.log(
+          `
+        [Game Session : ${deleteGameSession.id}]
+         게임이 종료되었습니다...
+         세션을 삭제합니다.
+        `,
+        );
+        removeGameSession(deleteGameSession.id);
+      }
+    }
 
     // 사용자 정보 초기화
     user.clearUserData();
