@@ -29,20 +29,20 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     //타워의 타입에 따라서 골드와 스코어를 올리는 방법을 분리해보자.
     switch (prefix) {
       case 1: //기본 타워
-        user.updateGold(user.getGold() + user.pointMultiplier(10));
-        user.updateScore(user.getScore() + user.pointMultiplier(10));
+        user.updateGold(user.getGold() + 5);
+        user.updateScore(user.getScore() + (10));
         break;
       case 2: //골드 더 주는 타워'
-        user.updateGold(user.getGold() + user.pointMultiplier(30));
-        user.updateScore(user.getScore() + user.pointMultiplier(10));
+        user.updateGold(user.getGold() + (15));
+        user.updateScore(user.getScore() + (10));
         break;
       case 3: //스코어 더 주는 타워
-        user.updateGold(user.getGold() + user.pointMultiplier(10));
-        user.updateScore(user.getScore() + user.pointMultiplier(30));
+        user.updateGold(user.getGold() + (5));
+        user.updateScore(user.getScore() + (30));
         break;
       case 4: //둘 다 더 주는 타워
-        user.updateGold(user.getGold() + user.pointMultiplier(20));
-        user.updateScore(user.getScore() + user.pointMultiplier(20));
+        user.updateGold(user.getGold() + (10));
+        user.updateScore(user.getScore() + (20));
         break;
     }
 
