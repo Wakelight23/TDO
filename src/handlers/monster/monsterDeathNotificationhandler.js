@@ -14,7 +14,6 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     const prefix = Math.floor(monsterId / 100000);
 
     const user = getUserBySocket(socket);
-
     monsterId = monsterId % 100000;
 
     //유저가 가지고 있는 몬스터중 같은 아이디의 몬스터를 삭제시킵니다.
