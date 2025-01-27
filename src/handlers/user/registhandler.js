@@ -7,9 +7,9 @@ import {
 } from '../../db/user/user.db.js';
 import { addUser, isUserLoggedIn } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../../constants/env.js';
+import bcrypt from 'bcrypt';
 import User from '../../classes/models/user.class.js';
 
 const registHandler = async ({ socket, sequence, payload }) => {
@@ -31,12 +31,19 @@ const registHandler = async ({ socket, sequence, payload }) => {
           },
           sequence,
         );
-        console.log('1 failResponse' + failResponse);
+        console.log('1 failResponse: ', failResponse);
         return socket.write(failResponse);
       }
 
       // 비밀번호 검증
+      console.log('Entered password:', password); // 입력된 비밀번호
+      console.log('Hashed password from DB:', userData.password); // DB에서 가져온 해시된 비밀번호
+
       const passwordMatch = await bcrypt.compare(password, userData.password);
+
+      // 비교 결과 로그 추가
+      console.log('Password match result:', passwordMatch); // true여야 정상
+
       if (!passwordMatch) {
         const failResponse = createResponse(
           PacketType.LOGIN_RESPONSE,
@@ -47,7 +54,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
           },
           sequence,
         );
-        console.log('2 failResponse' + failResponse);
+        console.log('2 failResponse:', failResponse);
         return socket.write(failResponse);
       }
 
@@ -62,7 +69,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
           },
           sequence,
         );
-        console.log('3 failResponse : ' + failResponse);
+        console.log('3 fail Response :', failResponse);
         return socket.write(failResponse);
       }
 
@@ -86,7 +93,8 @@ const registHandler = async ({ socket, sequence, payload }) => {
 
       const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
       socket.write(successResponse);
-      console.log('successResponse : ' + successResponse);
+      console.log('Login success response: ', successResponse);
+
       // DB에 저장된 login_id를 토대로 highscore를 가져온다
       const highScoreData = await findUserByHighScore(id);
 
@@ -125,11 +133,17 @@ const registHandler = async ({ socket, sequence, payload }) => {
           },
           sequence,
         );
+        console.log('email failResponse : ' + failResponse);
         return socket.write(failResponse);
       }
 
       // 비밀번호 해싱
-      const hashedPassword = await bcrypt.hash(password, 10);
+      // const isMatch = await bcrypt.compare(password, hashedPassword);
+      // console.log('Password match test:', isMatch); // true가 출력되어야 함
+
+      // 사용자 추가
+      console.log(id);
+      await createUser(email, id, password);
 
       // 중복 이메일 확인
       const existingUserByEmail = await findUserByEmail(email);
@@ -160,10 +174,6 @@ const registHandler = async ({ socket, sequence, payload }) => {
         );
         return socket.write(failResponse);
       }
-
-      // 사용자 추가
-      console.log(id);
-      await createUser(email, id, hashedPassword);
 
       const successPayload = {
         success: true,
