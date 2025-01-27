@@ -5,7 +5,7 @@ import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
 class MatchmakingQueue {
   constructor() {
     this.waitingUsers = [];
-    this.scoreRange = 100; // 초기 매칭 범위
+    this.scoreRange = 10000; // 초기 매칭 범위
     this.matchingInterval = null;
   }
 
