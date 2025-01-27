@@ -7,14 +7,25 @@ class MatchmakingQueue {
     this.waitingUsers = [];
     this.scoreRange = 10000; // 초기 매칭 범위
     this.matchingInterval = null;
+    this.matchingUsers = new Set(); // 매칭 중인 유저 저장
   }
 
   // 대기열에 유저 추가
   addToQueue(user) {
+    // 이미 대기열에 있는 유저인지 확인
+    const isUserInQueue = this.waitingUsers.some((waitingUser) => waitingUser.user.id === user.id);
+
+    if (isUserInQueue) {
+      console.log(`${user.id} 님은 이미 대기열에 있습니다.`);
+      return false;
+    }
+
     this.waitingUsers.push({
       user,
       joinTime: Date.now(),
     });
+
+    return true; // 대기열에 추가되었을 경우 true 반환
   }
 
   // 매칭 가능한 유저들 찾기
@@ -57,7 +68,7 @@ class MatchmakingQueue {
 
   // 매칭 실행
   executeMatch(user) {
-    console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작');
+    // console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작');
     const matchableUsers = this.findMatchableUsers(user);
 
     if (matchableUsers.length > 0) {
@@ -86,12 +97,25 @@ class MatchmakingQueue {
 
   // 매칭 시도 시작
   startMatching(user) {
+    // 이미 매칭 중인 유저라면 중복 매칭 방지
+    if (this.matchingUsers.has(user.id)) {
+      return;
+    }
+
+    this.matchingUsers.add(user.id);
+
     this.matchingInterval = setInterval(async () => {
+      // 유저가 이미 게임 중이거나 매칭이 완료된 경우
+      if (!this.waitingUsers.some((waitingUser) => waitingUser.user.id === user.id)) {
+        this.stopMatching(user.id);
+        return;
+      }
+
       const matchedUser = this.executeMatch(user);
 
       if (matchedUser) {
-        // 매칭 성공 시 인터벌 정지
-        clearInterval(this.matchingInterval);
+        this.stopMatching(user.id);
+        this.stopMatching(matchedUser.id);
 
         // 게임 세션 생성 및 시작
         const gameId = uuidv4();
@@ -122,11 +146,14 @@ class MatchmakingQueue {
   }
 
   // 매칭 시도 중단
-  stopMatching() {
+  stopMatching(userId) {
     if (this.matchingInterval) {
       clearInterval(this.matchingInterval);
+      this.matchingInterval = null;
     }
+    this.matchingUsers.delete(userId);
   }
 }
 
-export default MatchmakingQueue;
+const matchmakingQueue = new MatchmakingQueue();
+export default matchmakingQueue;
