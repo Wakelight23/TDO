@@ -15,23 +15,9 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     const user = getUserBySocket(socket);
 
-    switch (prefix) {
-      case 1:
-        user.updateGold(user.getGold() + 10);
-        user.updateScore(user.getScore() + 10);
-        break;
-      case 2:
-        user.updateGold(user.getGold() + 20);
-        user.updateScore(user.getScore() + 10);
-        break;
-      case 3:
-        user.updateGold(user.getGold() + 10);
-        user.updateScore(user.getScore() + 20);
-        break;
-      case 4:
-        user.updateGold(user.getGold() + 20);
-        user.updateScore(user.getScore() + 20);
-        break;
+    if(!user)
+    {
+      return;
     }
 
     monsterId = monsterId % 100000;
@@ -65,6 +51,11 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     //const gameSession = getJoinGameSessions(user);
 
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
+
+    if(!enemyUser)
+    {
+      return;
+    }
 
     const enemyMonsterDeathNotificationpayload = {
       monsterId: monsterId,

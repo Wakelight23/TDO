@@ -10,8 +10,18 @@ const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
 
     const user = getUserBySocket(socket);
 
+    if(!user)
+    {
+      return;
+    }
+
     //유저가 참여하고 있는 게임 세션을 가져옵니다.
     const gameSessions = getJoinGameSessions(user);
+
+    if(gameSessions.length === 0)
+    {
+      return;
+    }
 
     //게임 세션의 몬스터 스폰 카운트를 가져옵니다. 
     //이 함수는 가져올때마다 세션의 몬스터 카운트가 하나씩 증가해 중복되지 않게 해줍니다.

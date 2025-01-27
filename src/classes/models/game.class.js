@@ -1,3 +1,4 @@
+import { FRAME_DIVISION, LEVEL_BASED_MULTIPLIER, LEVEL_INITIAL_VIGILANCE } from '../../constants/env.js';
 import { PacketType } from '../../constants/header.js';
 import { removeGameSession } from '../../session/game.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
@@ -211,8 +212,9 @@ class Game {
       //공식 : (스코어 + (시간 값/1000)) / ((시간 값/(1000 + user.monsterLevel * 100)) + 500);
       //시간 경과에 따라서 조금씩 필요한 스코어가 많이 필요해지는 방식
       //레벨이 일정 이상 올라가지 않게 할거면 currentLowLevel 연산 단계에서 limit 값을 넣으면 된다.
-      user.monsterLevel = Math.max(user.monsterLevel, Math.ceil((user.score + this.playingTime / 1000) / (this.playingTime / (1000 + (user.monsterLevel- 1) * 100) + (500))));
-      currentLowLevel = Math.min(currentLowLevel, user.monsterLevel, 8);
+      user.monsterLevel = Math.max(user.monsterLevel, Math.ceil((user.score + this.playingTime / FRAME_DIVISION) / 
+      (this.playingTime / (FRAME_DIVISION + (user.monsterLevel- 1) * LEVEL_BASED_MULTIPLIER) + (LEVEL_INITIAL_VIGILANCE))));
+      currentLowLevel = Math.min(currentLowLevel, user.monsterLevel);
     });
 
     this.monsterLevel = currentLowLevel;

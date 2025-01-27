@@ -9,8 +9,19 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     const { damage } = payload; //소켓으로 유저 찾아서 매칭.
 
     const user = getUserBySocket(socket);
+
+    if(!user)
+    {
+      return;
+    }
+
     // 유저에게 저장된 상대 유저의 소켓으로 상대 유저를 찾습니다. 
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
+
+    if(!enemyUser)
+    {
+      return;
+    }
 
     //음수값의 수치가 있을 수 있으니까?
     if (damage < 0) {
@@ -19,9 +30,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
 
     user.updateBase(user.base.hp - damage);
     //충돌했을 때 돈은 분명 더 줘야지 제대로 처리할 수 있을 것으로 생각된다.
-    user.updateGold(user.getGold() + user.pointMultiplier(30));
-    //충돌 시의 포인트 증가는 있으면 좋되 default 값으로 증가하도록 해보자.
-    user.updateScore(user.getScore() + 30);
+    user.updateGold(user.getGold() - 10 > 0 ? user.getGold() : 0);
 
     //user.stateSyn(); //--> 추가해서 이거 쓰면 개인을 동기화 합니다.
 
@@ -33,7 +42,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
       }
       const packetType = PacketType.GAME_OVER_NOTIFICATION;
       const sgameOverNotificationResponse = createResponse(packetType, gameOverNotificationpayload, sequence);
-      socket.write(sgameOverNotificationResponse);
+      user.socket.write(sgameOverNotificationResponse);
 
       //그 뒤 상대 유저에게는 승리 처리를 해줍니다. isWin이 true면 승리입니다.
       const enemygameOverNotificationpayload = {
