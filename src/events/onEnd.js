@@ -1,9 +1,12 @@
+import { PacketType } from '../constants/header.js';
+import gameEndHandler from '../handlers/game/gameEndhandler.js';
 import {
   getAllGameSessions,
   getGameSessionBySocket,
   removeGameSession,
 } from '../session/game.session.js';
 import { removeUser } from '../session/user.session.js';
+import { createResponse } from '../utils/response/createResponse.js';
 
 export const onEnd = (socket) => () => {
   // 유저 세션에서 해당 유저 제거
@@ -26,24 +29,36 @@ export const onEnd = (socket) => () => {
     if (gameSession.users.length === 1) {
       const winner = gameSession.users[0];
       console.log(
-        `상대방과 연결이 끊어졌습니다. 남은 User : ${winner.id} 방 이름 : ${gameSession.id}`,
+        `
+        [Notice]
+         - 상대방과 연결이 끊어졌습니다. 
+         - 남은 User : ${winner.id} 
+         - 방 이름 : ${gameSession.id}
+         `,
       );
 
       // 승리 메시지 전송
-      winner.socket.write(
-        JSON.stringify({
-          type: 'S2CGameOverNotification',
-          isWin: true,
-        }),
-      );
+      const gameOverNotificationpayload = {
+        isWin: true,
+      };
+      const packetType = PacketType.GAME_OVER_NOTIFICATION;
+      const gameDisconnected = createResponse(packetType, gameOverNotificationpayload);
+      // 비정상 게임 종료시 winner에게 승리 메시지 전송 = 승리 판정
+      winner.socket.write(gameDisconnected);
 
       // 게임 상태를 종료로 변경
       gameSession.state = 'ended';
     }
 
     // 게임 세션이 비어 있으면 삭제
-    if (gameSession.users.length === 0) {
-      console.log(`Game session ${gameSession.id} is now empty and will be removed.`);
+    if (gameSession.users.length === 0 || gameSession.state === 'ended') {
+      console.log(
+        `
+        [Game Session : ${gameSession.id}]
+         세션에 User가 존재하지 않습니다.
+         세션을 삭제합니다...
+         `,
+      );
       removeGameSession(gameSession.id);
     }
   } else {

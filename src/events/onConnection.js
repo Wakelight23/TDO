@@ -27,9 +27,13 @@ export const onConnection = (socket, activeClients) => {
 
   // 연결 종료 이벤트 처리
   socket.on('end', async () => {
-    console.log('클라이언트 연결이 종료되었습니다:', clientKey);
-    activeClients.delete(clientKey); // 연결 종료 시 activeClients에서 제거
-    onEnd(socket)(); // 기존 onEnd 호출
+    try {
+      console.log('클라이언트 연결이 종료되었습니다:', clientKey);
+      activeClients.delete(clientKey); // 연결 종료 시 activeClients에서 제거
+      await onEnd(socket)(); // 기존 onEnd 호출
+    } catch (error) {
+      console.error('socket.on("end") 처리 중 오류 발생:', error);
+    }
   });
 
   // 에러 발생 이벤트 처리
