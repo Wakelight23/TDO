@@ -8,6 +8,7 @@ import {
 import { removeUser } from '../session/user.session.js';
 import { createResponse } from '../utils/response/createResponse.js';
 import matchmakingQueue from '../classes/models/matchmaking.class.js';
+import { gameSessions, userSessions } from '../session/sessions.js';
 
 export const onEnd = (socket) => () => {
   // 유저 세션에서 해당 유저 제거
@@ -70,5 +71,6 @@ export const onEnd = (socket) => () => {
     }
   } else {
     console.log('No game session found for this socket.');
+    console.log(`userSessions & gameSessions : ${userSessions}, ${gameSessions}`);
   }
 };

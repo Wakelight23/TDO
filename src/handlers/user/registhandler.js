@@ -162,7 +162,6 @@ const registHandler = async ({ socket, sequence, payload }) => {
       }
 
       // 사용자 추가
-      console.log(id);
       await createUser(email, id, hashedPassword);
 
       const successPayload = {
