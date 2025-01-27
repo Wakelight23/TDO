@@ -26,12 +26,12 @@ const registHandler = async ({ socket, sequence, payload }) => {
           PacketType.LOGIN_RESPONSE,
           {
             success: false,
-            message: 'User not found',
+            message: ' User not found',
             failCode: 3, // AUTHENTICATION_FAILED
           },
           sequence,
         );
-        console.log('1 failResponse' + failResponse);
+        console.log('1 failResponse : ' + failResponse);
         return socket.write(failResponse);
       }
 
@@ -42,12 +42,12 @@ const registHandler = async ({ socket, sequence, payload }) => {
           PacketType.LOGIN_RESPONSE,
           {
             success: false,
-            message: 'Invalid credentials',
+            message: ' Invalid credentials',
             failCode: 3, // AUTHENTICATION_FAILED
           },
           sequence,
         );
-        console.log('2 failResponse' + failResponse);
+        console.log('2 failResponse : ' + failResponse);
         return socket.write(failResponse);
       }
 
@@ -57,7 +57,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
           PacketType.LOGIN_RESPONSE,
           {
             success: false,
-            message: 'User already logged in',
+            message: ' User already logged in',
             failCode: 4, // USER_ALREADY_LOGGED_IN
           },
           sequence,
