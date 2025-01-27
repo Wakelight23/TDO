@@ -1,3 +1,4 @@
+import { FRAME_DIVISION, LEVEL_BASED_MULTIPLIER, LEVEL_BOSS_SPAWN, LEVEL_INITIAL_VIGILANCE, ONE_SECOND_FRAME } from '../../constants/env.js';
 import { PacketType } from '../../constants/header.js';
 import { removeGameSession } from '../../session/game.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
@@ -17,7 +18,7 @@ class Game {
     this.startTime = Date.now();
     this.playingTime = 0;
     this.baseHp = 100;
-    this.towerCost = 100;
+    this.towerCost = 150;
     this.initialGold = 500;
     this.monsterSpawnInterval = 1;
   }
@@ -212,23 +213,30 @@ class Game {
   }
 
   //여기서 계속
+  //심플하게 10초마다 레벨이 올라가도록 수정하도록 하자.
   updateTimestamp(deltaTime) {
     this.playingTime += deltaTime;
-    let currentLowLevel = Infinity;
+    this.monsterLevel = Math.ceil(this.playingTime/(ONE_SECOND_FRAME * 10));
     //console.log(this.playingTime);
     this.users.forEach((user) => {
       //일단 레벨 올라가는공식을 이렇게 해보도록 하고
-      user.monsterLevel = Math.max(
-        user.monsterLevel,
-        Math.ceil((user.score + this.playingTime / 1000) / (this.playingTime / 1000 + 500)),
-      );
-      currentLowLevel = Math.min(currentLowLevel, user.monsterLevel);
+      if(user.base.hp > 0)
+      {
+        if(user.monsterLevel < this.monsterLevel)
+        {
+          user.monsterLevel = this.monsterLevel;
+          if(user.monsterLevel >= LEVEL_BOSS_SPAWN)
+          {
+            //레벨 5당 보스 한 마리씩 등장하도록 수정
+            user.bossCount = Math.floor(user.monsterLevel/LEVEL_BOSS_SPAWN);
+          }
+        }
+        
+      }
     });
 
-    this.monsterLevel = currentLowLevel;
-
     //약 0.1초 뒤부터 업데이트를 진행하겠다.
-    if (this.playingTime > 1000) {
+    if (this.playingTime > ONE_SECOND_FRAME) {
       this.stateSyn();
     }
   }
