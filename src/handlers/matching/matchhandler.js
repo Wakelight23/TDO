@@ -16,6 +16,8 @@ import matchmakingQueue from '../../classes/models/matchmaking.class.js';
 
 const matchHandler = async ({ socket, sequence, payload }) => {
   try {
+    const { isMatchable } = payload;
+
     const user = getUserBySocket(socket);
 
     // 이미 게임 중인 유저인지 확인
