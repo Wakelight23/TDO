@@ -33,12 +33,12 @@ class MatchmakingQueue {
     const userScore = user.highscore;
     const currentTime = Date.now();
 
-    // console.log(`
-    //   [매칭 시도 정보]
-    //   - 현재 유저: ${user.id} (점수: ${userScore})
-    //   - 대기열 유저 수: ${this.waitingUsers.length}
-    //   - 현재 시간: ${currentTime}
-    // `);
+    console.log(`
+      [매칭 시도 정보]
+      - 현재 유저: ${user.id} (점수: ${userScore})
+      - 대기열 유저 수: ${this.waitingUsers.length}
+      - 현재 시간: ${currentTime}
+    `);
 
     return this.waitingUsers.filter((waitingUser) => {
       // 자기 자신 제외
