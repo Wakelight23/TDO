@@ -4,7 +4,6 @@ import User from '../classes/models/user.class.js';
 export const addUser = (socket, highscore, id) => {
   const user = new User(socket, highscore, id);
   userSessions.push(user);
-  console.log('addUser 안에 있는 userSessions : ', userSessions);
   return user;
 };
 

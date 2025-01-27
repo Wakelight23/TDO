@@ -86,14 +86,14 @@ const registHandler = async ({ socket, sequence, payload }) => {
 
       const successPayload = {
         success: true,
-        message: 'Login successful',
+        message: ' Login successful',
         token, // JWT 발급
         failCode: 0, // NONE
       };
 
       const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
       socket.write(successResponse);
-      console.log('Login success response: ', successResponse);
+      console.log('Login success response: ' + successResponse);
 
       // DB에 저장된 login_id를 토대로 highscore를 가져온다
       const highScoreData = await findUserByHighScore(id);
@@ -149,6 +149,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
           },
           sequence,
         );
+        console.log('Fail : ' + failResponse);
         return socket.write(failResponse);
       }
 
@@ -159,11 +160,12 @@ const registHandler = async ({ socket, sequence, payload }) => {
           PacketType.REGISTER_RESPONSE,
           {
             success: false,
-            message: 'Login ID already exists',
+            message: ' Login ID already exists',
             failCode: 3, // AUTHENTICATION_FAILED
           },
           sequence,
         );
+        console.log('Fail : ' + failResponse);
         return socket.write(failResponse);
       }
 
@@ -175,6 +177,8 @@ const registHandler = async ({ socket, sequence, payload }) => {
         message: 'Signup successful!',
         failCode: 0, // NONE
       };
+
+      console.log('회원가입이 되었습니다.');
 
       const successResponse = createResponse(
         PacketType.REGISTER_RESPONSE,
