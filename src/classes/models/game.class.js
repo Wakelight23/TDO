@@ -202,18 +202,17 @@ class Game {
     removeGameSession(this.id);
   }
 
-  //여기서 계속 
+  //여기서 계속
   updateTimestamp(deltaTime) {
     this.playingTime += deltaTime;
     let currentLowLevel = Infinity;
     //console.log(this.playingTime);
     this.users.forEach((user) => {
-      //일단 레벨 올라가는공식을 이렇게 해보도록 하고 
-      //공식 : (스코어 + (시간 값/1000)) / ((시간 값/(1000 + user.monsterLevel * 100)) + 500);
-      //시간 경과에 따라서 조금씩 필요한 스코어가 많이 필요해지는 방식
-      //레벨이 일정 이상 올라가지 않게 할거면 currentLowLevel 연산 단계에서 limit 값을 넣으면 된다.
-      user.monsterLevel = Math.max(user.monsterLevel, Math.ceil((user.score + this.playingTime / FRAME_DIVISION) / 
-      (this.playingTime / (FRAME_DIVISION + (user.monsterLevel- 1) * LEVEL_BASED_MULTIPLIER) + (LEVEL_INITIAL_VIGILANCE))));
+      //일단 레벨 올라가는공식을 이렇게 해보도록 하고
+      user.monsterLevel = Math.max(
+        user.monsterLevel,
+        Math.ceil((user.score + this.playingTime / 1000) / (this.playingTime / 1000 + 500)),
+      );
       currentLowLevel = Math.min(currentLowLevel, user.monsterLevel);
     });
 
@@ -226,7 +225,6 @@ class Game {
   }
   //몬스터가 몇 마리 소환되었는가에 따라서 레벨이 오르는 구조
   levelUp() {
-
     this.monsterLevel = this.monsterLevel <= 5 ? this.monsterLevel + 1 : this.monsterLevel;
   }
 }
