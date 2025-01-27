@@ -7,6 +7,7 @@ class MatchmakingQueue {
     this.waitingUsers = [];
     this.scoreRange = 10000; // 초기 매칭 범위
     this.matchingInterval = null;
+    this.matchingUsers = new Set(); // 매칭 중인 유저 저장
   }
 
   // 대기열에 유저 추가
@@ -27,7 +28,7 @@ class MatchmakingQueue {
       - 현재 유저: ${user.id} (점수: ${userScore})
       - 대기열 유저 수: ${this.waitingUsers.length}
       - 현재 시간: ${currentTime}
-    `);
+    `); // 2번째로 로그 찍힘
 
     return this.waitingUsers.filter((waitingUser) => {
       // 자기 자신 제외
@@ -57,7 +58,7 @@ class MatchmakingQueue {
 
   // 매칭 실행
   executeMatch(user) {
-    console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작');
+    console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작'); // 1번째로 로그 찍힘
     const matchableUsers = this.findMatchableUsers(user);
 
     if (matchableUsers.length > 0) {
@@ -86,12 +87,25 @@ class MatchmakingQueue {
 
   // 매칭 시도 시작
   startMatching(user) {
+    // 이미 매칭 중인 유저라면 중복 매칭 방지
+    if (this.matchingUsers.has(user.id)) {
+      return;
+    }
+
+    this.matchingUsers.add(user.id);
+
     this.matchingInterval = setInterval(async () => {
+      // 유저가 이미 게임 중이거나 매칭이 완료된 경우
+      if (!this.waitingUsers.some((waitingUser) => waitingUser.user.id === user.id)) {
+        this.stopMatching(user.id);
+        return;
+      }
+
       const matchedUser = this.executeMatch(user);
 
       if (matchedUser) {
-        // 매칭 성공 시 인터벌 정지
-        clearInterval(this.matchingInterval);
+        this.stopMatching(user.id);
+        this.stopMatching(matchedUser.id);
 
         // 게임 세션 생성 및 시작
         const gameId = uuidv4();
