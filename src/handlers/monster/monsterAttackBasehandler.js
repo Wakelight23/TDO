@@ -12,6 +12,10 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
     // 유저에게 저장된 상대 유저의 소켓으로 상대 유저를 찾습니다.
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
 
+    if(!enemyUser)
+    {
+      return;
+    }
     //음수값의 수치가 있을 수 있으니까?
     if (damage < 0) {
       damage = 0;
@@ -19,9 +23,7 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
 
     user.updateBase(user.base.hp - damage);
     //충돌했을 때 돈은 분명 더 줘야지 제대로 처리할 수 있을 것으로 생각된다.
-    user.updateGold(user.getGold() + user.pointMultiplier(30));
-    //충돌 시의 포인트 증가는 있으면 좋되 default 값으로 증가하도록 해보자.
-    user.updateScore(user.getScore() + 30);
+    user.updateGold(user.getGold() - 10 > 0 ? user.getGold() : 0);
 
     //user.stateSyn(); //--> 추가해서 이거 쓰면 개인을 동기화 합니다.
 
@@ -42,45 +44,34 @@ const monsterAttackBaseHandler = async ({ socket, sequence, payload }) => {
 
       //그 뒤 상대 유저에게는 승리 처리를 해줍니다. isWin이 true면 승리입니다.
       const enemygameOverNotificationpayload = {
-        isWin: true,
-      };
-      const enemysgameOverNotificationResponse = createResponse(
-        packetType,
-        enemygameOverNotificationpayload,
-        sequence,
-      );
-      //상대 유저 소캣으로 보내줍니다.
-      enemyUser.socket.write(enemysgameOverNotificationResponse);
-    } else {
-      //베이스가 0이 아니라면 업데이트 시켜줍니다. isOpponent이 false 면 유저의 베이스의 체력이 업데이트 됩니다. 모르겠으면 true로 바꿔봅시다.
-      const updateBaseHPNotificationpayload = {
-        isOpponent: false,
-        baseHp: user.base.hp,
-      };
-      const packetType = PacketType.UPDATE_BASE_HP_NOTIFICATION;
-      const updateBaseHPNotificationResponse = createResponse(
-        packetType,
-        updateBaseHPNotificationpayload,
-        sequence,
-      );
-      socket.write(updateBaseHPNotificationResponse);
+          isWin: true, 
+        }
+        const enemysgameOverNotificationResponse = createResponse(packetType, enemygameOverNotificationpayload, sequence);
+        //상대 유저 소캣으로 보내줍니다.
+        enemyUser.socket.write(enemysgameOverNotificationResponse);
+      } else { //베이스가 0이 아니라면 업데이트 시켜줍니다. isOpponent이 false 면 유저의 베이스의 체력이 업데이트 됩니다. 모르겠으면 true로 바꿔봅시다.
+        const updateBaseHPNotificationpayload = {
+          isOpponent: false, 
+          baseHp: user.base.hp,
+        };
+        const packetType = PacketType.UPDATE_BASE_HP_NOTIFICATION;
+        const updateBaseHPNotificationResponse = createResponse(packetType, updateBaseHPNotificationpayload, sequence);
+        socket.write(updateBaseHPNotificationResponse);
+    
+        // 상대 유저에게 보내주는 겁니다. 상대 유저의 화면에 보이는 베이스의 체력을 업데이트 시켜 줍니다.
+        const enemyupdateBaseHPNotificationpayload = {
+          isOpponent: true, 
+          baseHp: user.base.hp,
+        };
+        const enemyupdateBaseHPNotificationResponse = createResponse(packetType, enemyupdateBaseHPNotificationpayload, sequence);
+        //상대 유저 소캣으로 보내줍니다.
+        enemyUser.socket.write(enemyupdateBaseHPNotificationResponse);
+      }
 
-      // 상대 유저에게 보내주는 겁니다. 상대 유저의 화면에 보이는 베이스의 체력을 업데이트 시켜 줍니다.
-      const enemyupdateBaseHPNotificationpayload = {
-        isOpponent: true,
-        baseHp: user.base.hp,
-      };
-      const enemyupdateBaseHPNotificationResponse = createResponse(
-        packetType,
-        enemyupdateBaseHPNotificationpayload,
-        sequence,
-      );
-      //상대 유저 소캣으로 보내줍니다.
-      enemyUser.socket.write(enemyupdateBaseHPNotificationResponse);
-    }
+      //일단 동기화를 이렇게 처리하도록 하자
+      notificationGameSessionsBySocket(socket);
 
-    //일단 동기화를 이렇게 처리하도록 하자
-    notificationGameSessionsBySocket(socket);
+
   } catch (error) {
     console.error(error);
   }

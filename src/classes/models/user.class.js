@@ -19,6 +19,7 @@ class User {
     this.gameId = null;
     this.monsterLevel = 1;
     this.lastTowerPurchaseTime = 0; //마지막 타워 구매 시간 (타임스탬프)
+    this.bossCount = 0;
   }
 
   updateHighScore(highScore) {
@@ -39,22 +40,8 @@ class User {
 
   //레벨 등에 따라서 처리해야 할 문제가 조금씩 있으니까 이런 게 필요할 듯 하다.
   pointMultiplier(point) {
-    switch(this.monsterLevel)
-    {
-      case 0:
-      case 1:
-        return point;
-        break;
-      case 2:
-        return point * 2;
-        break;
-      case 3:
-        return point * 4;
-        break;
-      default:
-        return point * 5;
-        break;
-    }
+    //일단 레벨에 따라서 아무리 올려도 문제 없게 바꾼다면 이런 식
+    return point * Math.floor(Math.sqrt(this.monsterLevel));
   }
 
   updateGold(gold) {
