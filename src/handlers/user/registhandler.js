@@ -86,7 +86,7 @@ const registHandler = async ({ socket, sequence, payload }) => {
 
       const successResponse = createResponse(PacketType.LOGIN_RESPONSE, successPayload, sequence);
       socket.write(successResponse);
-      console.log('successResponse : ' + successResponse);
+      // console.log('successResponse : ' + successResponse);
       // DB에 저장된 login_id를 토대로 highscore를 가져온다
       const highScoreData = await findUserByHighScore(id);
 
