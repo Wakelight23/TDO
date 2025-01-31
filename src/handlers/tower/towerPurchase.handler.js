@@ -45,20 +45,14 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     const scoreTowerChance = Number(SCORE_TOWER); // 스코어 타워: 13%
     const bothTowerChance = Number(BOTH_TOWER); // 둘 다 타워: 4%
 
-    console.log(normalTowerChance+goldTowerChance)
-    console.log(scoreTowerChance+bothTowerChance)
-
-    console.log(normalTowerChance,goldTowerChance,scoreTowerChance,bothTowerChance)
-
     const specialTowerTotalChance =
       normalTowerChance + goldTowerChance + scoreTowerChance + bothTowerChance;
 
     let towerId;
-    let towerType = 'normal'; // 기본 타워는 일반 타워
+    let towerType;
 
     const randomValue = Math.ceil(Math.random() * 100); // 1 ~ 100 사이의 정수
 
-    console.log(`랜덤 값: ${randomValue}`);
 
     if (randomValue < normalTowerChance) {
       towerType = 'normal';
@@ -73,8 +67,6 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
       towerType = 'both';
       towerId = gameSessions.getBothPurchTowerConter();
     }
-
-    console.log(`선택된 타워 타입: ${towerType}`);
 
     // 8. 타워 정보 생성 및 추가
     const tower = { towerId: towerId, x: x, y: y };
