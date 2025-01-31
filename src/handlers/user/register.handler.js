@@ -12,7 +12,7 @@ import { SECRET_KEY } from '../../constants/env.js';
 import bcrypt from 'bcrypt';
 import User from '../../classes/models/user.class.js';
 
-const registHandler = async ({ socket, sequence, payload }) => {
+const registerHandler = async ({ socket, sequence, payload }) => {
   const { email, id, password } = payload;
 
   if (email === 'login') {
@@ -203,4 +203,4 @@ const registHandler = async ({ socket, sequence, payload }) => {
   }
 };
 
-export default registHandler;
+export default registerHandler;

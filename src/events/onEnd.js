@@ -1,10 +1,5 @@
 import { PacketType } from '../constants/header.js';
-import gameEndHandler from '../handlers/game/gameEndhandler.js';
-import {
-  getAllGameSessions,
-  getGameSessionBySocket,
-  removeGameSession,
-} from '../session/game.session.js';
+import { getGameSessionBySocket, removeGameSession } from '../session/game.session.js';
 import { removeUser } from '../session/user.session.js';
 import { createResponse } from '../utils/response/createResponse.js';
 import matchmakingQueue from '../classes/models/matchmaking.class.js';
