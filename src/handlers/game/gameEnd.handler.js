@@ -10,13 +10,9 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
   try {
     // 소켓에서 사용자 정보 가져오기
     const user = getUserBySocket(socket);
-    // console.log('gameEndHandler의 user 확인 : \n', user);
 
-    // 현재 참가 중인 게임 세션 가져오기
-    const gameSession = getJoinGameSessions(user);
-
-    console.log('user.score : ', user.score);
-    console.log('user.highscore : ', user.highscore);
+    console.log('현재 게임의 Score : ', user.score);
+    console.log('DB에 저장된 Score : ', user.highscore);
 
     // 새로운 점수가 기존 highScore보다 높은지 확인
     if (user.score > user.highscore) {
@@ -25,7 +21,6 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
       await updateDBHighScore(user.id, user.score);
       // 메모리 상의 사용자 highScore도 업데이트
       user.highscore = user.score;
-      // user.updateHighScore(user.highScore);
     }
 
     // 참가 중인 게임 세션 삭제

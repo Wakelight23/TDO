@@ -1,9 +1,10 @@
 export const PACKET_TYPE_LENGTH = 2; // 패킷타입길이를 나타내는 2바이트
-export const VERSION_LENGTH = 1;  //버전 길이
-export const SEQUENCE_LENGTH = 4;  //패킷 번호 길이?
-export const PAYLOAD_LENGTH = 4;  //실제 데이터 길이
+export const VERSION_LENGTH = 1; //버전 길이
+export const SEQUENCE_LENGTH = 4; //패킷 번호 길이?
+export const PAYLOAD_LENGTH = 4; //실제 데이터 길이
 
 export const PacketType = {
+  // 로그인 & 회원가입
   REGISTER_REQUEST: 1,
   REGISTER_RESPONSE: 2,
   LOGIN_REQUEST: 3,
@@ -41,4 +42,4 @@ export const PacketType = {
   // 몬스터 사망 통지
   MONSTER_DEATH_NOTIFICATION: 20,
   ENEMY_MONSTER_DEATH_NOTIFICATION: 21,
-  };
+};
