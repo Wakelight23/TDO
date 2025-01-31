@@ -1,18 +1,19 @@
 import { HANDLER_IDS } from '../constants/handlerIds.js';
-import customPacketParserHandler from '../utils/parser/customPacketParser.js';
-import gameEndHandler from './game/gameEnd.handler.js';
-import matchHandler from './matching/match.handler.js';
-import monsterAttackBaseHandler from './monster/monsterAttackBase.handler.js';
-import monsterDeathNotificationHandler from './monster/monsterDeathNotification.handler.js';
-import spawnMonsterHandler from './monster/spawnMonster.handler.js';
+import loginHandler from '../utils/parser/loginhandler.js';
+import gameEndHandler from './game/gameEndhandler.js';
+import matchHandler from './matching/matchhandler.js';
+import monsterAttackBaseHandler from './monster/monsterAttackBasehandler.js';
+import monsterDeathNotificationHandler from './monster/monsterDeathNotificationhandler.js';
+import spawnMonsterHandler from './monster/spawnMonsterhandler.js';
 import spawnMonsterNotification from './monster/spawnMonsterNotification.js';
-import towerAttackHandler from './tower/towerAttack.handler.js';
-import towerPurchaseHandler from './tower/towerPurchase.handler.js';
-import registerHandler from './user/register.handler.js';
+import testHandler from './test/testhandler.js';
+import towerAttackHandler from './tower/towerAttackhandler.js';
+import towerPurchaseHandler from './tower/towerPurchasehandler.js';
+import registHandler from './user/registhandler.js';
 
 const handlers = {
   [HANDLER_IDS.REGISTEREQUST]: {
-    handler: registerHandler,
+    handler: registHandler,
     protoType: 'packets.C2SRegisterRequest',
     packetname: 'registerRequest',
   },
@@ -22,7 +23,7 @@ const handlers = {
     packetname: 'registerResponse',
   },
   [HANDLER_IDS.LOGINREQUEST]: {
-    handler: customPacketParserHandler,
+    handler: loginHandler,
     protoType: 'packets.C2SLoginRequest',
     packetname: 'loginRequest',
   },

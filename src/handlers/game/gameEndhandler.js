@@ -24,8 +24,7 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
       // DB에 새로운 highScore 업데이트
       await updateDBHighScore(user.id, user.score);
       // 메모리 상의 사용자 highScore도 업데이트
-      user.highscore = user.score;
-      // user.updateHighScore(user.highScore);
+      user.highScore = user.score;
     }
 
     // 참가 중인 게임 세션 삭제
