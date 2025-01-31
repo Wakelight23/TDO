@@ -64,6 +64,9 @@ export const onEnd = (socket) => () => {
       );
       removeGameSession(gameSession.id);
     }
+
+    // 사용자 정보 초기화
+    removedUser.clearUserData();
   } else {
     console.log('No game session found for this socket.');
     console.log(`userSessions & gameSessions : ${userSessions}, ${gameSessions}`);

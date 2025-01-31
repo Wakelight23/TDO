@@ -1,5 +1,5 @@
 import { getJoinGameSessions } from '../../session/game.session.js';
-import { getUserBySocket } from '../../session/user.session.js';
+import { getUser, getUserBySocket } from '../../session/user.session.js';
 import matchmakingQueue from '../../classes/models/matchmaking.class.js';
 
 const matchHandler = async ({ socket, sequence, payload }) => {
