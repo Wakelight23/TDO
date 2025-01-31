@@ -25,6 +25,7 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
       throw new Error('상대 유저를 찾을 수 없습니다.');
     }
 
+    // 유저가 소지한 타워에 대한 공격 검증
     const userTower = user.towers;
     let IsUserTower = userTower.some((id) => id.towerId === towerId);
     if (!IsUserTower) {
