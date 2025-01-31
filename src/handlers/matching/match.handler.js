@@ -1,14 +1,5 @@
-import { PacketType } from '../../constants/header.js';
-import {
-  addGameSession,
-  getAllGameSessions,
-  getJoinGameSessions,
-  notificationGameSessionsBySocket,
-} from '../../session/game.session.js';
+import { getJoinGameSessions } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
-import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
-import { createResponse } from '../../utils/response/createResponse.js';
-import { v4 as uuidv4 } from 'uuid';
 import matchmakingQueue from '../../classes/models/matchmaking.class.js';
 
 // 전역 매칭큐 인스턴스 생성
@@ -16,6 +7,8 @@ import matchmakingQueue from '../../classes/models/matchmaking.class.js';
 
 const matchHandler = async ({ socket, sequence, payload }) => {
   try {
+    const { isMatchable } = payload;
+
     const user = getUserBySocket(socket);
 
     // 이미 게임 중인 유저인지 확인

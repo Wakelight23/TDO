@@ -40,10 +40,13 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     // user.updateTowerPurchaseTime(); // 타워 구매 후 쿨타임 갱신
 
     // 7. 스페셜 타워 확률 처리
-    const normalTowerChance = NOMAL_TOWER; // 일반 타워: 70%
-    const goldTowerChance = GOLD_TOWER; // 골드 타워: 13%
-    const scoreTowerChance = SCORE_TOWER; // 스코어 타워: 13%
-    const bothTowerChance = BOTH_TOWER; // 둘 다 타워: 4%
+    const normalTowerChance = Number(NOMAL_TOWER); // 일반 타워: 70%
+    const goldTowerChance = Number(GOLD_TOWER); // 골드 타워: 13%
+    const scoreTowerChance = Number(SCORE_TOWER); // 스코어 타워: 13%
+    const bothTowerChance = Number(BOTH_TOWER); // 둘 다 타워: 4%
+
+    console.log(normalTowerChance+goldTowerChance)
+    console.log(scoreTowerChance+bothTowerChance)
 
     console.log(normalTowerChance,goldTowerChance,scoreTowerChance,bothTowerChance)
 
