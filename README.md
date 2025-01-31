@@ -27,7 +27,7 @@
 ## How to play
 
 - [MacOS]()
-- [WinOS]()
+- [WinOS](https://drive.google.com/file/d/1RNX88x3OaxPnaLp463IdGCuA4aO6XLeq/view?usp=drive_link)
 
 ## File Directory
 
@@ -199,6 +199,12 @@
 
 <details> 
 <summary>서버 ↔ 클라이언트 동기화 작업</summary>
+
+- 동기화
+  - Handler에 맞는 동기화 Response 보내도록 처리
+  - 추가로 동기화가 필요한 경우 User 클래스의 stateSyn 함수 사용
+  - 토큰 및 변수 추가를 위해 기존 로그인 Request를 회원가입과 통합
+   └ 로그인 Request를 customPacketParser로 활용하여 id부분에서 token, password 부분에 PacketType, Payload를 추출하여 알맞는 Handler로 보내주도록 구현
 
 </details>
 
