@@ -4,6 +4,10 @@
 
 ## Introduce
 
+타워 디펜스 '온라인'
+
+다른 플레이어와 경쟁하여 최고의 점수를 기록하세요.
+
 ## WireFrame & ERD
 
 <details> 
