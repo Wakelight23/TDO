@@ -37,6 +37,7 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
       if (deleteGameSession.state === 'ended') {
         console.log(
           `
+          게임 엔드쪽
         [Game Session : ${deleteGameSession.id}]
          게임이 종료되었습니다...
          세션을 삭제합니다.
