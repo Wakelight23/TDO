@@ -5,9 +5,9 @@ import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
 class MatchmakingQueue {
   constructor() {
     this.waitingUsers = [];
-    this.scoreRange = 50; // 초기 매칭 범위
+    this.scoreRange = 200; // 초기 매칭 범위
     this.matchingInterval = null;
-    this.matchingUsers = new Set(); // 매칭 중인 유저 저장
+    this.matchingUsers = new Set(); // 게임 중인 유저 저장
   }
 
   // 대기열에 유저 추가
@@ -68,7 +68,6 @@ class MatchmakingQueue {
 
   // 매칭 실행
   executeMatch(user) {
-    // console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ 매칭 실행 시작');
     const matchableUsers = this.findMatchableUsers(user);
 
     if (matchableUsers.length > 0) {
@@ -97,7 +96,7 @@ class MatchmakingQueue {
 
   // 매칭 시도 시작
   startMatching(user) {
-    // 이미 매칭 중인 유저라면 중복 매칭 방지
+    // 이미 게임 중인 유저라면 중복 매칭 방지
     if (this.matchingUsers.has(user.id)) {
       return;
     }
@@ -151,6 +150,7 @@ class MatchmakingQueue {
       clearInterval(this.matchingInterval);
       this.matchingInterval = null;
     }
+    this.waitingUsers = this.waitingUsers.filter((waitingUser) => waitingUser.user.id !== userId);
     this.matchingUsers.delete(userId);
   }
 }
