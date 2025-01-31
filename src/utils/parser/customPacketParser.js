@@ -4,8 +4,8 @@ const customPacketParserHandler = async ({ socket, sequence, payload }) => {
   //id = 토큰, password는 {packetType, handlerpayload} 여기서 가공.
   const { id, password } = payload;
 
-  console.log('id:', id);
-  console.log('password:', password);
+  //console.log('id:', id);
+  //console.log('password:', password);
 
   let parsedPassword;
   try {
@@ -14,13 +14,13 @@ const customPacketParserHandler = async ({ socket, sequence, payload }) => {
     console.error('어 안돼 돌아가.', error);
     throw new Error('우린 안되.');
   }
-  console.log('parsedPassword:', parsedPassword);
+  //console.log('parsedPassword:', parsedPassword);
 
   const { packetType, ...handlerPayload } = parsedPassword;
 
   const handler = getHandlerById(packetType);
 
-  console.log('handlerPayload:', handlerPayload);
+  //console.log('handlerPayload:', handlerPayload);
 
   await handler({ socket: socket, sequence: sequence, payload: handlerPayload });
 };

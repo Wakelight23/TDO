@@ -1,5 +1,5 @@
 import { getJoinGameSessions } from '../../session/game.session.js';
-import { getUserBySocket } from '../../session/user.session.js';
+import { getUser, getUserBySocket } from '../../session/user.session.js';
 import matchmakingQueue from '../../classes/models/matchmaking.class.js';
 
 const matchHandler = async ({ socket, sequence, payload }) => {
@@ -8,6 +8,8 @@ const matchHandler = async ({ socket, sequence, payload }) => {
     const { isMatchable } = payload;
 
     const user = getUserBySocket(socket);
+
+    const users = getUser();
 
     if (isMatchable) {
       // 이미 게임 중인 유저인지 확인
@@ -19,7 +21,7 @@ const matchHandler = async ({ socket, sequence, payload }) => {
 
       // 대기열에 추가
       const addedToQueue = matchmakingQueue.addToQueue(user);
-      console.log('\n🚀 ~ matchHandler ~ addedToQueue:', addedToQueue);
+      //console.log('\n🚀 ~ matchHandler ~ addedToQueue:', addedToQueue);
 
       // 대기열에 추가되었을 경우 매칭 시작
       if (addedToQueue) {
