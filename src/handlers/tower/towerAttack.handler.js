@@ -24,7 +24,13 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
     if (!enemyUser) {
       throw new Error('상대 유저를 찾을 수 없습니다.');
     }
-    
+
+    const userTower = user.towers;
+    let IsUserTower = userTower.some((id) => id.towerId === towerId);
+    if (!IsUserTower) {
+      throw new Error('유저가 가지고 있지 않는 타워입니다.');
+    }
+
     // // 특수 타워의 경우 점수나 골드 증가
     // if (3000 <= towerId) {
     //   user.updateGold(user.getGold() + 1);
