@@ -18,6 +18,7 @@ const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
     const gameSessions = getJoinGameSessions(user);
 
     if (gameSessions.length === 0) {
+      console.log(gameSessions);
       return;
     }
 
