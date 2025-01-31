@@ -9,10 +9,14 @@
 <details> 
 <summary>WireFrame</summary>
 
+![Project_TDO_WireFrame](https://github.com/user-attachments/assets/e67abfd5-96ef-4000-9fc7-cdde5dcefddd)
+
 </details>
 
 <details> 
 <summary>ERD</summary>
+
+![Project_TDO_ERD](https://github.com/user-attachments/assets/2c804734-a035-4d7e-9762-10c08f1d2066)
 
 </details>
 
