@@ -43,7 +43,7 @@ class MatchmakingQueue {
     return this.waitingUsers.filter((waitingUser) => {
       // 자기 자신 제외
       if (waitingUser.user === user) {
-        console.log(`- 자기 자신 제외: ${waitingUser.user.id}`);
+        //console.log(`- 자기 자신 제외: ${waitingUser.user.id}`);
         return false;
       }
 
@@ -51,16 +51,16 @@ class MatchmakingQueue {
       const waitTime = currentTime - waitingUser.joinTime;
 
       // 대기 시간이 길어질수록 매칭 범위 확대
-      const adjustedScoreRange = this.scoreRange + (waitTime / 1000) * 2;
+      const adjustedScoreRange = this.scoreRange + (waitTime / 1000) * 10;
 
-      console.log(`
-        [매칭 상세 정보]
-        - 대기 유저: ${waitingUser.user.id} (점수: ${waitingUser.user.highscore})
-        - 점수 차이: ${scoreDiff}
-        - 대기 시간: ${waitTime / 1000}초
-        - 현재 매칭 범위: ${adjustedScoreRange}
-        - 매칭 가능 여부: ${scoreDiff <= adjustedScoreRange}
-      `);
+      // console.log(`
+      //   [매칭 상세 정보]
+      //   - 대기 유저: ${waitingUser.user.id} (점수: ${waitingUser.user.highscore})
+      //   - 점수 차이: ${scoreDiff}
+      //   - 대기 시간: ${waitTime / 1000}초
+      //   - 현재 매칭 범위: ${adjustedScoreRange}
+      //   - 매칭 가능 여부: ${scoreDiff <= adjustedScoreRange}
+      // `);
 
       return scoreDiff <= adjustedScoreRange;
     });
@@ -79,7 +79,7 @@ class MatchmakingQueue {
       this.removeFromQueue(user);
       this.removeFromQueue(matchedUser);
 
-      console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ matchedUser:', matchedUser);
+      console.log('\n🚀 ~ MatchmakingQueue ~ executeMatch ~ matchedUser:', matchedUser.id);
 
       return matchedUser;
     }
@@ -119,6 +119,7 @@ class MatchmakingQueue {
         // 게임 세션 생성 및 시작
         const gameId = uuidv4();
         const gameSession = addGameSession(gameId);
+        console.log("게임 세션이 만들어 졌다!!!", "user.id",user.id,"matchedUser.id",matchedUser.id);
 
         // 몬스터 경로 생성 및 설정
         const path1 = generateRandomMonsterPath(340);
