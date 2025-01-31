@@ -16,7 +16,7 @@ export const findUserByHighScore = async (id) => {
 
 export const createUser = async (email, loginId, password) => {
   const userId = uuidv4(); // UUID 생성
-  const hashedPassword = await bcrypt.hash(password, 10); // 비밀번호 해싱
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   // 사용자 생성 쿼리 실행
   await pools.TDO_USER_DB.query(SQL_QUERIES.CREATE_USER, [userId, email, loginId, hashedPassword]);

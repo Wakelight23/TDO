@@ -1,8 +1,4 @@
 import { PacketType } from '../../constants/header.js';
-import {
-  getJoinGameSessions,
-  notificationGameSessionsBySocket,
-} from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
@@ -15,8 +11,7 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     const user = getUserBySocket(socket);
 
-    if(!user)
-    {
+    if (!user) {
       return;
     }
 
@@ -30,19 +25,19 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
     switch (prefix) {
       case 1: //기본 타워
         user.updateGold(user.getGold() + 5);
-        user.updateScore(user.getScore() + (10));
+        user.updateScore(user.getScore() + 10);
         break;
       case 2: //골드 더 주는 타워'
-        user.updateGold(user.getGold() + (15));
-        user.updateScore(user.getScore() + (10));
+        user.updateGold(user.getGold() + 15);
+        user.updateScore(user.getScore() + 10);
         break;
       case 3: //스코어 더 주는 타워
-        user.updateGold(user.getGold() + (5));
-        user.updateScore(user.getScore() + (30));
+        user.updateGold(user.getGold() + 5);
+        user.updateScore(user.getScore() + 30);
         break;
       case 4: //둘 다 더 주는 타워
-        user.updateGold(user.getGold() + (10));
-        user.updateScore(user.getScore() + (20));
+        user.updateGold(user.getGold() + 10);
+        user.updateScore(user.getScore() + 20);
         break;
     }
 
@@ -50,8 +45,7 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
 
-    if(!enemyUser)
-    {
+    if (!enemyUser) {
       return;
     }
 
