@@ -5,7 +5,7 @@ import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
 class MatchmakingQueue {
   constructor() {
     this.waitingUsers = [];
-    this.scoreRange = 10000; // 초기 매칭 범위
+    this.scoreRange = 200; // 초기 매칭 범위
     this.matchingInterval = null;
     this.matchingUsers = new Set(); // 매칭 중인 유저 저장
   }
@@ -106,6 +106,7 @@ class MatchmakingQueue {
 
     this.matchingInterval = setInterval(async () => {
       // 유저가 이미 게임 중이거나 매칭이 완료된 경우
+      console.log("인터벌 들어감")
       if (!this.waitingUsers.some((waitingUser) => waitingUser.user.id === user.id)) {
         this.stopMatching(user.id);
         return;

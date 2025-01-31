@@ -22,11 +22,11 @@ const createPool = (dbConfig) => {
   pool.query = (sql, params) => {
     const date = new Date();
     // 쿼리 실행시 로그
-    console.log(
-      `[${formatDate(date)}] Executing query: ${sql} ${
-        params ? `, ${JSON.stringify(params)}` : ``
-      }`,
-    );
+    // console.log(
+    //   `[${formatDate(date)}] Executing query: ${sql} ${
+    //     params ? `, ${JSON.stringify(params)}` : ``
+    //   }`,
+    // );
     return originalQuery.call(pool, sql, params);
   };
 
