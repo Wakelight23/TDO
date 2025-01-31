@@ -77,8 +77,8 @@ class Game {
     this.state = 'inProgress';
     const [user1, user2] = this.users;
 
-    console.log('\n🚀 ~ Game start');
-    console.log('\n🚀 ~ Game ~ startGame ~ user1, user2:', user1, user2);
+    //console.log('\n🚀 ~ Game start');
+    console.log('\n🚀 ~ Game ~ startGame ~ user1, user2:', user1.id, user2.id);
 
     user1.updateMatchingUsersocket(user2.socket); // 유저1의 matchingUserSocket에 유저2의 소켓 할당
     user2.updateMatchingUsersocket(user1.socket); // 유저2의 matchingUserSocket에 유저1의 소켓 할당 --> 나중에 쓰기 편하라고.

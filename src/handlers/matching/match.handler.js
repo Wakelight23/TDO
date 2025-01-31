@@ -19,7 +19,7 @@ const matchHandler = async ({ socket, sequence, payload }) => {
 
       // 대기열에 추가
       const addedToQueue = matchmakingQueue.addToQueue(user);
-      console.log('\n🚀 ~ matchHandler ~ addedToQueue:', addedToQueue);
+      //console.log('\n🚀 ~ matchHandler ~ addedToQueue:', addedToQueue);
 
       // 대기열에 추가되었을 경우 매칭 시작
       if (addedToQueue) {
