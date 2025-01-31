@@ -3,8 +3,6 @@ import initServer from './init/index.js';
 import { config } from './config/config.js';
 import { onConnection, recoverSessions } from './events/onConnection.js';
 
-// const server = net.createServer(onConnection);
-
 const activeClients = new Map(); // 활성 클라이언트를 관리하기 위한 Map 객체
 
 const server = net.createServer((socket) => {

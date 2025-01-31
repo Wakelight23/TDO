@@ -18,7 +18,6 @@ class User {
     this.matchingUsersocket = null;
     this.gameId = null;
     this.monsterLevel = 1;
-    this.lastTowerPurchaseTime = 0; //마지막 타워 구매 시간 (타임스탬프)
     this.bossCount = 0;
   }
 
@@ -103,23 +102,6 @@ class User {
     return this.monsterLevel;
   }
 
-  // // 쿨타임 체크
-  // canPurchaseTower() {
-  //   const currentTime = Date.now();
-  //   const cooldownPeriod = 100; // 0.1초 (쿨타임 시간)
-  //   const timeSinceLastPurchase = currentTime - this.lastTowerPurchaseTime;
-
-  //   if (timeSinceLastPurchase < cooldownPeriod) {
-  //     return false; // 쿨타임 중이라면 구매 불가
-  //   }
-  //   return true; // 쿨타임이 지나면 구매 가능
-  // }
-
-  // // 타워 구매 후 쿨타임 업데이트
-  // updateTowerPurchaseTime() {
-  //   this.lastTowerPurchaseTime = Date.now(); // 타워 구매 후 시간 갱신
-  // }
-
   //타워 추가.
   addTower(tower) {
     this.towers.push(tower);
@@ -154,6 +136,7 @@ class User {
     this.monsterLevel = 1;
   }
 
+  // 게임 플레이 동기화
   stateSyn() {
     const stateSyncPayload = {
       userGold: this.gold,

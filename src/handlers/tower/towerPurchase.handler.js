@@ -16,14 +16,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     // 2. 유저 객체 가져오기
     const user = getUserBySocket(socket);
 
-    // // 3. 쿨타임 체크
-    // if (!user.canPurchaseTower()) {
-    //   const remainingCooldown = 5000 - (Date.now() - user.lastTowerPurchaseTime);
-    //   console.log(`쿨타임이 남았습니다. ${remainingCooldown}ms 후에 다시 시도해주세요.`);
-    //   return; // 쿨타임이 남아있으면 타워 구매 불가
-    // }
-
-    // 4. 게임 세션 및 골드 확인
+    // 3. 게임 세션 및 골드 확인
     const gameSessions = getJoinGameSessions(user);
     let userGold = user.getGold();
 
@@ -33,22 +26,19 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
       return; // 에러 발생시 바로 리턴
     }
 
-    // 5. 골드 차감
+    // 4. 골드 차감
     user.updateGold(userGold - towerCost);
 
-    // // 6. 타워 구매 후 쿨타임 갱신
-    // user.updateTowerPurchaseTime(); // 타워 구매 후 쿨타임 갱신
-
-    // 7. 스페셜 타워 확률 처리
+    // 5. 스페셜 타워 확률 처리
     const normalTowerChance = Number(NOMAL_TOWER); // 일반 타워: 70%
     const goldTowerChance = Number(GOLD_TOWER); // 골드 타워: 13%
     const scoreTowerChance = Number(SCORE_TOWER); // 스코어 타워: 13%
     const bothTowerChance = Number(BOTH_TOWER); // 둘 다 타워: 4%
 
-    console.log(normalTowerChance+goldTowerChance)
-    console.log(scoreTowerChance+bothTowerChance)
+    console.log(normalTowerChance + goldTowerChance);
+    console.log(scoreTowerChance + bothTowerChance);
 
-    console.log(normalTowerChance,goldTowerChance,scoreTowerChance,bothTowerChance)
+    console.log(normalTowerChance, goldTowerChance, scoreTowerChance, bothTowerChance);
 
     const specialTowerTotalChance =
       normalTowerChance + goldTowerChance + scoreTowerChance + bothTowerChance;
@@ -76,13 +66,13 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
 
     console.log(`선택된 타워 타입: ${towerType}`);
 
-    // 8. 타워 정보 생성 및 추가
+    // 6. 타워 정보 생성 및 추가
     const tower = { towerId: towerId, x: x, y: y };
     user.addTower(tower);
 
     console.log('유저가 보유한 타워:', user.towers);
 
-    // 9. 타워 구매 응답
+    // 7. 타워 구매 응답
     const towerPurchasePayload = { towerId: towerId };
     const towerPurchaseResponse = createResponse(
       PacketType.TOWER_PURCHASE_RESPONSE,
@@ -91,7 +81,7 @@ const towerPurchaseHandler = async ({ socket, sequence, payload }) => {
     );
     socket.write(towerPurchaseResponse);
 
-    // 10. 상대방에게 타워 추가 알림 전송
+    // 8. 상대방에게 타워 추가 알림 전송
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
     if (enemyUser && enemyUser.socket) {
       const addEnemyTowerNotificationPayload = { towerId: towerId, x: x, y: y };

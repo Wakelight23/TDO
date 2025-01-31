@@ -31,25 +31,9 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
       throw new Error('유저가 가지고 있지 않는 타워입니다.');
     }
 
-    // // 특수 타워의 경우 점수나 골드 증가
-    // if (3000 <= towerId) {
-    //   user.updateGold(user.getGold() + 1);
-    //   user.updateScore(user.getScore() + 1);
-    //   // console.log(towerId);
-    //   // console.log('둘다 타워가 떄림', user.gold, user.score);
-    // } else if (2000 <= towerId) {
-    //   user.updateScore(user.getScore() + 1);
-    //   // console.log(towerId);
-    //   // console.log('스코어 타워가 떄림', user.score);
-    // } else if (1000 <= towerId) {
-    //   user.updateGold(user.getGold() + 1);
-    //   // console.log(towerId);
-    //   // console.log('골드 타워가 떄림', user.gold);
-    // }
-
     user.stateSyn();
 
-    // 상대 유저에게 이 타워가 저 몬스터를 때렸다고 알려줍니다. 그럼 클라에서 때림.
+    // 상대 유저에게 이 타워가 저 몬스터를 때렸다고 알려줍니다.
     const enemyTowerAttackNotificationpayload = {
       towerId: towerId,
       monsterId: monsterId,
@@ -61,8 +45,8 @@ const towerAttackHandler = async ({ socket, sequence, payload }) => {
       enemyTowerAttackNotificationpayload,
       sequence,
     );
-    enemyUser.socket.write(enemyTowerAttackNotificationResponse);
-    // ^상대 유저에게 보냅니다. 모르겠으면 안보내 보면 됨.
+
+    enemyUser.socket.write(enemyTowerAttackNotificationResponse); // 상대 유저에게 데이터 전송
   } catch (error) {
     console.error(error);
   }

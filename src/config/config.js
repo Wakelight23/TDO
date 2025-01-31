@@ -17,10 +17,10 @@ export const config = {
     version: CLIENT_VERSION,
   },
   packet: {
-    packetTypeLength: PACKET_TYPE_LENGTH, //2
-    versionLength: VERSION_LENGTH, //1
-    sequenceLength: SEQUENCE_LENGTH, //4
-    payloadLength: PAYLOAD_LENGTH, //4
+    packetTypeLength: PACKET_TYPE_LENGTH, // Packet Byte : 2
+    versionLength: VERSION_LENGTH, // Packet Byte : 1
+    sequenceLength: SEQUENCE_LENGTH, // Packet Byte : 4
+    payloadLength: PAYLOAD_LENGTH, // Packet Byte : 4
   },
   database: {
     TDO_USER_DB: {

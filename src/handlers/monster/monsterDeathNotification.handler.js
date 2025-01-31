@@ -17,8 +17,8 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
 
     monsterId = monsterId % 100000;
 
-    //유저가 가지고 있는 몬스터중 같은 아이디의 몬스터를 삭제시킵니다.
-    //pointMuitiplier : 레벨 값에 따라서 현재 얻을 포인트 값을 곱해서 리턴한다.
+    // 유저가 가지고 있는 몬스터중 같은 아이디의 몬스터를 삭제시킵니다.
+    // pointMuitiplier : 레벨 값에 따라서 현재 얻을 포인트 값을 곱해서 리턴한다.
     user.removeMonster(monsterId);
 
     //타워의 타입에 따라서 골드와 스코어를 올리는 방법을 분리해보자.
@@ -41,8 +41,6 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
         break;
     }
 
-    //const gameSession = getJoinGameSessions(user);
-
     const enemyUser = getUserBySocket(user.getMatchingUsersocket());
 
     if (!enemyUser) {
@@ -59,12 +57,12 @@ const monsterDeathNotificationHandler = async ({ socket, sequence, payload }) =>
       enemyMonsterDeathNotificationpayload,
       sequence,
     );
-    //user.socket.write(enemyMonsterDeathNotificationResponse);
     enemyUser.socket.write(enemyMonsterDeathNotificationResponse);
 
+    // 자신의 상태 동기화
     user.stateSyn();
+    // 상대방 상태 동기화
     enemyUser.stateSyn();
-    // notificationGameSessionsBySocket(socket);
   } catch (error) {
     console.error(error);
   }
