@@ -26,8 +26,8 @@
 
 ## How to play
 
-- [MacOS]()
-- [WinOS]()
+- [MacOS](https://drive.google.com/file/d/1ZxblKXG35hBEsTeKCaPghdWXwcuJdVeB/view?usp=drive_link)
+- [WinOS](https://drive.google.com/file/d/1RNX88x3OaxPnaLp463IdGCuA4aO6XLeq/view?usp=drive_link)
 
 ## File Directory
 
