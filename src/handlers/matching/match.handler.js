@@ -12,8 +12,6 @@ const matchHandler = async ({ socket, sequence, payload }) => {
     if (isMatchable) {
       // 이미 게임 중인 유저인지 확인
       const gameSession = getJoinGameSessions(user);
-      console.log(user.id,"가 게임에 참여했다!!!");
-      console.log(gameSession,"에 참여했다!!!");
       if (gameSession) {
         //console.log(`${user.id} 님은 이미 게임 중입니다.`);
         return;

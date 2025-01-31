@@ -51,7 +51,7 @@ class MatchmakingQueue {
       const waitTime = currentTime - waitingUser.joinTime;
 
       // 대기 시간이 길어질수록 매칭 범위 확대
-      const adjustedScoreRange = this.scoreRange + (waitTime / 1000) * 10;
+      const adjustedScoreRange = this.scoreRange + (waitTime / 1000) * 20;
 
       // console.log(`
       //   [매칭 상세 정보]
