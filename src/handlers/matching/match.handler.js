@@ -1,14 +1,5 @@
-import { PacketType } from '../../constants/header.js';
-import {
-  addGameSession,
-  getAllGameSessions,
-  getJoinGameSessions,
-  notificationGameSessionsBySocket,
-} from '../../session/game.session.js';
+import { getJoinGameSessions } from '../../session/game.session.js';
 import { getUserBySocket } from '../../session/user.session.js';
-import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
-import { createResponse } from '../../utils/response/createResponse.js';
-import { v4 as uuidv4 } from 'uuid';
 import matchmakingQueue from '../../classes/models/matchmaking.class.js';
 
 const matchHandler = async ({ socket, sequence, payload }) => {
