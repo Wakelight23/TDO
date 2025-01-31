@@ -29,51 +29,21 @@ const spawnMonsterHandler = async ({ socket, sequence, payload }) => {
     let monsterNumber;
     switch (user.monsterLevel) {
       case 0:
-      case 1:
         monsterNumber = 1;
         break;
+      case 1://1부터 5까지는 여기에 속하게 된다는 의미
       case 2:
-        monsterNumber = Math.ceil(Math.random() * (2));
-        break;
       case 3:
-        monsterNumber = Math.ceil(Math.random() * (3));
-        break;
       case 4:
-        monsterNumber = Math.ceil(Math.random() * (4));
-        break;
       case 5:
-        monsterNumber = Math.ceil(Math.random() * (5));
+        monsterNumber = Math.ceil(Math.random() * (user.monsterLevel));
         break;
-      case 6:
-        if (user.bossCount > 0) {
-          monsterNumber = 6;
-          user.bossCount--;
-        }
-        else {
-          monsterNumber = Math.ceil(Math.random() * (5));
-        }
-        break;
+      case 6://6부터 9까진느 여기에 속하게 된다는 의미
       case 7:
-        if (user.bossCount > 0) {
-          monsterNumber = 7;
-          user.bossCount--;
-        }
-        else {
-          monsterNumber = Math.ceil(Math.random() * (5));
-        }
-        break;
       case 8:
-        if (user.bossCount > 0) {
-          monsterNumber = 8;
-          user.bossCount--;
-        }
-        else {
-          monsterNumber = Math.ceil(Math.random() * (5));
-        }
-        break;
       case 9:
         if (user.bossCount > 0) {
-          monsterNumber = 9;
+          monsterNumber = user.monsterLevel;
           user.bossCount--;
         }
         else {
