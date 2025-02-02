@@ -10,10 +10,21 @@ const gameEndHandler = async ({ socket, sequence, payload }) => {
   try {
     // 소켓에서 사용자 정보 가져오기
     const user = getUserBySocket(socket);
+
+    if(!user)
+    {
+      return;
+    }
+    
     // console.log('gameEndHandler의 user 확인 : \n', user);
 
     // 현재 참가 중인 게임 세션 가져오기
     const gameSession = getJoinGameSessions(user);
+
+    if(!gameSession)
+    {
+      return;
+    }
 
     console.log('user.score : ', user.score);
     console.log('user.highscore : ', user.highscore);

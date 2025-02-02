@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { addGameSession } from '../../session/game.session.js';
 import { generateRandomMonsterPath } from '../../utils/monster/monsterPath.js';
+import { map } from 'lodash';
 
 class MatchmakingQueue {
   constructor() {
     this.waitingUsers = [];
     this.scoreRange = 200; // 초기 매칭 범위
-    this.matchingInterval = null;
+    this.matchingInterval = new Map();
     this.matchingUsers = new Set(); // 게임 중인 유저 저장
   }
 

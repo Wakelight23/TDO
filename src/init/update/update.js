@@ -26,7 +26,7 @@ function update() {
         if (gameSession.state === 'inProgress') {
             
             //console.log("업데이트 되는 중");
-            gameSession.updateTimestamp(deltaTime)
+            gameSession.updateTimestamp(deltaTime);
         }
     }
     //여기서 프레임마다 업데이트를 해보도록 하자.

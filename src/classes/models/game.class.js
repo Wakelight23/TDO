@@ -74,7 +74,7 @@ class Game {
 
   //게임 시작 함수입니다. 게임 상태를 'inProgress'로 바꾸어 줍니다.
   startGame() {
-    this.state = 'inProgress';
+    
     const [user1, user2] = this.users;
 
     console.log('\n🚀 ~ Game start');
@@ -146,6 +146,8 @@ class Game {
     );
     //유저2 소켓으로 보넵니다.
     user2.socket.write(user2matchStartResponse);
+
+    this.state = 'inProgress';
   }
 
   //스폰하는 몬스터의 카운트를 줍니다. 카운트가 하나 올라갑니다.
