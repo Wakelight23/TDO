@@ -28,7 +28,7 @@
 
 ## How to play
 
-- [MacOS(not yet upload)]()
+- [MacOS](https://drive.google.com/file/d/10zo6lc54nycNwS6P0BFF3V1wDGTyXPg6/view?usp=sharing)
 - [WinOS](https://drive.google.com/file/d/1pMORWKSR9DqPm3ymRLucMy25gGoUqjFP/view?usp=sharing)
 
 ## File Directory
