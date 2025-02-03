@@ -2,7 +2,7 @@
 
 ## GamePlay Video
 
-[![시연 영상](스크린샷 이미지)](https://www.youtube.com/watch?v=hNYPLb90DCA)
+[Nodejs_7기 2조 타워디펜스온라인 시연영상](https://www.youtube.com/watch?v=hNYPLb90DCA)
 
 ## Introduce
 
