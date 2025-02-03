@@ -28,8 +28,8 @@
 
 ## How to play
 
-- [MacOS]()
-- [WinOS](https://drive.google.com/file/d/1RNX88x3OaxPnaLp463IdGCuA4aO6XLeq/view?usp=drive_link)
+- [MacOS(not yet upload)]()
+- [WinOS](https://drive.google.com/file/d/1pMORWKSR9DqPm3ymRLucMy25gGoUqjFP/view?usp=sharing)
 
 ## File Directory
 
