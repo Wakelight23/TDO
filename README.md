@@ -2,6 +2,8 @@
 
 ## GamePlay Video
 
+[![시연 영상](스크린샷 이미지)](https://www.youtube.com/watch?v=hNYPLb90DCA)
+
 ## Introduce
 
 타워 디펜스 '온라인'
